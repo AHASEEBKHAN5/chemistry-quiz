@@ -12,21 +12,21 @@
         .header h1 { font-size: 24px; margin-bottom: 8px; }
         .header p { font-size: 14px; opacity: 0.9; }
         .tabs { display: flex; background: #f0f0f0; overflow-x: auto; }
-        .tab { flex: 1; min-width: 120px; padding: 15px 10px; text-align: center; background: #f0f0f0; border: none; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; }
+        .tab { flex: 1; min-width: 120px; padding: 15px 10px; text-align: center; background: #f0f0f0; border: none; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab.active { background: white; color: #667eea; border-bottom: 3px solid #667eea; }
-        .quiz-content { display: none; padding: 20px; }
+        .quiz-content { display: none; padding: 20px; max-height: 70vh; overflow-y: auto; }
         .quiz-content.active { display: block; }
         .question { background: #f8f9fa; padding: 18px; margin-bottom: 20px; border-radius: 10px; border-left: 4px solid #667eea; }
         .question-text { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 12px; line-height: 1.5; }
-        .option { background: white; padding: 12px; margin: 8px 0; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 14px; }
-        .option:active { background: #e3f2fd; border-color: #667eea; }
-        .option.selected { background: #e3f2fd; border-color: #667eea; }
+        .option { background: white; padding: 12px; margin: 8px 0; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+        .option:hover { border-color: #667eea; background: #f7f9fc; }
+        .option.selected { background: #e3f2fd; border-color: #667eea; font-weight: 600; }
         .option.correct { background: #d4edda; border-color: #28a745; }
         .option.wrong { background: #f8d7da; border-color: #dc3545; }
         .explanation { display: none; background: #fff3cd; padding: 12px; margin-top: 10px; border-radius: 5px; border-left: 4px solid #ffc107; font-size: 13px; line-height: 1.5; }
         .explanation.show { display: block; }
         .submit-btn { width: 100%; padding: 16px; background: #667eea; color: white; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .submit-btn:active { background: #5568d3; transform: scale(0.98); }
+        .submit-btn:hover { background: #5568d3; }
         .result { display: none; padding: 20px; margin-top: 20px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: bold; }
         .result.show { display: block; }
         @media (max-width: 600px) { .header h1 { font-size: 20px; } .tab { font-size: 12px; padding: 12px 8px; } }
@@ -36,13 +36,13 @@
     <div class="container">
         <div class="header">
             <h1>🧪 IAL Chemistry Unit 4 - Complete Quiz</h1>
-            <p>200 Exam-Standard Questions | All Devices</p>
+            <p>200 Exam-Standard Questions | Works on All Devices</p>
         </div>
         <div class="tabs">
-            <button class="tab active" onclick="showQuiz('rates')">Rates (50Q)</button>
-            <button class="tab" onclick="showQuiz('equilibria')">Equilibria (50Q)</button>
-            <button class="tab" onclick="showQuiz('acids')">Acids (50Q)</button>
-            <button class="tab" onclick="showQuiz('organic')">Organic (50Q)</button>
+            <button class="tab active" id="tab-rates">Rates (50Q)</button>
+            <button class="tab" id="tab-equilibria">Equilibria (50Q)</button>
+            <button class="tab" id="tab-acids">Acids (50Q)</button>
+            <button class="tab" id="tab-organic">Organic (50Q)</button>
         </div>
         <div id="rates" class="quiz-content active"></div>
         <div id="equilibria" class="quiz-content"></div>
@@ -260,45 +260,80 @@
         let currentQuiz = 'rates';
         let answers = {};
 
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const topic = this.id.replace('tab-', '');
+                showQuiz(topic);
+            });
+        });
+
         function showQuiz(topic) {
             currentQuiz = topic;
             answers = {};
+            
+            // Update tabs
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + topic).classList.add('active');
+            
+            // Update content
             document.querySelectorAll('.quiz-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
             document.getElementById(topic).classList.add('active');
+            
             loadQuiz(topic);
         }
 
         function loadQuiz(topic) {
             const container = document.getElementById(topic);
-            let html = '<h2 style="color:#667eea;margin-bottom:20px;">' + topic.toUpperCase() + ' (50 Questions)</h2>';
+            let html = '<h2 style="color:#667eea;margin-bottom:20px;font-size:20px;">' + topic.toUpperCase() + ' QUIZ (50 Questions)</h2>';
             
             quizData[topic].forEach((q, i) => {
-                html += `<div class="question">
+                html += `<div class="question" data-topic="${topic}" data-index="${i}">
                     <div class="question-text">${i+1}. ${q.q}</div>
-                    ${q.opts.map((opt, j) => `
-                        <div class="option" onclick="selectAnswer('${topic}',${i},${j})">
-                            ${String.fromCharCode(65+j)}) ${opt}
-                        </div>
-                    `).join('')}
-                    <div class="explanation" id="exp-${topic}-${i}">${q.exp}</div>
+                    <div class="options">
+                        ${q.opts.map((opt, j) => `
+                            <div class="option" data-topic="${topic}" data-qindex="${i}" data-optindex="${j}">
+                                ${String.fromCharCode(65+j)}) ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="exp-${topic}-${i}"><strong>Explanation:</strong> ${q.exp}</div>
                 </div>`;
             });
             
-            html += `<button class="submit-btn" onclick="submitQuiz('${topic}')">Submit ${topic.toUpperCase()} Quiz</button>
+            html += `<button class="submit-btn" id="submit-${topic}">Submit ${topic.toUpperCase()} Quiz</button>
                      <div class="result" id="result-${topic}"></div>`;
+            
             container.innerHTML = html;
+            
+            // Add click handlers to options
+            container.querySelectorAll('.option').forEach(opt => {
+                opt.addEventListener('click', function() {
+                    const topic = this.getAttribute('data-topic');
+                    const qIndex = parseInt(this.getAttribute('data-qindex'));
+                    const optIndex = parseInt(this.getAttribute('data-optindex'));
+                    selectAnswer(topic, qIndex, optIndex);
+                });
+            });
+            
+            // Add submit handler
+            document.getElementById('submit-' + topic).addEventListener('click', function() {
+                submitQuiz(topic);
+            });
         }
 
         function selectAnswer(topic, qIndex, optIndex) {
             if (!answers[topic]) answers[topic] = {};
             answers[topic][qIndex] = optIndex;
             
-            const options = document.querySelectorAll(`#${topic} .question:nth-child(${qIndex+2}) .option`);
+            const question = document.querySelector(`.question[data-topic="${topic}"][data-index="${qIndex}"]`);
+            const options = question.querySelectorAll('.option');
+            
             options.forEach((opt, i) => {
                 opt.classList.remove('selected');
-                if (i === optIndex) opt.classList.add('selected');
+                if (i === optIndex) {
+                    opt.classList.add('selected');
+                }
             });
         }
 
@@ -307,16 +342,22 @@
             const userAnswers = answers[topic] || {};
             
             quizData[topic].forEach((q, i) => {
-                const options = document.querySelectorAll(`#${topic} .question:nth-child(${i+2}) .option`);
+                const question = document.querySelector(`.question[data-topic="${topic}"][data-index="${i}"]`);
+                const options = question.querySelectorAll('.option');
                 const userAns = userAnswers[i];
                 
                 options.forEach((opt, j) => {
                     opt.classList.remove('selected');
-                    if (j === q.ans) opt.classList.add('correct');
-                    if (userAns !== undefined && j === userAns && j !== q.ans) opt.classList.add('wrong');
+                    if (j === q.ans) {
+                        opt.classList.add('correct');
+                    }
+                    if (userAns !== undefined && j === userAns && j !== q.ans) {
+                        opt.classList.add('wrong');
+                    }
                 });
                 
                 if (userAns === q.ans) score++;
+                
                 document.getElementById(`exp-${topic}-${i}`).classList.add('show');
             });
             
@@ -325,14 +366,16 @@
             const color = pct>=80?'#d4edda':pct>=70?'#d1ecf1':pct>=60?'#fff3cd':'#f8d7da';
             
             const result = document.getElementById(`result-${topic}`);
-            result.innerHTML = `Score: ${score}/50 (${pct}%) - Grade: ${grade}`;
+            result.innerHTML = `<strong>Your Score: ${score}/50 (${pct}%)</strong><br>Grade: ${grade}`;
             result.style.background = color;
             result.classList.add('show');
-            result.scrollIntoView({behavior:'smooth'});
+            result.scrollIntoView({behavior:'smooth', block: 'nearest'});
         }
 
         // Load first quiz on page load
-        window.onload = () => loadQuiz('rates');
+        window.addEventListener('load', function() {
+            loadQuiz('rates');
+        });
     </script>
 </body>
 </html>
