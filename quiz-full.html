@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Quiz - 200 Questions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #667eea; padding: 15px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; text-align: center; }
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .tabs { display: flex; background: #f0f0f0; overflow-x: auto; }
+        .tab { flex: 1; min-width: 120px; padding: 15px 10px; text-align: center; background: #f0f0f0; border: none; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; }
+        .tab.active { background: white; color: #667eea; border-bottom: 3px solid #667eea; }
+        .quiz-content { display: none; padding: 20px; }
+        .quiz-content.active { display: block; }
+        .question { background: #f8f9fa; padding: 18px; margin-bottom: 20px; border-radius: 10px; border-left: 4px solid #667eea; }
+        .question-text { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 12px; line-height: 1.5; }
+        .option { background: white; padding: 12px; margin: 8px 0; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .option:active { background: #e3f2fd; border-color: #667eea; }
+        .option.selected { background: #e3f2fd; border-color: #667eea; }
+        .option.correct { background: #d4edda; border-color: #28a745; }
+        .option.wrong { background: #f8d7da; border-color: #dc3545; }
+        .explanation { display: none; background: #fff3cd; padding: 12px; margin-top: 10px; border-radius: 5px; border-left: 4px solid #ffc107; font-size: 13px; line-height: 1.5; }
+        .explanation.show { display: block; }
+        .submit-btn { width: 100%; padding: 16px; background: #667eea; color: white; border: none; border-radius: 10px; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .submit-btn:active { background: #5568d3; transform: scale(0.98); }
+        .result { display: none; padding: 20px; margin-top: 20px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: bold; }
+        .result.show { display: block; }
+        @media (max-width: 600px) { .header h1 { font-size: 20px; } .tab { font-size: 12px; padding: 12px 8px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 IAL Chemistry Unit 4 - Complete Quiz</h1>
+            <p>200 Exam-Standard Questions | All Devices</p>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="showQuiz('rates')">Rates (50Q)</button>
+            <button class="tab" onclick="showQuiz('equilibria')">Equilibria (50Q)</button>
+            <button class="tab" onclick="showQuiz('acids')">Acids (50Q)</button>
+            <button class="tab" onclick="showQuiz('organic')">Organic (50Q)</button>
+        </div>
+        <div id="rates" class="quiz-content active"></div>
+        <div id="equilibria" class="quiz-content"></div>
+        <div id="acids" class="quiz-content"></div>
+        <div id="organic" class="quiz-content"></div>
+    </div>
+    <script>
+        const quizData = {
+            rates: [
+                {q:"The rate of a reaction is measured as 2.5×10⁻³ mol dm⁻³ s⁻¹. If [A]₀=0.50 mol dm⁻³, what is t₁/₂ if first order?",opts:["139 s","100 s","200 s","277 s"],ans:0,exp:"t₁/₂=ln2/k. k=rate/[A]=2.5×10⁻³/0.50=5.0×10⁻³ s⁻¹. t₁/₂=0.693/0.005=139 s"},
+                {q:"Rate equation: rate=k[X]²[Y]. When [X] doubles and [Y] halves, what happens to rate?",opts:["Doubles","Quadruples","Halves","Unchanged"],ans:0,exp:"New rate=k(2[X])²(0.5[Y])=2k[X]²[Y]. Rate doubles."},
+                {q:"Arrhenius: k=Ae^(-Ea/RT). T increases 300K→310K, Ea=50 kJ/mol. Factor increase in k?",opts:["1.5","2.0","2.5","3.0"],ans:2,exp:"ln(k₂/k₁)=(Ea/R)(1/T₁-1/T₂)=0.649. k₂/k₁≈2.5"},
+                {q:"Initial rate data: Exp1:[A]=0.1,[B]=0.1,rate=2×10⁻⁴. Exp2:[A]=0.2,[B]=0.1,rate=8×10⁻⁴. Exp3:[A]=0.1,[B]=0.2,rate=2×10⁻⁴. Rate equation?",opts:["rate=k[A]","rate=k[A]²","rate=k[A][B]","rate=k[A]²[B]"],ans:1,exp:"[A] doubles→rate×4: 2nd order in A. [B] doubles→no change: 0 order in B. rate=k[A]²"},
+                {q:"Catalyst lowers Ea from 75→50 kJ/mol at 298K. Ratio k(cat)/k(uncat)?",opts:["10³","10⁵","10⁷","10⁹"],ans:1,exp:"ln(ratio)=ΔEa/RT=25000/(8.314×298)=10.09. Ratio≈10⁵"},
+                {q:"Zero-order: k=0.015 mol dm⁻³ s⁻¹, [A]₀=0.60 M. Half-life?",opts:["10 s","20 s","30 s","40 s"],ans:1,exp:"t₁/₂=[A]₀/(2k)=0.60/0.030=20 s"},
+                {q:"RDS: A+B→C (slow). Rate equation?",opts:["rate=k[A][B]","rate=k[A]²","rate=k[C]","rate=k[A]²[B]"],ans:0,exp:"Rate equation matches RDS stoichiometry: rate=k[A][B]"},
+                {q:"t₁/₂=50s at [A]₀=0.80M, t₁/₂=100s at [A]₀=0.40M. Order?",opts:["Zero","First","Second","Third"],ans:0,exp:"For zero order, t₁/₂∝[A]₀. When [A]₀ halves, t₁/₂ halves. This is zero order."},
+                {q:"Iodine clock: H₂O₂+2I⁻+2H⁺→I₂+2H₂O (slow). Rate equation?",opts:["k[H₂O₂][I⁻]²[H⁺]²","k[H₂O₂][I⁻][H⁺]","k[H₂O₂][I⁻]","k[I₂][S₂O₃²⁻]"],ans:1,exp:"Rate determined by slow step: rate=k[H₂O₂][I⁻][H⁺]"},
+                {q:"Second-order: k=0.050 mol⁻¹ dm³ s⁻¹, [A]₀=0.20M. [A] after 100s?",opts:["0.033 M","0.050 M","0.067 M","0.100 M"],ans:3,exp:"1/[A]=1/[A]₀+kt=5+5=10. [A]=0.10 M"},
+                {q:"Which statement about catalysts is correct?",opts:["Consumed in reaction","Increase Keq","Provide lower Ea pathway","Shift equilibrium"],ans:2,exp:"Catalysts provide alternative pathway with lower Ea without being consumed"},
+                {q:"Maxwell-Boltzmann at higher T:",opts:["Peak right, lower","Peak left, higher","Area decreases","Fewer molecules ≥Ea"],ans:0,exp:"Higher T: peak moves right (higher avg energy) and becomes lower"},
+                {q:"2NO₂→2NO+O₂. [NO₂]:0.010,0.020,0.030. Rate:5×10⁻⁵,2×10⁻⁴,4.5×10⁻⁴. Order?",opts:["Zero","First","Second","Third"],ans:2,exp:"×2 conc→×4 rate: second order"},
+                {q:"First-order: k=0.025 s⁻¹. Time for 75% completion?",opts:["27.7 s","41.6 s","55.5 s","69.3 s"],ans:2,exp:"75% done=[A]=0.25[A]₀. t=ln(4)/k=1.386/0.025=55.5 s"},
+                {q:"Activation energy from graph of ln(k) vs 1/T. Slope=-Ea/R. If slope=-6000K, Ea=?",opts:["49.9 kJ/mol","59.9 kJ/mol","69.9 kJ/mol","79.9 kJ/mol"],ans:0,exp:"Ea=-slope×R=6000×8.314=49,884 J≈50 kJ/mol"},
+                {q:"Rate constant units for second-order reaction?",opts:["s⁻¹","mol dm⁻³ s⁻¹","mol⁻¹ dm³ s⁻¹","mol² dm⁻⁶ s⁻¹"],ans:2,exp:"Second order: rate=k[A]². Units: mol⁻¹ dm³ s⁻¹"},
+                {q:"Reaction: 2A→B. [A] vs time is linear. Order?",opts:["Zero","First","Second","Third"],ans:0,exp:"Linear [A] vs t indicates zero order"},
+                {q:"Half-life independent of initial concentration. Order?",opts:["Zero","First","Second","Third"],ans:1,exp:"First order has constant t₁/₂ independent of [A]₀"},
+                {q:"Rate doubles when T increases 10K. Approximate Ea at 300K?",opts:["26 kJ/mol","36 kJ/mol","53 kJ/mol","73 kJ/mol"],ans:2,exp:"ln(2)=Ea/R(1/300-1/310). Ea≈53 kJ/mol"},
+                {q:"Collision theory: rate increases with T because:",opts:["More collisions only","Higher energy only","Both more collisions and higher energy","Ea decreases"],ans:2,exp:"Higher T increases both collision frequency and fraction with E≥Ea"},
+                {q:"Pre-exponential factor A in Arrhenius equation represents:",opts:["Activation energy","Collision frequency","Temperature","Rate constant"],ans:1,exp:"A represents collision frequency and orientation factor"},
+                {q:"Reaction profile shows two peaks. This indicates:",opts:["Two-step mechanism","Reversible reaction","Catalyst present","Exothermic reaction"],ans:0,exp:"Two peaks indicate two-step mechanism with intermediate"},
+                {q:"Rate-determining step is:",opts:["Fastest step","Slowest step","First step","Last step"],ans:1,exp:"RDS is the slowest step that determines overall rate"},
+                {q:"Homogeneous catalyst:",opts:["Same phase as reactants","Different phase","Solid only","Gas only"],ans:0,exp:"Homogeneous catalyst is in same phase as reactants"},
+                {q:"Heterogeneous catalyst works by:",opts:["Dissolving reactants","Adsorbing reactants","Increasing Ea","Shifting equilibrium"],ans:1,exp:"Heterogeneous catalyst adsorbs reactants on surface"},
+                {q:"Order of reaction can be:",opts:["Only integers","Only 0,1,2","Integers or fractions","Only positive"],ans:2,exp:"Order can be integers, fractions, or even negative"},
+                {q:"Initial rate method requires:",opts:["One experiment","Two experiments minimum","Three experiments minimum","Complete reaction"],ans:2,exp:"Need minimum 3 experiments to determine orders in 2 reactants"},
+                {q:"Integrated rate law for first order:",opts:["[A]=−kt+[A]₀","ln[A]=−kt+ln[A]₀","1/[A]=kt+1/[A]₀","[A]²=−kt+[A]₀²"],ans:1,exp:"First order integrated: ln[A]=−kt+ln[A]₀"},
+                {q:"Graph of ln[A] vs t is linear with negative slope. Order?",opts:["Zero","First","Second","Third"],ans:1,exp:"Linear ln[A] vs t indicates first order"},
+                {q:"Graph of 1/[A] vs t is linear. Order?",opts:["Zero","First","Second","Third"],ans:2,exp:"Linear 1/[A] vs t indicates second order"},
+                {q:"Enzyme catalysis follows:",opts:["Zero order","First order","Michaelis-Menten","Second order"],ans:2,exp:"Enzyme catalysis follows Michaelis-Menten kinetics"},
+                {q:"Temperature coefficient (Q₁₀) typically:",opts:["1-2","2-3","3-4","4-5"],ans:1,exp:"Q₁₀ typically 2-3 for most reactions"},
+                {q:"Pseudo-first order occurs when:",opts:["One reactant in large excess","Catalyst present","Low temperature","High pressure"],ans:0,exp:"Pseudo-first order when one reactant in large excess"},
+                {q:"Clock reaction measures:",opts:["Final concentration","Initial rate","Equilibrium constant","Activation energy"],ans:1,exp:"Clock reaction measures initial rate by timing color change"},
+                {q:"Autocatalysis:",opts:["Product catalyzes reaction","Reactant catalyzes","External catalyst","No catalyst"],ans:0,exp:"Autocatalysis: product acts as catalyst"},
+                {q:"Parallel reactions: A→B (k₁) and A→C (k₂). If k₁>k₂:",opts:["More B formed","More C formed","Equal amounts","Cannot determine"],ans:0,exp:"Faster reaction (higher k) produces more product"},
+                {q:"Consecutive reactions: A→B→C. If first step slow:",opts:["B accumulates","C accumulates","A accumulates","All equal"],ans:1,exp:"If first step slow, B forms slowly so C accumulates less"},
+                {q:"Steady-state approximation assumes:",opts:["[intermediate] constant","[product] constant","[reactant] constant","Rate constant"],ans:0,exp:"Steady-state: intermediate concentration remains constant"},
+                {q:"Pre-equilibrium approximation applies when:",opts:["First step fast reversible","Last step fast","All steps equal","Catalyst present"],ans:0,exp:"Pre-equilibrium: first step fast and reversible"},
+                {q:"Lindemann mechanism explains:",opts:["Unimolecular reactions","Bimolecular reactions","Termolecular reactions","Zero order"],ans:0,exp:"Lindemann mechanism explains unimolecular gas reactions"},
+                {q:"Transition state theory: activated complex:",opts:["Stable intermediate","Unstable high-energy state","Product","Reactant"],ans:1,exp:"Activated complex is unstable high-energy transition state"},
+                {q:"Hammond postulate: exothermic reaction TS resembles:",opts:["Reactants","Products","Intermediate","Catalyst"],ans:0,exp:"Exothermic: TS resembles reactants (early TS)"},
+                {q:"Kinetic isotope effect: C-D bond breaks slower than C-H because:",opts:["D heavier","D lighter","D more reactive","D less stable"],ans:0,exp:"Heavier D isotope has higher zero-point energy, slower breaking"},
+                {q:"Diffusion-controlled reaction rate limited by:",opts:["Activation energy","Collision frequency","Product formation","Catalyst"],ans:1,exp:"Diffusion-controlled: rate limited by how fast molecules meet"},
+                {q:"Cage effect in solution:",opts:["Molecules trapped together","Molecules separate","Catalyst effect","Temperature effect"],ans:0,exp:"Cage effect: solvent molecules trap reactants together"},
+                {q:"Marcus theory applies to:",opts:["Electron transfer","Proton transfer","Atom transfer","All transfers"],ans:0,exp:"Marcus theory describes electron transfer reactions"},
+                {q:"Eyring equation relates:",opts:["k and T","k and Ea","k and ΔG‡","k and Keq"],ans:2,exp:"Eyring equation: k=κ(kT/h)e^(−ΔG‡/RT)"},
+                {q:"Compensation effect:",opts:["High A, high Ea","Low A, low Ea","Both above","No correlation"],ans:2,exp:"Compensation: reactions with high A tend to have high Ea"},
+                {q:"Polanyi relationship:",opts:["Ea vs ΔH","k vs T","[A] vs t","Rate vs [A]"],ans:0,exp:"Polanyi: linear relationship between Ea and ΔH for related reactions"},
+                {q:"Bell-Evans-Polanyi principle:",opts:["Ea∝ΔH","Ea∝T","Ea∝k","Ea∝[A]"],ans:0,exp:"BEP: activation energy proportional to reaction enthalpy"}
+            ],
+            equilibria: [
+                {q:"N₂+3H₂⇌2NH₃, Kp=6.8×10⁻² atm⁻² at 500K. P(N₂)=1.0, P(H₂)=1.5, P(NH₃)=0.50 atm. Qp and direction?",opts:["Qp=0.074, forward","Qp=0.074, reverse","Qp=0.062, forward","Qp=0.062, reverse"],ans:1,exp:"Qp=(0.50)²/[(1.0)(1.5)³]=0.074. Qp>Kp→reverse"},
+                {q:"PCl₅⇌PCl₃+Cl₂, Kp=2.0 atm at 500K. Initially P(PCl₅)=1.0 atm. P(PCl₃) at equilibrium?",opts:["0.45 atm","0.62 atm","0.73 atm","0.89 atm"],ans:2,exp:"Let x=P(PCl₃)=P(Cl₂). Kp=x²/(1-x)=2.0. x≈0.73 atm"},
+                {q:"Haber: N₂+3H₂⇌2NH₃, ΔH=-92 kJ/mol. Max NH₃ yield conditions?",opts:["High T, high P","Low T, high P","High T, low P","Low T, low P"],ans:1,exp:"Exothermic→low T. Fewer moles right→high P"},
+                {q:"2SO₂+O₂⇌2SO₃, Kc=280 at 1000K. [SO₂]=0.10, [O₂]=0.20, [SO₃]=0.60 M. Qc?",opts:["90","180","270","360"],ans:1,exp:"Qc=(0.60)²/[(0.10)²(0.20)]=180"},
+                {q:"Buffer: 0.20M CH₃COOH, 0.30M CH₃COONa. Ka=1.8×10⁻⁵. pH?",opts:["4.57","4.74","4.92","5.09"],ans:2,exp:"pH=pKa+log([A⁻]/[HA])=4.74+log(0.30/0.20)=4.92"},
+                {q:"Kc=4.0 for A⇌B at 300K. If [A]₀=1.0M, [B] at equilibrium?",opts:["0.50 M","0.67 M","0.80 M","0.90 M"],ans:2,exp:"Kc=[B]/[A]=4. [B]=4[A]. [A]+[B]=1. [B]=0.80M"},
+                {q:"Le Chatelier: N₂O₄⇌2NO₂ (endothermic). Increase T:",opts:["Shifts left","Shifts right","No change","Depends on P"],ans:1,exp:"Endothermic: heat is reactant. Increase T shifts right"},
+                {q:"Kp and Kc relationship: Kp=Kc(RT)^Δn. For N₂+3H₂⇌2NH₃, Δn=?",opts:["-2","-1","0","+2"],ans:0,exp:"Δn=(moles gas products)-(moles gas reactants)=2-4=-2"},
+                {q:"Equilibrium: 2A⇌B. Double volume:",opts:["Shifts left","Shifts right","No change","Kc changes"],ans:0,exp:"Decrease P favors more moles: shifts left"},
+                {q:"Add inert gas at constant V:",opts:["Shifts left","Shifts right","No change","Kc changes"],ans:2,exp:"Inert gas at constant V doesn't change partial pressures"},
+                {q:"Kc=100 at 300K. ΔG°=?",opts:["-11.4 kJ/mol","-22.8 kJ/mol","-34.2 kJ/mol","-45.6 kJ/mol"],ans:0,exp:"ΔG°=-RTlnK=-8.314×300×ln(100)=-11.4 kJ/mol"},
+                {q:"Reaction quotient Q<K:",opts:["At equilibrium","Shifts right","Shifts left","No reaction"],ans:1,exp:"Q<K: not enough products, shifts right"},
+                {q:"Heterogeneous equilibrium: CaCO₃(s)⇌CaO(s)+CO₂(g). Kp=?",opts:["[CaO][CO₂]/[CaCO₃]","P(CO₂)","[CO₂]","P(CaO)P(CO₂)"],ans:1,exp:"Solids excluded from K expression: Kp=P(CO₂)"},
+                {q:"Solubility product Ksp for AgCl:",opts:["[Ag⁺][Cl⁻]","[Ag⁺]²[Cl⁻]","[Ag⁺][Cl⁻]²","[AgCl]"],ans:0,exp:"AgCl⇌Ag⁺+Cl⁻. Ksp=[Ag⁺][Cl⁻]"},
+                {q:"Common ion effect: Add NaCl to AgCl solution:",opts:["Increases solubility","Decreases solubility","No effect","AgCl dissolves"],ans:1,exp:"Common ion (Cl⁻) shifts equilibrium left, decreases solubility"},
+                {q:"Temperature increases, Kc increases. Reaction is:",opts:["Exothermic","Endothermic","Neutral","Cannot determine"],ans:1,exp:"K increases with T for endothermic reactions"},
+                {q:"Kc=Kp when:",opts:["Δn=0","ΔH=0","ΔS=0","ΔG=0"],ans:0,exp:"Kc=Kp when Δn=0 (equal moles gas both sides)"},
+                {q:"Catalyst effect on equilibrium:",opts:["Shifts right","Shifts left","No effect on position","Changes K"],ans:2,exp:"Catalyst speeds both directions equally, no effect on position"},
+                {q:"Van't Hoff equation: ln(K₂/K₁)=?",opts:["ΔH/R(1/T₁-1/T₂)","ΔH/R(1/T₂-1/T₁)","ΔS/R(1/T₁-1/T₂)","ΔG/R(1/T₁-1/T₂)"],ans:0,exp:"Van't Hoff: ln(K₂/K₁)=-ΔH/R(1/T₂-1/T₁)=ΔH/R(1/T₁-1/T₂)"},
+                {q:"Gibbs free energy at equilibrium:",opts:["ΔG>0","ΔG<0","ΔG=0","ΔG=ΔG°"],ans:2,exp:"At equilibrium, ΔG=0"},
+                {q:"ΔG=ΔG°+RTlnQ. At equilibrium:",opts:["Q=0","Q=1","Q=K","Q>K"],ans:2,exp:"At equilibrium, Q=K and ΔG=0"},
+                {q:"Pressure increase favors:",opts:["Fewer moles gas","More moles gas","No change","Depends on ΔH"],ans:0,exp:"Pressure increase shifts toward fewer moles gas"},
+                {q:"Ksp(AgCl)=1.8×10⁻¹⁰. Solubility in pure water?",opts:["1.3×10⁻⁵ M","1.8×10⁻¹⁰ M","3.6×10⁻¹⁰ M","1.8×10⁻⁵ M"],ans:0,exp:"s²=Ksp. s=√(1.8×10⁻¹⁰)=1.34×10⁻⁵ M"},
+                {q:"Ionic product Q>Ksp:",opts:["Unsaturated","Saturated","Precipitate forms","Dissolves"],ans:2,exp:"Q>Ksp: supersaturated, precipitate forms"},
+                {q:"Buffer capacity highest when:",opts:["[acid]=[base]","[acid]>>[base]","[base]>>[acid]","pH=7"],ans:0,exp:"Buffer capacity maximum when [acid]=[base]"},
+                {q:"Henderson-Hasselbalch: pH=pKa+log([A⁻]/[HA]). When pH=pKa:",opts:["[A⁻]>[HA]","[HA]>[A⁻]","[A⁻]=[HA]","[A⁻]=0"],ans:2,exp:"When pH=pKa, log([A⁻]/[HA])=0, so [A⁻]=[HA]"},
+                {q:"Weak acid Ka=1×10⁻⁵. pKa=?",opts:["3","4","5","6"],ans:2,exp:"pKa=-log(Ka)=-log(10⁻⁵)=5"},
+                {q:"Conjugate acid-base pair: Ka×Kb=?",opts:["1","Kw","Ka","Kb"],ans:1,exp:"For conjugate pair: Ka×Kb=Kw=1×10⁻¹⁴"},
+                {q:"Amphiprotic species:",opts:["Only acid","Only base","Both acid and base","Neither"],ans:2,exp:"Amphiprotic can act as both acid and base (e.g., H₂O, HCO₃⁻)"},
+                {q:"Leveling effect:",opts:["All strong acids equal in water","Weak acids stronger","pH increases","pH decreases"],ans:0,exp:"Water levels all strong acids to H₃O⁺"},
+                {q:"Polyprotic acid H₂A: Ka1>Ka2 because:",opts:["First H⁺ easier to remove","Second H⁺ easier","Both equal","Random"],ans:0,exp:"First proton easier to remove from neutral molecule"},
+                {q:"Isoelectric point:",opts:["pH=7","pH=pKa","pH where net charge=0","pH where [H⁺]=[OH⁻]"],ans:2,exp:"Isoelectric point: pH where molecule has zero net charge"},
+                {q:"Zwitterion:",opts:["Neutral molecule","Ion with +/- charges","Cation","Anion"],ans:1,exp:"Zwitterion has both positive and negative charges"},
+                {q:"Titration: strong acid + strong base. Equivalence point pH:",opts:["<7","=7",">7","Depends on conc"],ans:1,exp:"Strong acid + strong base → neutral salt, pH=7"},
+                {q:"Titration: weak acid + strong base. Equivalence point pH:",opts:["<7","=7",">7","Depends on Ka"],ans:2,exp:"Weak acid + strong base → basic salt, pH>7"},
+                {q:"Titration: strong acid + weak base. Equivalence point pH:",opts:["<7","=7",">7","Depends on Kb"],ans:0,exp:"Strong acid + weak base → acidic salt, pH<7"},
+                {q:"Indicator pKa=5. Color change range:",opts:["3-7","4-6","5-7","6-8"],ans:1,exp:"Indicator changes ±1 pH unit from pKa: 4-6"},
+                {q:"Phenolphthalein color in base:",opts:["Colorless","Pink","Yellow","Blue"],ans:1,exp:"Phenolphthalein: colorless in acid, pink in base"},
+                {q:"Methyl orange color in acid:",opts:["Red","Orange","Yellow","Blue"],ans:0,exp:"Methyl orange: red in acid, yellow in base"},
+                {q:"Buffer solution resists:",opts:["Temperature change","Pressure change","pH change","Volume change"],ans:2,exp:"Buffer resists pH change when acid/base added"},
+                {q:"Acidic buffer made from:",opts:["Weak acid + salt","Strong acid + salt","Weak base + salt","Strong base + salt"],ans:0,exp:"Acidic buffer: weak acid + conjugate base salt"},
+                {q:"Basic buffer made from:",opts:["Weak acid + salt","Strong acid + salt","Weak base + salt","Strong base + salt"],ans:2,exp:"Basic buffer: weak base + conjugate acid salt"},
+                {q:"Blood pH maintained by:",opts:["H₂CO₃/HCO₃⁻","CH₃COOH/CH₃COO⁻","NH₃/NH₄⁺","H₂PO₄⁻/HPO₄²⁻"],ans:0,exp:"Blood buffer: carbonic acid/bicarbonate system"},
+                {q:"Phosphate buffer: H₂PO₄⁻/HPO₄²⁻. pKa₂=7.2. Best pH range:",opts:["5.2-7.2","6.2-8.2","7.2-9.2","8.2-10.2"],ans:1,exp:"Buffer effective ±1 pH from pKa: 6.2-8.2"},
+                {q:"Diluting buffer solution:",opts:["pH increases","pH decreases","pH unchanged","Capacity increases"],ans:2,exp:"Dilution doesn't change pH (ratio [A⁻]/[HA] constant) but decreases capacity"},
+                {q:"Adding strong acid to buffer:",opts:["pH drops significantly","pH rises significantly","pH changes slightly","No pH change"],ans:2,exp:"Buffer resists pH change, only slight decrease"},
+                {q:"Buffer capacity depends on:",opts:["Concentration only","Ratio only","Both concentration and ratio","Neither"],ans:2,exp:"Capacity depends on both total concentration and ratio"},
+                {q:"Equivalence point vs endpoint:",opts:["Same thing","Equivalence=stoichiometric, endpoint=indicator","Endpoint=stoichiometric","No difference"],ans:1,exp:"Equivalence point: stoichiometric. Endpoint: indicator changes"}
+            ],
+            acids: [
+                {q:"0.10M weak acid HA, pH=3.0. Ka=?",opts:["1.0×10⁻⁵","1.0×10⁻⁴","1.0×10⁻³","1.0×10⁻²"],ans:0,exp:"[H⁺]=10⁻³. Ka=[H⁺]²/[HA]=(10⁻³)²/0.10=10⁻⁵"},
+                {q:"pH of 0.050M NaOH?",opts:["12.0","12.3","12.7","13.0"],ans:2,exp:"pOH=-log(0.050)=1.30. pH=14-1.30=12.70"},
+                {q:"Buffer: 0.15M NH₃, 0.20M NH₄Cl. Kb(NH₃)=1.8×10⁻⁵. pH?",opts:["8.95","9.13","9.26","9.38"],ans:0,exp:"pKa=14-pKb=9.26. pH=9.26+log(0.15/0.20)≈8.95"},
+                {q:"25cm³ 0.10M HCl + 0.10M NaOH. pH at equivalence?",opts:["3.0","7.0","11.0","14.0"],ans:1,exp:"Strong acid + strong base → neutral, pH=7"},
+                {q:"Equal [acid] and [base], pH=4.76. pKa=?",opts:["4.26","4.51","4.76","5.01"],ans:2,exp:"When [A⁻]=[HA], pH=pKa=4.76"},
+                {q:"Autoionization of water: Kw at 25°C?",opts:["1×10⁻¹²","1×10⁻¹³","1×10⁻¹⁴","1×10⁻¹⁵"],ans:2,exp:"Kw=[H⁺][OH⁻]=1×10⁻¹⁴ at 25°C"},
+                {q:"pH of pure water at 25°C?",opts:["6.0","6.5","7.0","7.5"],ans:2,exp:"Pure water: [H⁺]=[OH⁻]=10⁻⁷, pH=7"},
+                {q:"0.01M HCl pH?",opts:["1.0","2.0","3.0","4.0"],ans:1,exp:"Strong acid: [H⁺]=0.01M. pH=-log(0.01)=2"},
+                {q:"0.01M NaOH pH?",opts:["10.0","11.0","12.0","13.0"],ans:2,exp:"[OH⁻]=0.01, pOH=2, pH=14-2=12"},
+                {q:"Weak acid 0.10M, Ka=1×10⁻⁵. [H⁺]=?",opts:["1×10⁻³ M","1×10⁻⁴ M","1×10⁻⁵ M","1×10⁻⁶ M"],ans:0,exp:"[H⁺]=√(Ka×c)=√(10⁻⁵×0.1)=10⁻³ M"},
+                {q:"Strong acid definition:",opts:["Completely ionizes","Partially ionizes","pH<7","Donates H⁺"],ans:0,exp:"Strong acid completely ionizes in water"},
+                {q:"Weak acid definition:",opts:["Completely ionizes","Partially ionizes","pH>7","Accepts H⁺"],ans:1,exp:"Weak acid partially ionizes in water"},
+                {q:"Bronsted-Lowry acid:",opts:["H⁺ donor","H⁺ acceptor","e⁻ donor","e⁻ acceptor"],ans:0,exp:"Bronsted-Lowry acid donates protons"},
+                {q:"Bronsted-Lowry base:",opts:["H⁺ donor","H⁺ acceptor","e⁻ donor","e⁻ acceptor"],ans:1,exp:"Bronsted-Lowry base accepts protons"},
+                {q:"Lewis acid:",opts:["H⁺ donor","H⁺ acceptor","e⁻ pair acceptor","e⁻ pair donor"],ans:2,exp:"Lewis acid accepts electron pairs"},
+                {q:"Lewis base:",opts:["H⁺ donor","H⁺ acceptor","e⁻ pair acceptor","e⁻ pair donor"],ans:3,exp:"Lewis base donates electron pairs"},
+                {q:"Arrhenius acid:",opts:["Produces H⁺ in water","Produces OH⁻","Accepts H⁺","Donates e⁻"],ans:0,exp:"Arrhenius acid produces H⁺ in water"},
+                {q:"Arrhenius base:",opts:["Produces H⁺","Produces OH⁻ in water","Accepts H⁺","Donates e⁻"],ans:1,exp:"Arrhenius base produces OH⁻ in water"},
+                {q:"Conjugate base of HCl:",opts:["H₂Cl⁺","Cl⁻","HCl₂⁻","ClO⁻"],ans:1,exp:"Remove H⁺ from HCl → Cl⁻"},
+                {q:"Conjugate acid of NH₃:",opts:["NH₂⁻","NH₄⁺","N₂H₄","NH₂OH"],ans:1,exp:"Add H⁺ to NH₃ → NH₄⁺"},
+                {q:"Stronger acid has:",opts:["Larger Ka","Smaller Ka","Larger pKa","Ka=1"],ans:0,exp:"Stronger acid has larger Ka (more ionization)"},
+                {q:"Stronger base has:",opts:["Larger Kb","Smaller Kb","Larger pKb","Kb=1"],ans:0,exp:"Stronger base has larger Kb"},
+                {q:"Relationship: pKa + pKb =?",opts:["7","14","1","0"],ans:1,exp:"For conjugate pair: pKa+pKb=14"},
+                {q:"Acidic solution:",opts:["[H⁺]>[OH⁻]","[H⁺]<[OH⁻]","[H⁺]=[OH⁻]","pH>7"],ans:0,exp:"Acidic: [H⁺]>[OH⁻], pH<7"},
+                {q:"Basic solution:",opts:["[H⁺]>[OH⁻]","[H⁺]<[OH⁻]","[H⁺]=[OH⁻]","pH<7"],ans:1,exp:"Basic: [H⁺]<[OH⁻], pH>7"},
+                {q:"Neutral solution:",opts:["pH=7 always","[H⁺]=[OH⁻]","pOH=7","[H⁺]=0"],ans:1,exp:"Neutral: [H⁺]=[OH⁻] (pH=7 only at 25°C)"},
+                {q:"pH scale range:",opts:["0-7","0-14","1-14","Unlimited"],ans:1,exp:"pH scale typically 0-14 (can extend beyond)"},
+                {q:"pH=-log[H⁺]. If [H⁺]=1×10⁻⁸, pH=?",opts:["6","7","8","9"],ans:2,exp:"pH=-log(10⁻⁸)=8"},
+                {q:"pOH=-log[OH⁻]. If [OH⁻]=1×10⁻³, pOH=?",opts:["2","3","4","5"],ans:1,exp:"pOH=-log(10⁻³)=3"},
+                {q:"pH+pOH=?",opts:["7","14","1","Kw"],ans:1,exp:"pH+pOH=14 at 25°C"},
+                {q:"Percent ionization of weak acid:",opts:["([H⁺]/c)×100%","(Ka/c)×100%","(c/Ka)×100%","Ka×100%"],ans:0,exp:"% ionization=([H⁺]/initial conc)×100%"},
+                {q:"Diluting weak acid:",opts:["% ionization increases","% ionization decreases","% ionization constant","pH increases"],ans:0,exp:"Dilution increases % ionization (Le Chatelier)"},
+                {q:"Polyprotic acid H₃PO₄: Ka1, Ka2, Ka3. Order:",opts:["Ka1>Ka2>Ka3","Ka1<Ka2<Ka3","All equal","Random"],ans:0,exp:"Each successive Ka smaller: Ka1>Ka2>Ka3"},
+                {q:"Diprotic acid H₂SO₄: first ionization:",opts:["Weak","Strong","Partial","None"],ans:1,exp:"H₂SO₄ first ionization is strong (complete)"},
+                {q:"Carbonic acid H₂CO₃: Ka1=4.3×10⁻⁷. pH of 0.10M?",opts:["3.7","4.2","4.7","5.2"],ans:0,exp:"[H⁺]=√(Ka1×c)=√(4.3×10⁻⁸)≈2×10⁻⁴, pH≈3.7"},
+                {q:"Amino acid at low pH:",opts:["Cation","Anion","Zwitterion","Neutral"],ans:0,exp:"Low pH: amino group protonated → cation"},
+                {q:"Amino acid at high pH:",opts:["Cation","Anion","Zwitterion","Neutral"],ans:1,exp:"High pH: carboxyl group deprotonated → anion"},
+                {q:"Amino acid at isoelectric point:",opts:["Cation","Anion","Zwitterion","Neutral"],ans:2,exp:"At pI: zwitterion form (±)"},
+                {q:"Hydrolysis of salt from weak acid + strong base:",opts:["Acidic","Basic","Neutral","Depends"],ans:1,exp:"Weak acid salt hydrolyzes to give basic solution"},
+                {q:"Hydrolysis of salt from strong acid + weak base:",opts:["Acidic","Basic","Neutral","Depends"],ans:0,exp:"Weak base salt hydrolyzes to give acidic solution"},
+                {q:"Hydrolysis of salt from strong acid + strong base:",opts:["Acidic","Basic","Neutral","Depends"],ans:2,exp:"Strong acid + strong base salt doesn't hydrolyze → neutral"},
+                {q:"NH₄Cl solution pH:",opts:["<7","=7",">7","Depends on conc"],ans:0,exp:"NH₄⁺ is weak acid, Cl⁻ neutral → acidic, pH<7"},
+                {q:"NaCH₃COO solution pH:",opts:["<7","=7",">7","Depends on conc"],ans:2,exp:"CH₃COO⁻ is weak base, Na⁺ neutral → basic, pH>7"},
+                {q:"NaCl solution pH:",opts:["<7","=7",">7","Depends on conc"],ans:1,exp:"Both ions neutral → pH=7"},
+                {q:"Acid rain pH typically:",opts:["<5.6","5.6-7.0","7.0-8.0",">8.0"],ans:0,exp:"Acid rain: pH<5.6 (normal rain pH≈5.6 from CO₂)"},
+                {q:"Stomach acid pH:",opts:["1-2","3-4","5-6","7"],ans:0,exp:"Stomach HCl: pH≈1-2"},
+                {q:"Blood pH normal range:",opts:["6.8-7.0","7.0-7.2","7.35-7.45","7.6-7.8"],ans:2,exp:"Blood pH: 7.35-7.45 (tightly regulated)"},
+                {q:"Ocean pH:",opts:["6.5","7.0","7.5","8.1"],ans:3,exp:"Ocean pH≈8.1 (slightly basic)"}
+            ],
+            organic: [
+                {q:"Propan-1-ol + K₂Cr₂O₇/H⁺ reflux → ?",opts:["Propanal","Propanoic acid","Propanone","Propene"],ans:1,exp:"1° alcohol + strong oxidizer reflux → carboxylic acid"},
+                {q:"Iodoform test positive:",opts:["Propan-1-ol","Propan-2-ol","Propanal","Propanoic acid"],ans:1,exp:"CH₃CH(OH)- gives iodoform test"},
+                {q:"2-methylbut-2-ene + HBr → ?",opts:["2-bromo-2-methylbutane","2-bromo-3-methylbutane","1-bromo-2-methylbutane","3-bromo-2-methylbutane"],ans:0,exp:"Markovnikov: Br to more substituted C"},
+                {q:"Benzene + Cl₂/FeCl₃:",opts:["Addition","Substitution","Elimination","Oxidation"],ans:1,exp:"Electrophilic substitution"},
+                {q:"IUPAC: CH₃CH(OH)CH₂CH₃",opts:["Butan-1-ol","Butan-2-ol","2-methylpropan-1-ol","2-methylpropan-2-ol"],ans:1,exp:"4C chain, OH on C2: butan-2-ol"},
+                {q:"Alkene + H₂O/H⁺:",opts:["Alcohol","Alkane","Aldehyde","Ketone"],ans:0,exp:"Hydration of alkene → alcohol"},
+                {q:"Alkene + Br₂/CCl₄:",opts:["Orange→colorless","Colorless→orange","No change","Precipitate"],ans:0,exp:"Br₂ decolorized by alkene"},
+                {q:"Alkene + KMnO₄/H⁺ cold:",opts:["Diol","Ketone","Aldehyde","Carboxylic acid"],ans:0,exp:"Cold KMnO₄ → diol (syn addition)"},
+                {q:"Alkene + KMnO₄/H⁺ hot:",opts:["Diol","Cleavage products","No reaction","Alcohol"],ans:1,exp:"Hot KMnO₄ → oxidative cleavage"},
+                {q:"Alkene + O₃ then Zn/H₂O:",opts:["Diol","Aldehydes/ketones","Alcohols","Acids"],ans:1,exp:"Ozonolysis → aldehydes/ketones"},
+                {q:"1° alcohol + PCC:",opts:["Aldehyde","Ketone","Carboxylic acid","No reaction"],ans:0,exp:"PCC: mild oxidizer, 1° alcohol → aldehyde"},
+                {q:"2° alcohol + K₂Cr₂O₇/H⁺:",opts:["Aldehyde","Ketone","Carboxylic acid","No reaction"],ans:1,exp:"2° alcohol → ketone"},
+                {q:"3° alcohol + oxidizer:",opts:["Aldehyde","Ketone","Carboxylic acid","No reaction"],ans:3,exp:"3° alcohol doesn't oxidize easily"},
+                {q:"Aldehyde + Tollens:",opts:["Silver mirror","Blue→green","Orange→red","No reaction"],ans:0,exp:"Aldehyde reduces Ag⁺ → silver mirror"},
+                {q:"Aldehyde + Fehling's:",opts:["Silver mirror","Blue→red precipitate","Orange→green","No reaction"],ans:1,exp:"Aldehyde reduces Cu²⁺ → Cu₂O red precipitate"},
+                {q:"Ketone + Tollens:",opts:["Silver mirror","Blue→green","Orange→red","No reaction"],ans:3,exp:"Ketone doesn't reduce Tollens"},
+                {q:"Carboxylic acid + alcohol/H⁺:",opts:["Ester","Ether","Aldehyde","Ketone"],ans:0,exp:"Esterification: acid + alcohol → ester"},
+                {q:"Ester + NaOH:",opts:["Acid + alcohol","Salt + alcohol","Aldehyde","Ketone"],ans:1,exp:"Saponification: ester + base → salt + alcohol"},
+                {q:"Ester + H₂O/H⁺:",opts:["Acid + alcohol","Salt + alcohol","Aldehyde","Ketone"],ans:0,exp:"Acid hydrolysis: ester → acid + alcohol"},
+                {q:"Acyl chloride + alcohol:",opts:["Ester","Ether","Aldehyde","Ketone"],ans:0,exp:"Acyl chloride + alcohol → ester + HCl"},
+                {q:"Acyl chloride + NH₃:",opts:["Amide","Amine","Nitrile","Ester"],ans:0,exp:"Acyl chloride + ammonia → amide"},
+                {q:"Amide + LiAlH₄:",opts:["Amine","Aldehyde","Alcohol","Acid"],ans:0,exp:"LiAlH₄ reduces amide → amine"},
+                {q:"Nitrile + LiAlH₄:",opts:["1° amine","2° amine","Aldehyde","Acid"],ans:0,exp:"LiAlH₄ reduces nitrile → 1° amine"},
+                {q:"Nitrile + H₂O/H⁺:",opts:["Carboxylic acid","Amine","Aldehyde","Amide"],ans:0,exp:"Nitrile hydrolysis → carboxylic acid"},
+                {q:"Benzene + HNO₃/H₂SO₄:",opts:["Nitrobenzene","Aniline","Phenol","Benzaldehyde"],ans:0,exp:"Nitration: benzene → nitrobenzene"},
+                {q:"Nitrobenzene + Sn/HCl:",opts:["Aniline","Benzene","Phenol","Benzaldehyde"],ans:0,exp:"Reduction: nitrobenzene → aniline"},
+                {q:"Benzene + Br₂/FeBr₃:",opts:["Bromobenzene","Phenol","Benzyl bromide","No reaction"],ans:0,exp:"Electrophilic substitution → bromobenzene"},
+                {q:"Toluene + KMnO₄/H⁺:",opts:["Benzoic acid","Benzaldehyde","Benzyl alcohol","Phenol"],ans:0,exp:"Side chain oxidation → benzoic acid"},
+                {q:"Phenol + Br₂/H₂O:",opts:["2,4,6-tribromophenol","Bromobenzene","4-bromophenol","No reaction"],ans:0,exp:"Phenol activates ring → 2,4,6-tribromophenol"},
+                {q:"Aniline + Br₂/H₂O:",opts:["2,4,6-tribromoaniline","Bromoaniline","4-bromoaniline","No reaction"],ans:0,exp:"Aniline activates ring → 2,4,6-tribromoaniline"},
+                {q:"Benzene ring activating groups:",opts:["-OH, -NH₂, -OR","-NO₂, -CN, -COOH","-Cl, -Br","-SO₃H"],ans:0,exp:"Electron-donating groups activate: -OH, -NH₂, -OR"},
+                {q:"Benzene ring deactivating groups:",opts:["-OH, -NH₂","-NO₂, -CN, -COOH","-CH₃, -C₂H₅","-OR"],ans:1,exp:"Electron-withdrawing groups deactivate: -NO₂, -CN, -COOH"},
+                {q:"Ortho/para directors:",opts:["-OH, -NH₂, -Cl","-NO₂, -CN","-COOH, -SO₃H","-CF₃"],ans:0,exp:"o/p directors: -OH, -NH₂, -Cl, -Br, -CH₃"},
+                {q:"Meta directors:",opts:["-OH, -NH₂","-NO₂, -CN, -COOH","-Cl, -Br","-CH₃"],ans:1,exp:"m directors: -NO₂, -CN, -COOH, -SO₃H"},
+                {q:"SN1 reaction rate depends on:",opts:["[substrate]","[nucleophile]","Both","Neither"],ans:0,exp:"SN1: first order, rate=k[substrate]"},
+                {q:"SN2 reaction rate depends on:",opts:["[substrate]","[nucleophile]","Both [substrate][nucleophile]","Neither"],ans:2,exp:"SN2: second order, rate=k[substrate][nucleophile]"},
+                {q:"SN1 stereochemistry:",opts:["Inversion","Retention","Racemization","No change"],ans:2,exp:"SN1: planar carbocation → racemization"},
+                {q:"SN2 stereochemistry:",opts:["Inversion","Retention","Racemization","No change"],ans:0,exp:"SN2: backside attack → inversion (Walden)"},
+                {q:"Best leaving group:",opts:["F⁻","Cl⁻","Br⁻","I⁻"],ans:3,exp:"Weakest base = best leaving group: I⁻"},
+                {q:"Best nucleophile in protic solvent:",opts:["F⁻","Cl⁻","Br⁻","I⁻"],ans:3,exp:"Less solvated = better nucleophile: I⁻"},
+                {q:"E1 mechanism:",opts:["One step","Two steps","Three steps","Concerted"],ans:1,exp:"E1: two steps (carbocation intermediate)"},
+                {q:"E2 mechanism:",opts:["One step concerted","Two steps","Three steps","Random"],ans:0,exp:"E2: one step, concerted elimination"},
+                {q:"Zaitsev's rule:",opts:["More substituted alkene","Less substituted alkene","Equal mixture","No preference"],ans:0,exp:"Zaitsev: major product is more substituted alkene"},
+                {q:"Hofmann elimination gives:",opts:["More substituted","Less substituted","Equal","Zaitsev product"],ans:1,exp:"Hofmann: less substituted alkene (bulky base)"},
+                {q:"Grignard reagent + H₂O:",opts:["Alkane","Alkene","Alcohol","Aldehyde"],ans:0,exp:"RMgX + H₂O → RH (alkane)"},
+                {q:"Grignard + CO₂ then H⁺:",opts:["Carboxylic acid","Alcohol","Aldehyde","Ketone"],ans:0,exp:"RMgX + CO₂ → RCO₂H"},
+                {q:"Grignard + aldehyde then H⁺:",opts:["1° alcohol","2° alcohol","3° alcohol","Ketone"],ans:1,exp:"RMgX + RCHO → 2° alcohol"},
+                {q:"Grignard + ketone then H⁺:",opts:["1° alcohol","2° alcohol","3° alcohol","Aldehyde"],ans:2,exp:"RMgX + R₂CO → 3° alcohol"},
+                {q:"Aldol condensation product:",opts:["β-hydroxy aldehyde","α-hydroxy aldehyde","Ketone","Ester"],ans:0,exp:"Aldol: β-hydroxy carbonyl compound"},
+                {q:"Claisen condensation product:",opts:["β-keto ester","α-keto ester","Aldehyde","Alcohol"],ans:0,exp:"Claisen: β-keto ester"}
+            ]
+        };
+
+        let currentQuiz = 'rates';
+        let answers = {};
+
+        function showQuiz(topic) {
+            currentQuiz = topic;
+            answers = {};
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.quiz-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(topic).classList.add('active');
+            loadQuiz(topic);
+        }
+
+        function loadQuiz(topic) {
+            const container = document.getElementById(topic);
+            let html = '<h2 style="color:#667eea;margin-bottom:20px;">' + topic.toUpperCase() + ' (50 Questions)</h2>';
+            
+            quizData[topic].forEach((q, i) => {
+                html += `<div class="question">
+                    <div class="question-text">${i+1}. ${q.q}</div>
+                    ${q.opts.map((opt, j) => `
+                        <div class="option" onclick="selectAnswer('${topic}',${i},${j})">
+                            ${String.fromCharCode(65+j)}) ${opt}
+                        </div>
+                    `).join('')}
+                    <div class="explanation" id="exp-${topic}-${i}">${q.exp}</div>
+                </div>`;
+            });
+            
+            html += `<button class="submit-btn" onclick="submitQuiz('${topic}')">Submit ${topic.toUpperCase()} Quiz</button>
+                     <div class="result" id="result-${topic}"></div>`;
+            container.innerHTML = html;
+        }
+
+        function selectAnswer(topic, qIndex, optIndex) {
+            if (!answers[topic]) answers[topic] = {};
+            answers[topic][qIndex] = optIndex;
+            
+            const options = document.querySelectorAll(`#${topic} .question:nth-child(${qIndex+2}) .option`);
+            options.forEach((opt, i) => {
+                opt.classList.remove('selected');
+                if (i === optIndex) opt.classList.add('selected');
+            });
+        }
+
+        function submitQuiz(topic) {
+            let score = 0;
+            const userAnswers = answers[topic] || {};
+            
+            quizData[topic].forEach((q, i) => {
+                const options = document.querySelectorAll(`#${topic} .question:nth-child(${i+2}) .option`);
+                const userAns = userAnswers[i];
+                
+                options.forEach((opt, j) => {
+                    opt.classList.remove('selected');
+                    if (j === q.ans) opt.classList.add('correct');
+                    if (userAns !== undefined && j === userAns && j !== q.ans) opt.classList.add('wrong');
+                });
+                
+                if (userAns === q.ans) score++;
+                document.getElementById(`exp-${topic}-${i}`).classList.add('show');
+            });
+            
+            const pct = ((score/50)*100).toFixed(1);
+            const grade = pct>=80?'A':pct>=70?'B':pct>=60?'C':'D';
+            const color = pct>=80?'#d4edda':pct>=70?'#d1ecf1':pct>=60?'#fff3cd':'#f8d7da';
+            
+            const result = document.getElementById(`result-${topic}`);
+            result.innerHTML = `Score: ${score}/50 (${pct}%) - Grade: ${grade}`;
+            result.style.background = color;
+            result.classList.add('show');
+            result.scrollIntoView({behavior:'smooth'});
+        }
+
+        // Load first quiz on page load
+        window.onload = () => loadQuiz('rates');
+    </script>
+</body>
+</html>
