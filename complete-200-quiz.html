@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAL Chemistry Unit 4 - Complete Quiz (200 Questions)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab:hover {
+            background: #e9ecef;
+        }
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        .quiz-content {
+            display: none;
+            padding: 30px;
+        }
+        .quiz-content.active {
+            display: block;
+        }
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .options {
+            margin-left: 10px;
+        }
+        .option {
+            margin: 10px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .option label {
+            cursor: pointer;
+            display: inline;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+        }
+        .explanation.show {
+            display: block;
+        }
+        .correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .incorrect {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .result {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .result.show {
+            display: block;
+        }
+        .progress {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .tab {
+                font-size: 0.9em;
+                padding: 12px 10px;
+            }
+            .quiz-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 IAL Chemistry Unit 4 Quiz</h1>
+            <p>Complete Practice - 200 Questions | 4 Topics</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showQuiz('rates')">Rates & Kinetics</button>
+            <button class="tab" onclick="showQuiz('equilibria')">Equilibria</button>
+            <button class="tab" onclick="showQuiz('acids')">Acids & Bases</button>
+            <button class="tab" onclick="showQuiz('organic')">Organic Chemistry</button>
+        </div>
+
+        <!-- RATES & KINETICS QUIZ -->
+        <div id="rates" class="quiz-content active">
+            <h2>Rates & Kinetics (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" id="rates-progress"></div></div>
+            <form id="rates-form"></form>
+            <button class="submit-btn" onclick="submitQuiz('rates')">Submit Rates & Kinetics Quiz</button>
+            <div id="rates-result" class="result"></div>
+        </div>
+
+        <!-- EQUILIBRIA QUIZ -->
+        <div id="equilibria" class="quiz-content">
+            <h2>Equilibria (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" id="equilibria-progress"></div></div>
+            <form id="equilibria-form"></form>
+            <button class="submit-btn" onclick="submitQuiz('equilibria')">Submit Equilibria Quiz</button>
+            <div id="equilibria-result" class="result"></div>
+        </div>
+
+        <!-- ACIDS & BASES QUIZ -->
+        <div id="acids" class="quiz-content">
+            <h2>Acids & Bases (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" id="acids-progress"></div></div>
+            <form id="acids-form"></form>
+            <button class="submit-btn" onclick="submitQuiz('acids')">Submit Acids & Bases Quiz</button>
+            <div id="acids-result" class="result"></div>
+        </div>
+
+        <!-- ORGANIC CHEMISTRY QUIZ -->
+        <div id="organic" class="quiz-content">
+            <h2>Organic Chemistry (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" id="organic-progress"></div></div>
+            <form id="organic-form"></form>
+            <button class="submit-btn" onclick="submitQuiz('organic')">Submit Organic Chemistry Quiz</button>
+            <div id="organic-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // RATES & KINETICS QUESTIONS (50)
+        const ratesQuestions = [
+            {q: "What is the definition of rate of reaction?", opts: ["A) Change in concentration per unit time", "B) Change in temperature per unit time", "C) Change in pressure per unit time", "D) Change in volume per unit time"], ans: 0, exp: "Rate of reaction is defined as the change in concentration of a reactant or product per unit time."},
+            {q: "Which units are commonly used for rate of reaction?", opts: ["A) mol dm⁻³ s⁻¹", "B) g cm⁻³", "C) J mol⁻¹", "D) Pa s⁻¹"], ans: 0, exp: "Rate is measured in mol dm⁻³ s⁻¹ (concentration change per second)."},
+            {q: "What does a steep gradient on a concentration-time graph indicate?", opts: ["A) Fast reaction", "B) Slow reaction", "C) No reaction", "D) Equilibrium"], ans: 0, exp: "A steep gradient indicates a rapid change in concentration, meaning a fast reaction."},
+            {q: "How does increasing temperature affect reaction rate?", opts: ["A) Increases rate", "B) Decreases rate", "C) No effect", "D) Stops reaction"], ans: 0, exp: "Higher temperature increases kinetic energy, leading to more frequent and energetic collisions."},
+            {q: "What is activation energy?", opts: ["A) Minimum energy for reaction", "B) Maximum energy released", "C) Average kinetic energy", "D) Total system energy"], ans: 0, exp: "Activation energy (Ea) is the minimum energy required for reactant particles to react."},
+            {q: "What does a catalyst do?", opts: ["A) Lowers activation energy", "B) Increases temperature", "C) Changes equilibrium position", "D) Increases concentration"], ans: 0, exp: "A catalyst provides an alternative pathway with lower activation energy."},
+            {q: "What is the rate equation for A + B → C if rate = k[A]²[B]?", opts: ["A) Second order in A, first order in B", "B) First order in A, second order in B", "C) Zero order in both", "D) Third order in A"], ans: 0, exp: "The exponents show the order: [A]² means second order in A, [B]¹ means first order in B."},
+            {q: "What is the overall order of reaction for rate = k[A]²[B]?", opts: ["A) 3", "B) 2", "C) 1", "D) 0"], ans: 0, exp: "Overall order = sum of individual orders = 2 + 1 = 3."},
+            {q: "What are the units of k for a first-order reaction?", opts: ["A) s⁻¹", "B) mol⁻¹ dm³ s⁻¹", "C) mol⁻² dm⁶ s⁻¹", "D) mol dm⁻³ s⁻¹"], ans: 0, exp: "For first order: rate = k[A], so k = rate/[A] = (mol dm⁻³ s⁻¹)/(mol dm⁻³) = s⁻¹."},
+            {q: "What is half-life?", opts: ["A) Time for concentration to halve", "B) Time for reaction to complete", "C) Time for temperature to double", "D) Time for catalyst to work"], ans: 0, exp: "Half-life (t₁/₂) is the time taken for the concentration of a reactant to decrease to half its initial value."},
+            {q: "For a zero-order reaction, how does concentration affect rate?", opts: ["A) No effect", "B) Doubles rate", "C) Halves rate", "D) Quadruples rate"], ans: 0, exp: "In zero-order reactions, rate is independent of concentration: rate = k."},
+            {q: "What is the shape of a concentration-time graph for a first-order reaction?", opts: ["A) Exponential decay", "B) Straight line", "C) Parabola", "D) Hyperbola"], ans: 0, exp: "First-order reactions show exponential decay with constant half-life."},
+            {q: "How do you determine reaction order experimentally?", opts: ["A) Initial rates method", "B) Measuring temperature", "C) Observing color", "D) Weighing products"], ans: 0, exp: "The initial rates method involves measuring initial rates at different concentrations."},
+            {q: "What is the rate-determining step?", opts: ["A) Slowest step in mechanism", "B) Fastest step in mechanism", "C) First step always", "D) Last step always"], ans: 0, exp: "The rate-determining step is the slowest step that controls the overall reaction rate."},
+            {q: "If doubling [A] doubles the rate, what is the order with respect to A?", opts: ["A) First order", "B) Zero order", "C) Second order", "D) Third order"], ans: 0, exp: "Rate ∝ [A]¹, so doubling [A] doubles the rate (first order)."},
+            {q: "If doubling [A] quadruples the rate, what is the order with respect to A?", opts: ["A) Second order", "B) First order", "C) Zero order", "D) Third order"], ans: 0, exp: "Rate ∝ [A]², so doubling [A] increases rate by 2² = 4 (second order)."},
+            {q: "What is the Arrhenius equation?", opts: ["A) k = Ae^(-Ea/RT)", "B) k = Ea/RT", "C) k = A + Ea", "D) k = RT/Ea"], ans: 0, exp: "The Arrhenius equation relates rate constant to temperature and activation energy."},
+            {q: "What does 'A' represent in the Arrhenius equation?", opts: ["A) Pre-exponential factor", "B) Activation energy", "C) Rate constant", "D) Temperature"], ans: 0, exp: "A is the pre-exponential factor (frequency factor) related to collision frequency."},
+            {q: "How does a Maxwell-Boltzmann distribution change with temperature?", opts: ["A) Flattens and shifts right", "B) Becomes taller and narrower", "C) Shifts left", "D) No change"], ans: 0, exp: "At higher temperature, the curve flattens and shifts right, with more molecules having energy ≥ Ea."},
+            {q: "What is a homogeneous catalyst?", opts: ["A) Same phase as reactants", "B) Different phase from reactants", "C) Solid only", "D) Gas only"], ans: 0, exp: "Homogeneous catalysts are in the same phase as the reactants (e.g., both in solution)."},
+            {q: "What is a heterogeneous catalyst?", opts: ["A) Different phase from reactants", "B) Same phase as reactants", "C) Liquid only", "D) Always aqueous"], ans: 0, exp: "Heterogeneous catalysts are in a different phase (e.g., solid catalyst with gaseous reactants)."},
+            {q: "What is the clock reaction method?", opts: ["A) Measures time for visible change", "B) Uses atomic clock", "C) Measures temperature change", "D) Measures pressure change"], ans: 0, exp: "Clock reactions measure the time taken for a visible change (e.g., color change) to occur."},
+            {q: "In the iodine clock reaction, what causes the sudden color change?", opts: ["A) All thiosulfate consumed", "B) Temperature increase", "C) Pressure drop", "D) pH change"], ans: 0, exp: "When all thiosulfate is consumed, free iodine reacts with starch to give a blue-black color."},
+            {q: "What is continuous monitoring?", opts: ["A) Measuring concentration over time", "B) Single measurement", "C) Temperature control", "D) Pressure regulation"], ans: 0, exp: "Continuous monitoring involves taking measurements at regular intervals throughout the reaction."},
+            {q: "How can you follow the rate of a gas-producing reaction?", opts: ["A) Measure volume or mass loss", "B) Measure color change", "C) Measure pH", "D) Measure conductivity"], ans: 0, exp: "Gas production can be monitored by collecting gas volume or measuring mass loss."},
+            {q: "What is colorimetry used for?", opts: ["A) Measuring concentration via absorbance", "B) Measuring temperature", "C) Measuring pressure", "D) Measuring pH"], ans: 0, exp: "Colorimetry measures the absorbance of light to determine concentration of colored species."},
+            {q: "What is the relationship between absorbance and concentration?", opts: ["A) Beer-Lambert law: A = εcl", "B) Inverse relationship", "C) No relationship", "D) Exponential relationship"], ans: 0, exp: "Beer-Lambert law: Absorbance (A) is directly proportional to concentration (c)."},
+            {q: "What is quenching in kinetics?", opts: ["A) Stopping reaction suddenly", "B) Heating reaction", "C) Adding catalyst", "D) Increasing pressure"], ans: 0, exp: "Quenching rapidly stops a reaction (e.g., by cooling or dilution) to measure concentration at that time."},
+            {q: "For a second-order reaction, what are the units of k?", opts: ["A) mol⁻¹ dm³ s⁻¹", "B) s⁻¹", "C) mol dm⁻³ s⁻¹", "D) mol⁻² dm⁶ s⁻¹"], ans: 0, exp: "For second order: rate = k[A]², so k = rate/[A]² = (mol dm⁻³ s⁻¹)/(mol dm⁻³)² = mol⁻¹ dm³ s⁻¹."},
+            {q: "What is the integrated rate law for a first-order reaction?", opts: ["A) ln[A]t = ln[A]0 - kt", "B) [A]t = [A]0 - kt", "C) 1/[A]t = 1/[A]0 + kt", "D) [A]t = [A]0e^kt"], ans: 0, exp: "The integrated first-order rate law is ln[A]t = ln[A]0 - kt."},
+            {q: "What graph gives a straight line for a first-order reaction?", opts: ["A) ln[A] vs time", "B) [A] vs time", "C) 1/[A] vs time", "D) [A]² vs time"], ans: 0, exp: "Plotting ln[A] against time gives a straight line with slope = -k for first-order reactions."},
+            {q: "What graph gives a straight line for a zero-order reaction?", opts: ["A) [A] vs time", "B) ln[A] vs time", "C) 1/[A] vs time", "D) [A]² vs time"], ans: 0, exp: "For zero-order: [A]t = [A]0 - kt, so [A] vs time is linear with slope = -k."},
+            {q: "What graph gives a straight line for a second-order reaction?", opts: ["A) 1/[A] vs time", "B) [A] vs time", "C) ln[A] vs time", "D) [A]² vs time"], ans: 0, exp: "For second-order: 1/[A]t = 1/[A]0 + kt, so 1/[A] vs time is linear with slope = k."},
+            {q: "What is the half-life equation for a first-order reaction?", opts: ["A) t₁/₂ = ln2/k", "B) t₁/₂ = 1/k", "C) t₁/₂ = k/ln2", "D) t₁/₂ = [A]0/2k"], ans: 0, exp: "For first-order reactions, t₁/₂ = 0.693/k (independent of concentration)."},
+            {q: "Is half-life constant for a first-order reaction?", opts: ["A) Yes", "B) No", "C) Only at high temperature", "D) Only at low concentration"], ans: 0, exp: "First-order reactions have constant half-life regardless of initial concentration."},
+            {q: "Is half-life constant for a zero-order reaction?", opts: ["A) No", "B) Yes", "C) Always", "D) Sometimes"], ans: 0, exp: "For zero-order reactions, t₁/₂ = [A]0/2k, which depends on initial concentration."},
+            {q: "What is a reaction mechanism?", opts: ["A) Series of elementary steps", "B) Single collision", "C) Energy diagram", "D) Rate equation"], ans: 0, exp: "A reaction mechanism is the sequence of elementary steps that make up the overall reaction."},
+            {q: "What is an elementary step?", opts: ["A) Single molecular event", "B) Overall reaction", "C) Rate-determining step", "D) Catalyst addition"], ans: 0, exp: "An elementary step is a single molecular event (collision) in a mechanism."},
+            {q: "What is molecularity?", opts: ["A) Number of species in elementary step", "B) Overall order", "C) Number of products", "D) Number of electrons"], ans: 0, exp: "Molecularity is the number of reactant molecules/atoms involved in an elementary step."},
+            {q: "What is a unimolecular step?", opts: ["A) One molecule reacts", "B) Two molecules react", "C) Three molecules react", "D) No molecules react"], ans: 0, exp: "A unimolecular step involves one molecule decomposing or rearranging."},
+            {q: "What is a bimolecular step?", opts: ["A) Two molecules collide", "B) One molecule reacts", "C) Three molecules collide", "D) Four molecules collide"], ans: 0, exp: "A bimolecular step involves collision between two molecules."},
+            {q: "What is an intermediate?", opts: ["A) Formed and consumed in mechanism", "B) Final product", "C) Initial reactant", "D) Catalyst"], ans: 0, exp: "An intermediate is formed in one step and consumed in a later step; it doesn't appear in the overall equation."},
+            {q: "How does the rate equation relate to the mechanism?", opts: ["A) Reflects rate-determining step", "B) Shows all steps equally", "C) Ignores mechanism", "D) Only shows products"], ans: 0, exp: "The rate equation reflects the stoichiometry of the rate-determining step."},
+            {q: "If the rate equation is rate = k[A][B], what could the RDS be?", opts: ["A) A + B → products", "B) 2A → products", "C) A → products", "D) B → products"], ans: 0, exp: "The rate equation suggests the RDS involves one A and one B molecule."},
+            {q: "What is the effect of surface area on heterogeneous catalysis?", opts: ["A) Larger area increases rate", "B) No effect", "C) Smaller area increases rate", "D) Only temperature matters"], ans: 0, exp: "Larger surface area provides more active sites for adsorption, increasing reaction rate."},
+            {q: "What is adsorption in heterogeneous catalysis?", opts: ["A) Reactants bind to catalyst surface", "B) Products leave surface", "C) Catalyst dissolves", "D) Temperature increases"], ans: 0, exp: "Adsorption is when reactant molecules bind to the catalyst surface at active sites."},
+            {q: "What is desorption?", opts: ["A) Products leave catalyst surface", "B) Reactants bind to surface", "C) Catalyst breaks down", "D) Reaction stops"], ans: 0, exp: "Desorption is when product molecules leave the catalyst surface, freeing active sites."},
+            {q: "What is catalyst poisoning?", opts: ["A) Impurities block active sites", "B) Catalyst melts", "C) Catalyst evaporates", "D) Catalyst reacts"], ans: 0, exp: "Catalyst poisoning occurs when impurities strongly adsorb to active sites, blocking them."},
+            {q: "Give an example of a heterogeneous catalyst.", opts: ["A) Iron in Haber process", "B) H₂SO₄ in esterification", "C) Enzymes in solution", "D) HCl in water"], ans: 0, exp: "Iron is a solid catalyst used in the Haber process (N₂ + H₂ → NH₃)."},
+            {q: "Give an example of a homogeneous catalyst.", opts: ["A) H₂SO₄ in esterification", "B) Platinum in catalytic converter", "C) Iron in Haber process", "D) Nickel in hydrogenation"], ans: 0, exp: "H₂SO₄ acts as a homogeneous catalyst in esterification (both in liquid phase)."}
+        ];
+
+        // EQUILIBRIA QUESTIONS (50)
+        const equilibriaQuestions = [
+            {q: "What is dynamic equilibrium?", opts: ["A) Forward and reverse rates equal", "B) No reaction occurring", "C) Only forward reaction", "D) Only reverse reaction"], ans: 0, exp: "At dynamic equilibrium, forward and reverse reactions occur at equal rates, so concentrations remain constant."},
+            {q: "What is the equilibrium constant Kc?", opts: ["A) [products]/[reactants] at equilibrium", "B) Rate of forward reaction", "C) Temperature coefficient", "D) Activation energy"], ans: 0, exp: "Kc = [products]^n/[reactants]^m at equilibrium (with stoichiometric coefficients as powers)."},
+            {q: "What does a large Kc value indicate?", opts: ["A) Products favored", "B) Reactants favored", "C) No reaction", "D) Slow reaction"], ans: 0, exp: "Large Kc (>>1) means equilibrium lies to the right, favoring products."},
+            {q: "What does a small Kc value indicate?", opts: ["A) Reactants favored", "B) Products favored", "C) Fast reaction", "D) Complete reaction"], ans: 0, exp: "Small Kc (<<1) means equilibrium lies to the left, favoring reactants."},
+            {q: "What is Le Chatelier's Principle?", opts: ["A) System opposes changes", "B) System enhances changes", "C) No response to changes", "D) Only temperature matters"], ans: 0, exp: "Le Chatelier's Principle: if a system at equilibrium is disturbed, it shifts to oppose the change."},
+            {q: "How does increasing temperature affect an endothermic equilibrium?", opts: ["A) Shifts right (forward)", "B) Shifts left (reverse)", "C) No effect", "D) Stops reaction"], ans: 0, exp: "For endothermic reactions (ΔH > 0), increasing temperature shifts equilibrium right to absorb heat."},
+            {q: "How does increasing temperature affect an exothermic equilibrium?", opts: ["A) Shifts left (reverse)", "B) Shifts right (forward)", "C) No effect", "D) Increases rate only"], ans: 0, exp: "For exothermic reactions (ΔH < 0), increasing temperature shifts equilibrium left."},
+            {q: "How does increasing pressure affect equilibrium with fewer gas moles on the right?", opts: ["A) Shifts right", "B) Shifts left", "C) No effect", "D) Stops reaction"], ans: 0, exp: "Increasing pressure shifts equilibrium toward the side with fewer gas molecules."},
+            {q: "How does a catalyst affect equilibrium position?", opts: ["A) No effect on position", "B) Shifts right", "C) Shifts left", "D) Changes Kc"], ans: 0, exp: "A catalyst speeds up both forward and reverse reactions equally, so equilibrium position is unchanged."},
+            {q: "What is Kp?", opts: ["A) Equilibrium constant using partial pressures", "B) Equilibrium constant using concentrations", "C) Rate constant", "D) Pressure coefficient"], ans: 0, exp: "Kp is the equilibrium constant expressed in terms of partial pressures (for gas-phase reactions)."},
+            {q: "What is the relationship between Kp and Kc?", opts: ["A) Kp = Kc(RT)^Δn", "B) Kp = Kc", "C) Kp = Kc/RT", "D) Kp = Kc + RT"], ans: 0, exp: "Kp = Kc(RT)^Δn, where Δn = (moles of gas products) - (moles of gas reactants)."},
+            {q: "For N₂ + 3H₂ ⇌ 2NH₃, what is Δn?", opts: ["A) -2", "B) +2", "C) 0", "D) -4"], ans: 0, exp: "Δn = 2 - (1+3) = 2 - 4 = -2."},
+            {q: "What happens to Kc when temperature increases for an endothermic reaction?", opts: ["A) Kc increases", "B) Kc decreases", "C) Kc unchanged", "D) Kc becomes zero"], ans: 0, exp: "For endothermic reactions, increasing temperature shifts equilibrium right, increasing Kc."},
+            {q: "What happens to Kc when temperature increases for an exothermic reaction?", opts: ["A) Kc decreases", "B) Kc increases", "C) Kc unchanged", "D) Kc becomes infinite"], ans: 0, exp: "For exothermic reactions, increasing temperature shifts equilibrium left, decreasing Kc."},
+            {q: "Does changing concentration affect Kc?", opts: ["A) No", "B) Yes, always", "C) Only for gases", "D) Only for liquids"], ans: 0, exp: "Kc is constant at a given temperature; changing concentration shifts position but not Kc."},
+            {q: "Does changing pressure affect Kc?", opts: ["A) No", "B) Yes, always", "C) Only for endothermic", "D) Only for exothermic"], ans: 0, exp: "Kc depends only on temperature, not pressure."},
+            {q: "What is the reaction quotient Q?", opts: ["A) [products]/[reactants] at any time", "B) Same as Kc always", "C) Rate of reaction", "D) Activation energy"], ans: 0, exp: "Q has the same form as Kc but uses concentrations at any time, not just at equilibrium."},
+            {q: "If Q < Kc, which direction does the reaction proceed?", opts: ["A) Forward (right)", "B) Reverse (left)", "C) No change", "D) Stops"], ans: 0, exp: "Q < Kc means too few products, so reaction proceeds forward to reach equilibrium."},
+            {q: "If Q > Kc, which direction does the reaction proceed?", opts: ["A) Reverse (left)", "B) Forward (right)", "C) No change", "D) Stops"], ans: 0, exp: "Q > Kc means too many products, so reaction proceeds in reverse to reach equilibrium."},
+            {q: "If Q = Kc, what is the system's state?", opts: ["A) At equilibrium", "B) Moving forward", "C) Moving reverse", "D) Not reacting"], ans: 0, exp: "Q = Kc indicates the system is at equilibrium."},
+            {q: "For aA + bB ⇌ cC + dD, what is the expression for Kc?", opts: ["A) [C]^c[D]^d / [A]^a[B]^b", "B) [A]^a[B]^b / [C]^c[D]^d", "C) [C][D] / [A][B]", "D) [A] + [B] / [C] + [D]"], ans: 0, exp: "Kc = [products]^coefficients / [reactants]^coefficients."},
+            {q: "What is the unit of Kc for N₂ + 3H₂ ⇌ 2NH₃?", opts: ["A) mol⁻² dm⁶", "B) mol dm⁻³", "C) No units", "D) mol² dm⁻⁶"], ans: 0, exp: "Kc = [NH₃]² / [N₂][H₂]³ = (mol dm⁻³)² / (mol dm⁻³)(mol dm⁻³)³ = mol⁻² dm⁶."},
+            {q: "What is a homogeneous equilibrium?", opts: ["A) All species in same phase", "B) Species in different phases", "C) Only gases", "D) Only liquids"], ans: 0, exp: "Homogeneous equilibrium: all reactants and products are in the same phase."},
+            {q: "What is a heterogeneous equilibrium?", opts: ["A) Species in different phases", "B) All species in same phase", "C) Only solids", "D) Only aqueous"], ans: 0, exp: "Heterogeneous equilibrium: reactants and products are in different phases."},
+            {q: "In Kc expressions, what is excluded?", opts: ["A) Pure solids and liquids", "B) Gases", "C) Aqueous solutions", "D) All species"], ans: 0, exp: "Pure solids and pure liquids have constant concentrations and are omitted from Kc expressions."},
+            {q: "For CaCO₃(s) ⇌ CaO(s) + CO₂(g), what is Kc?", opts: ["A) [CO₂]", "B) [CaO][CO₂]/[CaCO₃]", "C) [CaCO₃]/[CO₂]", "D) 1"], ans: 0, exp: "Solids are excluded, so Kc = [CO₂]."},
+            {q: "What is the Haber process equilibrium?", opts: ["A) N₂ + 3H₂ ⇌ 2NH₃", "B) 2SO₂ + O₂ ⇌ 2SO₃", "C) H₂ + I₂ ⇌ 2HI", "D) CO + 2H₂ ⇌ CH₃OH"], ans: 0, exp: "The Haber process synthesizes ammonia: N₂(g) + 3H₂(g) ⇌ 2NH₃(g)."},
+            {q: "Is the Haber process exothermic or endothermic?", opts: ["A) Exothermic", "B) Endothermic", "C) Neither", "D) Both"], ans: 0, exp: "The forward reaction (forming NH₃) is exothermic: ΔH = -92 kJ/mol."},
+            {q: "What conditions favor high NH₃ yield in Haber process?", opts: ["A) High pressure, low temperature", "B) Low pressure, high temperature", "C) High pressure, high temperature", "D) Low pressure, low temperature"], ans: 0, exp: "High pressure favors fewer moles (right); low temperature favors exothermic (right). But low temp is too slow, so compromise ~450°C used."},
+            {q: "Why is a compromise temperature used in Haber process?", opts: ["A) Balance yield and rate", "B) Save energy", "C) Prevent explosion", "D) Reduce cost only"], ans: 0, exp: "Low temperature favors yield but is too slow; high temperature is fast but reduces yield. ~450°C is a compromise."},
+            {q: "What catalyst is used in the Haber process?", opts: ["A) Iron", "B) Platinum", "C) Vanadium(V) oxide", "D) Nickel"], ans: 0, exp: "Iron catalyst (with promoters) is used to speed up the reaction without affecting equilibrium position."},
+            {q: "What is the Contact process?", opts: ["A) 2SO₂ + O₂ ⇌ 2SO₃", "B) N₂ + 3H₂ ⇌ 2NH₃", "C) H₂ + I₂ ⇌ 2HI", "D) CO + H₂O ⇌ CO₂ + H₂"], ans: 0, exp: "The Contact process produces sulfuric acid via: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)."},
+            {q: "Is the Contact process exothermic or endothermic?", opts: ["A) Exothermic", "B) Endothermic", "C) Neither", "D) Both"], ans: 0, exp: "The forward reaction is exothermic: ΔH = -197 kJ/mol."},
+            {q: "What catalyst is used in the Contact process?", opts: ["A) Vanadium(V) oxide", "B) Iron", "C) Platinum", "D) Nickel"], ans: 0, exp: "Vanadium(V) oxide (V₂O₅) is used as the catalyst."},
+            {q: "What is the effect of adding an inert gas at constant volume?", opts: ["A) No effect on equilibrium", "B) Shifts right", "C) Shifts left", "D) Changes Kc"], ans: 0, exp: "At constant volume, adding inert gas increases total pressure but doesn't change partial pressures, so no shift."},
+            {q: "What is the effect of adding an inert gas at constant pressure?", opts: ["A) Shifts toward more moles", "B) No effect", "C) Shifts toward fewer moles", "D) Stops reaction"], ans: 0, exp: "At constant pressure, adding inert gas increases volume, decreasing partial pressures, shifting toward more moles."},
+            {q: "For H₂ + I₂ ⇌ 2HI, what is Δn?", opts: ["A) 0", "B) +2", "C) -2", "D) +1"], ans: 0, exp: "Δn = 2 - (1+1) = 0, so pressure has no effect on this equilibrium."},
+            {q: "If Δn = 0, how does pressure affect equilibrium?", opts: ["A) No effect", "B) Shifts right", "C) Shifts left", "D) Doubles rate"], ans: 0, exp: "When Δn = 0 (equal moles of gas on both sides), pressure changes don't shift equilibrium."},
+            {q: "What is the equilibrium expression for Kp?", opts: ["A) (P_products)^n / (P_reactants)^m", "B) (P_reactants) / (P_products)", "C) P_total", "D) P_products + P_reactants"], ans: 0, exp: "Kp uses partial pressures with stoichiometric coefficients as powers."},
+            {q: "What is partial pressure?", opts: ["A) Pressure exerted by one gas in mixture", "B) Total pressure", "C) Atmospheric pressure", "D) Vapor pressure"], ans: 0, exp: "Partial pressure is the pressure a gas would exert if it alone occupied the volume."},
+            {q: "How do you calculate partial pressure?", opts: ["A) P_i = X_i × P_total", "B) P_i = P_total / X_i", "C) P_i = X_i + P_total", "D) P_i = P_total - X_i"], ans: 0, exp: "Partial pressure = mole fraction × total pressure."},
+            {q: "What is mole fraction?", opts: ["A) Moles of component / total moles", "B) Mass of component / total mass", "C) Volume of component / total volume", "D) Pressure of component / total pressure"], ans: 0, exp: "Mole fraction (X) = moles of component / total moles in mixture."},
+            {q: "For an equilibrium with Kc = 100, which statement is true?", opts: ["A) Products strongly favored", "B) Reactants strongly favored", "C) Equal amounts of both", "D) No reaction occurs"], ans: 0, exp: "Kc = 100 >> 1, so equilibrium lies far to the right (products favored)."},
+            {q: "For an equilibrium with Kc = 0.01, which statement is true?", opts: ["A) Reactants strongly favored", "B) Products strongly favored", "C) Equal amounts of both", "D) Complete reaction"], ans: 0, exp: "Kc = 0.01 << 1, so equilibrium lies far to the left (reactants favored)."},
+            {q: "What is the effect of removing a product from equilibrium?", opts: ["A) Shifts right to replace it", "B) Shifts left", "C) No effect", "D) Stops reaction"], ans: 0, exp: "Removing product decreases [product], so system shifts right to oppose the change."},
+            {q: "What is the effect of adding more reactant to equilibrium?", opts: ["A) Shifts right", "B) Shifts left", "C) No effect", "D) Changes Kc"], ans: 0, exp: "Adding reactant increases [reactant], so system shifts right to consume the excess."},
+            {q: "In industrial processes, why is unreacted material recycled?", opts: ["A) Improve yield and efficiency", "B) Reduce temperature", "C) Increase pressure", "D) Change equilibrium constant"], ans: 0, exp: "Recycling unreacted material effectively increases concentration, shifting equilibrium right and improving overall yield."},
+            {q: "What is the equilibrium constant for the reverse reaction if Kc(forward) = 100?", opts: ["A) 0.01", "B) 100", "C) 10", "D) 1000"], ans: 0, exp: "Kc(reverse) = 1/Kc(forward) = 1/100 = 0.01."},
+            {q: "If two equilibria are added, how are their K values combined?", opts: ["A) K_total = K₁ × K₂", "B) K_total = K₁ + K₂", "C) K_total = K₁ - K₂", "D) K_total = K₁ / K₂"], ans: 0, exp: "When equilibria are added, their equilibrium constants are multiplied: K_total = K₁ × K₂."},
+            {q: "What is the van't Hoff equation used for?", opts: ["A) Relating Kc to temperature", "B) Calculating rate constants", "C) Determining activation energy", "D) Measuring pressure"], ans: 0, exp: "The van't Hoff equation shows how equilibrium constant varies with temperature: ln(K₂/K₁) = -ΔH°/R(1/T₂ - 1/T₁)."}
+        ];
+
+        // ACIDS & BASES QUESTIONS (50)
+        const acidsQuestions = [
+            {q: "What is a Brønsted-Lowry acid?", opts: ["A) Proton donor", "B) Proton acceptor", "C) Electron donor", "D) Electron acceptor"], ans: 0, exp: "A Brønsted-Lowry acid is a proton (H⁺) donor."},
+            {q: "What is a Brønsted-Lowry base?", opts: ["A) Proton acceptor", "B) Proton donor", "C) Electron donor", "D) Electron acceptor"], ans: 0, exp: "A Brønsted-Lowry base is a proton (H⁺) acceptor."},
+            {q: "What is a conjugate acid-base pair?", opts: ["A) Differ by one H⁺", "B) Same molecule", "C) Differ by one OH⁻", "D) Differ by one electron"], ans: 0, exp: "A conjugate acid-base pair consists of two species that differ by one proton (H⁺)."},
+            {q: "What is the conjugate base of HCl?", opts: ["A) Cl⁻", "B) H₂Cl⁺", "C) HCl₂⁻", "D) ClO⁻"], ans: 0, exp: "HCl loses H⁺ to form Cl⁻ (conjugate base)."},
+            {q: "What is the conjugate acid of NH₃?", opts: ["A) NH₄⁺", "B) NH₂⁻", "C) N₂H₄", "D) NH₂OH"], ans: 0, exp: "NH₃ gains H⁺ to form NH₄⁺ (conjugate acid)."},
+            {q: "What is pH?", opts: ["A) -log[H⁺]", "B) log[H⁺]", "C) -log[OH⁻]", "D) [H⁺]"], ans: 0, exp: "pH = -log₁₀[H⁺], a measure of acidity."},
+            {q: "What is pOH?", opts: ["A) -log[OH⁻]", "B) log[OH⁻]", "C) -log[H⁺]", "D) [OH⁻]"], ans: 0, exp: "pOH = -log₁₀[OH⁻], a measure of basicity."},
+            {q: "What is the relationship between pH and pOH at 25°C?", opts: ["A) pH + pOH = 14", "B) pH - pOH = 14", "C) pH × pOH = 14", "D) pH / pOH = 14"], ans: 0, exp: "At 25°C, pH + pOH = 14 (from Kw = 1.0 × 10⁻¹⁴)."},
+            {q: "What is Kw?", opts: ["A) Ionic product of water", "B) Acid dissociation constant", "C) Base dissociation constant", "D) Equilibrium constant"], ans: 0, exp: "Kw = [H⁺][OH⁻] = 1.0 × 10⁻¹⁴ at 25°C (ionic product of water)."},
+            {q: "What is the value of Kw at 25°C?", opts: ["A) 1.0 × 10⁻¹⁴", "B) 1.0 × 10⁻⁷", "C) 1.0 × 10⁻¹⁴", "D) 1.0"], ans: 0, exp: "Kw = 1.0 × 10⁻¹⁴ mol² dm⁻⁶ at 25°C."},
+            {q: "What is a strong acid?", opts: ["A) Completely dissociates", "B) Partially dissociates", "C) Doesn't dissociate", "D) Weak proton donor"], ans: 0, exp: "A strong acid completely dissociates in water (e.g., HCl, H₂SO₄, HNO₃)."},
+            {q: "What is a weak acid?", opts: ["A) Partially dissociates", "B) Completely dissociates", "C) Doesn't dissociate", "D) Strong proton donor"], ans: 0, exp: "A weak acid only partially dissociates in water (e.g., CH₃COOH, HF)."},
+            {q: "What is Ka?", opts: ["A) Acid dissociation constant", "B) Base dissociation constant", "C) Ionic product", "D) Rate constant"], ans: 0, exp: "Ka is the acid dissociation constant: Ka = [H⁺][A⁻]/[HA]."},
+            {q: "What is pKa?", opts: ["A) -log Ka", "B) log Ka", "C) 1/Ka", "D) Ka²"], ans: 0, exp: "pKa = -log₁₀Ka, a measure of acid strength."},
+            {q: "What does a large Ka value indicate?", opts: ["A) Strong acid", "B) Weak acid", "C) Strong base", "D) Weak base"], ans: 0, exp: "Large Ka means more dissociation, so stronger acid."},
+            {q: "What does a small Ka value indicate?", opts: ["A) Weak acid", "B) Strong acid", "C) Strong base", "D) Neutral"], ans: 0, exp: "Small Ka means less dissociation, so weaker acid."},
+            {q: "What is the relationship between Ka and pKa?", opts: ["A) Inverse: large Ka = small pKa", "B) Direct: large Ka = large pKa", "C) No relationship", "D) Equal"], ans: 0, exp: "pKa = -log Ka, so strong acids (large Ka) have small pKa values."},
+            {q: "For a weak acid HA, what is the expression for Ka?", opts: ["A) [H⁺][A⁻]/[HA]", "B) [HA]/[H⁺][A⁻]", "C) [H⁺]/[HA]", "D) [A⁻]/[HA]"], ans: 0, exp: "Ka = [H⁺][A⁻]/[HA] for the equilibrium HA ⇌ H⁺ + A⁻."},
+            {q: "What is Kb?", opts: ["A) Base dissociation constant", "B) Acid dissociation constant", "C) Ionic product", "D) Buffer constant"], ans: 0, exp: "Kb is the base dissociation constant: Kb = [BH⁺][OH⁻]/[B]."},
+            {q: "What is the relationship between Ka and Kb for a conjugate pair?", opts: ["A) Ka × Kb = Kw", "B) Ka + Kb = Kw", "C) Ka - Kb = Kw", "D) Ka / Kb = Kw"], ans: 0, exp: "For a conjugate acid-base pair: Ka × Kb = Kw = 1.0 × 10⁻¹⁴ at 25°C."},
+            {q: "What is the pH of pure water at 25°C?", opts: ["A) 7", "B) 0", "C) 14", "D) 1"], ans: 0, exp: "Pure water is neutral: [H⁺] = [OH⁻] = 1.0 × 10⁻⁷, so pH = 7."},
+            {q: "What is the pH of a 0.1 M HCl solution?", opts: ["A) 1", "B) 7", "C) 13", "D) 0.1"], ans: 0, exp: "HCl is strong acid: [H⁺] = 0.1 M, pH = -log(0.1) = 1."},
+            {q: "What is the pH of a 0.01 M NaOH solution?", opts: ["A) 12", "B) 2", "C) 7", "D) 14"], ans: 0, exp: "NaOH is strong base: [OH⁻] = 0.01 M, pOH = 2, pH = 14 - 2 = 12."},
+            {q: "What is a buffer solution?", opts: ["A) Resists pH change", "B) Always pH 7", "C) Strong acid + strong base", "D) Pure water"], ans: 0, exp: "A buffer resists pH changes when small amounts of acid or base are added."},
+            {q: "What makes an acidic buffer?", opts: ["A) Weak acid + its salt", "B) Strong acid + strong base", "C) Weak base + its salt", "D) Two strong acids"], ans: 0, exp: "Acidic buffer: weak acid (e.g., CH₃COOH) + its conjugate base salt (e.g., CH₃COONa)."},
+            {q: "What makes a basic buffer?", opts: ["A) Weak base + its salt", "B) Strong base + strong acid", "C) Weak acid + its salt", "D) Two strong bases"], ans: 0, exp: "Basic buffer: weak base (e.g., NH₃) + its conjugate acid salt (e.g., NH₄Cl)."},
+            {q: "What is the Henderson-Hasselbalch equation for acids?", opts: ["A) pH = pKa + log([A⁻]/[HA])", "B) pH = pKa - log([A⁻]/[HA])", "C) pH = pKa × [A⁻]/[HA]", "D) pH = [A⁻]/[HA]"], ans: 0, exp: "Henderson-Hasselbalch: pH = pKa + log([conjugate base]/[acid])."},
+            {q: "When [A⁻] = [HA] in a buffer, what is pH?", opts: ["A) pH = pKa", "B) pH = 7", "C) pH = 0", "D) pH = 14"], ans: 0, exp: "When [A⁻] = [HA], log([A⁻]/[HA]) = log(1) = 0, so pH = pKa."},
+            {q: "How does a buffer work when acid is added?", opts: ["A) Conjugate base neutralizes H⁺", "B) Acid neutralizes H⁺", "C) pH increases", "D) Buffer fails"], ans: 0, exp: "Added H⁺ reacts with conjugate base (A⁻): A⁻ + H⁺ → HA, minimizing pH change."},
+            {q: "How does a buffer work when base is added?", opts: ["A) Weak acid neutralizes OH⁻", "B) Conjugate base neutralizes OH⁻", "C) pH decreases", "D) Buffer fails"], ans: 0, exp: "Added OH⁻ reacts with weak acid (HA): HA + OH⁻ → A⁻ + H₂O, minimizing pH change."},
+            {q: "What is buffer capacity?", opts: ["A) Amount of acid/base buffer can neutralize", "B) pH of buffer", "C) Volume of buffer", "D) Temperature of buffer"], ans: 0, exp: "Buffer capacity is the amount of acid or base a buffer can neutralize before significant pH change."},
+            {q: "What is the equivalence point in a titration?", opts: ["A) Moles acid = moles base", "B) pH = 7", "C) Color change", "D) Half-neutralization"], ans: 0, exp: "Equivalence point: moles of acid exactly equal moles of base added."},
+            {q: "What is the end point in a titration?", opts: ["A) Indicator color change", "B) Moles acid = moles base", "C) pH = 7", "D) Start of titration"], ans: 0, exp: "End point is when the indicator changes color (should match equivalence point)."},
+            {q: "What is the pH at equivalence point for strong acid + strong base?", opts: ["A) 7", "B) <7", "C) >7", "D) 0"], ans: 0, exp: "Strong acid + strong base gives neutral salt, so pH = 7 at equivalence point."},
+            {q: "What is the pH at equivalence point for weak acid + strong base?", opts: ["A) >7", "B) 7", "C) <7", "D) 0"], ans: 0, exp: "Weak acid + strong base gives basic salt (conjugate base), so pH > 7."},
+            {q: "What is the pH at equivalence point for strong acid + weak base?", opts: ["A) <7", "B) 7", "C) >7", "D) 14"], ans: 0, exp: "Strong acid + weak base gives acidic salt (conjugate acid), so pH < 7."},
+            {q: "What indicator is suitable for strong acid + strong base titration?", opts: ["A) Any indicator (pH 4-10)", "B) Only phenolphthalein", "C) Only methyl orange", "D) No indicator works"], ans: 0, exp: "Sharp pH change at equivalence point (pH 7), so many indicators work."},
+            {q: "What indicator is suitable for weak acid + strong base titration?", opts: ["A) Phenolphthalein (pH 8-10)", "B) Methyl orange (pH 3-4)", "C) Litmus (pH 5-8)", "D) Any indicator"], ans: 0, exp: "Equivalence point pH > 7, so use indicator that changes in basic range (phenolphthalein)."},
+            {q: "What indicator is suitable for strong acid + weak base titration?", opts: ["A) Methyl orange (pH 3-4)", "B) Phenolphthalein (pH 8-10)", "C) Litmus (pH 5-8)", "D) Any indicator"], ans: 0, exp: "Equivalence point pH < 7, so use indicator that changes in acidic range (methyl orange)."},
+            {q: "What is a polyprotic acid?", opts: ["A) Can donate multiple protons", "B) Can donate one proton", "C) Cannot donate protons", "D) Is a base"], ans: 0, exp: "Polyprotic acids can donate more than one proton (e.g., H₂SO₄, H₃PO₄)."},
+            {q: "For H₂SO₄, which dissociation is complete?", opts: ["A) First dissociation", "B) Second dissociation", "C) Both", "D) Neither"], ans: 0, exp: "H₂SO₄ → H⁺ + HSO₄⁻ is complete (strong acid); HSO₄⁻ ⇌ H⁺ + SO₄²⁻ is partial (weak)."},
+            {q: "What is the pH of a salt solution from strong acid + strong base?", opts: ["A) 7 (neutral)", "B) <7 (acidic)", "C) >7 (basic)", "D) 0"], ans: 0, exp: "Neither ion hydrolyzes, so solution is neutral (pH = 7)."},
+            {q: "What is the pH of a salt solution from weak acid + strong base?", opts: ["A) >7 (basic)", "B) 7 (neutral)", "C) <7 (acidic)", "D) 14"], ans: 0, exp: "Conjugate base hydrolyzes: A⁻ + H₂O ⇌ HA + OH⁻, making solution basic."},
+            {q: "What is the pH of a salt solution from strong acid + weak base?", opts: ["A) <7 (acidic)", "B) 7 (neutral)", "C) >7 (basic)", "D) 0"], ans: 0, exp: "Conjugate acid hydrolyzes: BH⁺ + H₂O ⇌ B + H₃O⁺, making solution acidic."},
+            {q: "What is hydrolysis?", opts: ["A) Reaction of ion with water", "B) Dissolving in water", "C) Evaporation", "D) Precipitation"], ans: 0, exp: "Hydrolysis is when an ion reacts with water to produce H⁺ or OH⁻, affecting pH."},
+            {q: "What is the common ion effect?", opts: ["A) Suppresses dissociation", "B) Increases dissociation", "C) No effect", "D) Changes Ka"], ans: 0, exp: "Adding a common ion shifts equilibrium to suppress dissociation (Le Chatelier)."},
+            {q: "What happens to pH of CH₃COOH when CH₃COONa is added?", opts: ["A) pH increases", "B) pH decreases", "C) pH unchanged", "D) pH becomes 7"], ans: 0, exp: "CH₃COO⁻ (common ion) suppresses dissociation of CH₃COOH, reducing [H⁺], so pH increases."},
+            {q: "What is the pH range of phenolphthalein?", opts: ["A) 8.2-10.0", "B) 3.1-4.4", "C) 4.5-6.2", "D) 6.0-7.6"], ans: 0, exp: "Phenolphthalein is colorless below pH 8.2 and pink above pH 10.0."},
+            {q: "What is the pH range of methyl orange?", opts: ["A) 3.1-4.4", "B) 8.2-10.0", "C) 4.5-6.2", "D) 6.0-7.6"], ans: 0, exp: "Methyl orange is red below pH 3.1 and yellow above pH 4.4."},
+            {q: "What is an amphoteric species?", opts: ["A) Can act as acid or base", "B) Only acts as acid", "C) Only acts as base", "D) Neutral always"], ans: 0, exp: "Amphoteric species can donate or accept protons (e.g., H₂O, HCO₃⁻, HSO₄⁻)."}
+        ];
+
+        // ORGANIC CHEMISTRY QUESTIONS (50)
+        const organicQuestions = [
+            {q: "What is a functional group?", opts: ["A) Atom/group determining properties", "B) Carbon chain", "C) Hydrogen atoms", "D) Molecular formula"], ans: 0, exp: "A functional group is an atom or group of atoms responsible for characteristic reactions of a compound."},
+            {q: "What is the functional group of alcohols?", opts: ["A) -OH", "B) -COOH", "C) -CHO", "D) -NH₂"], ans: 0, exp: "Alcohols contain the hydroxyl group (-OH)."},
+            {q: "What is the functional group of carboxylic acids?", opts: ["A) -COOH", "B) -OH", "C) -CHO", "D) -CO-"], ans: 0, exp: "Carboxylic acids contain the carboxyl group (-COOH)."},
+            {q: "What is the functional group of aldehydes?", opts: ["A) -CHO", "B) -COOH", "C) -OH", "D) -CO-"], ans: 0, exp: "Aldehydes contain the carbonyl group at the end of the chain (-CHO)."},
+            {q: "What is the functional group of ketones?", opts: ["A) -CO-", "B) -CHO", "C) -COOH", "D) -OH"], ans: 0, exp: "Ketones contain the carbonyl group within the chain (R-CO-R')."},
+            {q: "What is the functional group of esters?", opts: ["A) -COO-", "B) -COOH", "C) -OH", "D) -CHO"], ans: 0, exp: "Esters contain the ester linkage (-COO-)."},
+            {q: "What is the functional group of amines?", opts: ["A) -NH₂", "B) -OH", "C) -COOH", "D) -NO₂"], ans: 0, exp: "Amines contain the amino group (-NH₂, -NHR, or -NR₂)."},
+            {q: "What is the functional group of amides?", opts: ["A) -CONH₂", "B) -NH₂", "C) -COOH", "D) -CHO"], ans: 0, exp: "Amides contain the amide group (-CONH₂, -CONHR, or -CONR₂)."},
+            {q: "What is the functional group of nitriles?", opts: ["A) -CN", "B) -NH₂", "C) -NO₂", "D) -COOH"], ans: 0, exp: "Nitriles contain the cyano group (-C≡N)."},
+            {q: "What is the functional group of acyl chlorides?", opts: ["A) -COCl", "B) -Cl", "C) -COOH", "D) -CHO"], ans: 0, exp: "Acyl chlorides contain the acyl chloride group (-COCl)."},
+            {q: "What is a primary alcohol?", opts: ["A) -OH on carbon with one R group", "B) -OH on carbon with two R groups", "C) -OH on carbon with three R groups", "D) -OH on benzene ring"], ans: 0, exp: "Primary (1°) alcohol: -OH attached to carbon bonded to one alkyl group (RCH₂OH)."},
+            {q: "What is a secondary alcohol?", opts: ["A) -OH on carbon with two R groups", "B) -OH on carbon with one R group", "C) -OH on carbon with three R groups", "D) -OH on benzene ring"], ans: 0, exp: "Secondary (2°) alcohol: -OH attached to carbon bonded to two alkyl groups (R₂CHOH)."},
+            {q: "What is a tertiary alcohol?", opts: ["A) -OH on carbon with three R groups", "B) -OH on carbon with one R group", "C) -OH on carbon with two R groups", "D) -OH on benzene ring"], ans: 0, exp: "Tertiary (3°) alcohol: -OH attached to carbon bonded to three alkyl groups (R₃COH)."},
+            {q: "What is oxidation of primary alcohols with [O]?", opts: ["A) Aldehyde then carboxylic acid", "B) Ketone", "C) Ester", "D) No reaction"], ans: 0, exp: "Primary alcohols oxidize to aldehydes (with distillation) or carboxylic acids (with reflux)."},
+            {q: "What is oxidation of secondary alcohols with [O]?", opts: ["A) Ketone", "B) Aldehyde", "C) Carboxylic acid", "D) No reaction"], ans: 0, exp: "Secondary alcohols oxidize to ketones."},
+            {q: "What happens when tertiary alcohols are oxidized?", opts: ["A) No reaction", "B) Ketone forms", "C) Aldehyde forms", "D) Carboxylic acid forms"], ans: 0, exp: "Tertiary alcohols resist oxidation under normal conditions."},
+            {q: "What reagent is used to oxidize alcohols?", opts: ["A) K₂Cr₂O₇/H₂SO₄", "B) NaOH", "C) LiAlH₄", "D) H₂/Ni"], ans: 0, exp: "Acidified potassium dichromate (K₂Cr₂O₇/H₂SO₄) is a common oxidizing agent."},
+            {q: "What color change occurs when alcohols are oxidized with K₂Cr₂O₇?", opts: ["A) Orange to green", "B) Green to orange", "C) Colorless to blue", "D) Blue to colorless"], ans: 0, exp: "Cr₂O₇²⁻ (orange) is reduced to Cr³⁺ (green) during oxidation."},
+            {q: "What is esterification?", opts: ["A) Alcohol + carboxylic acid → ester", "B) Alcohol + aldehyde → ester", "C) Alcohol + ketone → ester", "D) Alcohol + amine → ester"], ans: 0, exp: "Esterification: alcohol + carboxylic acid → ester + water (with H₂SO₄ catalyst)."},
+            {q: "What is the general equation for esterification?", opts: ["A) R-COOH + R'-OH → R-COO-R' + H₂O", "B) R-OH + R'-OH → R-O-R' + H₂O", "C) R-COOH + R'-COOH → R-COO-R' + H₂O", "D) R-CHO + R'-OH → R-COO-R'"], ans: 0, exp: "Carboxylic acid + alcohol → ester + water."},
+            {q: "What catalyst is used in esterification?", opts: ["A) Concentrated H₂SO₄", "B) NaOH", "C) K₂Cr₂O₇", "D) LiAlH₄"], ans: 0, exp: "Concentrated sulfuric acid acts as a catalyst and dehydrating agent."},
+            {q: "What is hydrolysis of esters?", opts: ["A) Ester + water → acid + alcohol", "B) Ester → aldehyde + alcohol", "C) Ester → ketone + alcohol", "D) Ester → amine + acid"], ans: 0, exp: "Ester hydrolysis breaks ester into carboxylic acid and alcohol."},
+            {q: "What is acid hydrolysis of esters?", opts: ["A) Ester + H₂O/H⁺ → acid + alcohol", "B) Ester + NaOH → salt + alcohol", "C) Ester + H₂ → alcohol", "D) Ester + [O] → acid"], ans: 0, exp: "Acid hydrolysis: ester + water (with H⁺ catalyst) → carboxylic acid + alcohol (reversible)."},
+            {q: "What is alkaline hydrolysis (saponification) of esters?", opts: ["A) Ester + NaOH → salt + alcohol", "B) Ester + H₂O/H⁺ → acid + alcohol", "C) Ester + H₂ → alcohol", "D) Ester + [O] → acid"], ans: 0, exp: "Alkaline hydrolysis: ester + NaOH → carboxylate salt + alcohol (irreversible)."},
+            {q: "What is reduction of carboxylic acids?", opts: ["A) LiAlH₄ → primary alcohol", "B) K₂Cr₂O₇ → aldehyde", "C) NaOH → salt", "D) H₂SO₄ → ester"], ans: 0, exp: "Carboxylic acids are reduced by LiAlH₄ to primary alcohols."},
+            {q: "What is reduction of aldehydes?", opts: ["A) NaBH₄ or LiAlH₄ → primary alcohol", "B) K₂Cr₂O₇ → carboxylic acid", "C) H₂SO₄ → ester", "D) NaOH → salt"], ans: 0, exp: "Aldehydes are reduced to primary alcohols using NaBH₄ or LiAlH₄."},
+            {q: "What is reduction of ketones?", opts: ["A) NaBH₄ or LiAlH₄ → secondary alcohol", "B) K₂Cr₂O₇ → carboxylic acid", "C) H₂SO₄ → ester", "D) No reaction"], ans: 0, exp: "Ketones are reduced to secondary alcohols using NaBH₄ or LiAlH₄."},
+            {q: "What is the nucleophilic addition mechanism?", opts: ["A) Nucleophile attacks C=O", "B) Electrophile attacks C=C", "C) Free radical attacks C-H", "D) Elimination of H₂O"], ans: 0, exp: "Nucleophilic addition: nucleophile attacks the δ+ carbon of C=O bond."},
+            {q: "What is the test for aldehydes using Tollens' reagent?", opts: ["A) Silver mirror forms", "B) Orange to green", "C) Blue to colorless", "D) Precipitate forms"], ans: 0, exp: "Tollens' reagent ([Ag(NH₃)₂]⁺) oxidizes aldehydes, forming a silver mirror."},
+            {q: "What is the test for aldehydes using Fehling's solution?", opts: ["A) Blue to red precipitate", "B) Orange to green", "C) Silver mirror", "D) No change"], ans: 0, exp: "Fehling's solution (Cu²⁺ complex) oxidizes aldehydes, forming red Cu₂O precipitate."},
+            {q: "Do ketones react with Tollens' or Fehling's reagent?", opts: ["A) No", "B) Yes, always", "C) Only Tollens'", "D) Only Fehling's"], ans: 0, exp: "Ketones are not easily oxidized, so they don't react with Tollens' or Fehling's."},
+            {q: "What is the Brady's reagent test?", opts: ["A) Orange precipitate with C=O", "B) Silver mirror", "C) Blue to red", "D) Color change to green"], ans: 0, exp: "Brady's reagent (2,4-DNPH) forms orange precipitate with aldehydes and ketones."},
+            {q: "What is the iodoform test?", opts: ["A) Yellow precipitate with CH₃CO-", "B) Silver mirror", "C) Orange precipitate", "D) Blue solution"], ans: 0, exp: "Iodoform test: compounds with CH₃CO- or CH₃CH(OH)- give yellow CHI₃ precipitate with I₂/NaOH."},
+            {q: "What is dehydration of alcohols?", opts: ["A) Elimination of H₂O to form alkene", "B) Addition of H₂O", "C) Oxidation", "D) Reduction"], ans: 0, exp: "Dehydration: alcohol loses H₂O (with conc. H₂SO₄/heat) to form alkene."},
+            {q: "What is substitution of alcohols with HX?", opts: ["A) R-OH + HX → R-X + H₂O", "B) R-OH + HX → R-H + H₂O", "C) R-OH + HX → R=O + H₂", "D) No reaction"], ans: 0, exp: "Alcohols react with hydrogen halides to form haloalkanes."},
+            {q: "What is the order of reactivity of alcohols with HX?", opts: ["A) Tertiary > secondary > primary", "B) Primary > secondary > tertiary", "C) All equal", "D) Secondary > tertiary > primary"], ans: 0, exp: "Tertiary alcohols react fastest (via SN1 mechanism with stable carbocation)."},
+            {q: "What is acylation of alcohols?", opts: ["A) R-OH + R'-COCl → R-OOC-R' + HCl", "B) R-OH + R'-OH → R-O-R' + H₂O", "C) R-OH + [O] → R=O", "D) R-OH + H₂ → R-H"], ans: 0, exp: "Acylation: alcohol + acyl chloride → ester + HCl."},
+            {q: "What is the difference between acylation and esterification?", opts: ["A) Acylation uses acyl chloride, faster", "B) No difference", "C) Acylation uses carboxylic acid", "D) Esterification is faster"], ans: 0, exp: "Acylation (with acyl chloride) is faster and irreversible; esterification (with carboxylic acid) is slower and reversible."},
+            {q: "What is a carboxylic acid derivative?", opts: ["A) Compound derived from -COOH", "B) Alcohol derivative", "C) Aldehyde derivative", "D) Alkene derivative"], ans: 0, exp: "Carboxylic acid derivatives include acyl chlorides, esters, amides, and anhydrides."},
+            {q: "What is the order of reactivity of carboxylic acid derivatives?", opts: ["A) Acyl chloride > anhydride > ester > amide", "B) Amide > ester > anhydride > acyl chloride", "C) All equal", "D) Ester > acyl chloride > amide"], ans: 0, exp: "Acyl chlorides are most reactive (best leaving group); amides are least reactive."},
+            {q: "What is formed when acyl chloride reacts with water?", opts: ["A) Carboxylic acid + HCl", "B) Ester + HCl", "C) Amide + HCl", "D) Alcohol + HCl"], ans: 0, exp: "R-COCl + H₂O → R-COOH + HCl (vigorous reaction)."},
+            {q: "What is formed when acyl chloride reacts with alcohol?", opts: ["A) Ester + HCl", "B) Carboxylic acid + HCl", "C) Amide + HCl", "D) Ketone + HCl"], ans: 0, exp: "R-COCl + R'-OH → R-COO-R' + HCl (acylation)."},
+            {q: "What is formed when acyl chloride reacts with ammonia?", opts: ["A) Amide + HCl", "B) Ester + HCl", "C) Carboxylic acid + HCl", "D) Amine + HCl"], ans: 0, exp: "R-COCl + NH₃ → R-CONH₂ + HCl (forms primary amide)."},
+            {q: "What is formed when acyl chloride reacts with amine?", opts: ["A) Substituted amide + HCl", "B) Ester + HCl", "C) Carboxylic acid + HCl", "D) Ketone + HCl"], ans: 0, exp: "R-COCl + R'-NH₂ → R-CONH-R' + HCl (forms N-substituted amide)."},
+            {q: "What is the basicity order of amines?", opts: ["A) Aliphatic > NH₃ > aromatic", "B) Aromatic > aliphatic > NH₃", "C) NH₃ > aliphatic > aromatic", "D) All equal"], ans: 0, exp: "Aliphatic amines are most basic (electron-donating alkyl groups); aromatic amines are least basic (lone pair delocalized)."},
+            {q: "What is the reaction of amines with acids?", opts: ["A) Salt formation", "B) Ester formation", "C) Amide formation", "D) No reaction"], ans: 0, exp: "Amines are bases: R-NH₂ + HCl → R-NH₃⁺Cl⁻ (forms salt)."},
+            {q: "What is the reaction of amines with acyl chlorides?", opts: ["A) Amide + HCl", "B) Ester + HCl", "C) Salt only", "D) No reaction"], ans: 0, exp: "R-NH₂ + R'-COCl → R-NH-CO-R' + HCl (forms N-substituted amide)."},
+            {q: "What is optical isomerism?", opts: ["A) Non-superimposable mirror images", "B) Different functional groups", "C) Different chain length", "D) Different molecular formula"], ans: 0, exp: "Optical isomers (enantiomers) are non-superimposable mirror images with a chiral center."},
+            {q: "What is a chiral center?", opts: ["A) Carbon with 4 different groups", "B) Carbon with 2 different groups", "C) Carbon with double bond", "D) Carbon with triple bond"], ans: 0, exp: "A chiral center (stereocenter) is a carbon atom bonded to four different groups."}
+        ];
+
+        // Store all questions
+        const allQuestions = {
+            rates: ratesQuestions,
+            equilibria: equilibriaQuestions,
+            acids: acidsQuestions,
+            organic: organicQuestions
+        };
+
+        // Initialize quizzes
+        function initQuiz(quizId) {
+            const form = document.getElementById(`${quizId}-form`);
+            const questions = allQuestions[quizId];
+            
+            form.innerHTML = questions.map((q, i) => `
+                <div class="question" id="${quizId}-q${i}">
+                    <div class="question-text">${i + 1}. ${q.q}</div>
+                    <div class="options">
+                        ${q.opts.map((opt, j) => `
+                            <div class="option" onclick="selectOption('${quizId}', ${i}, ${j})">
+                                <input type="radio" name="${quizId}-q${i}" id="${quizId}-q${i}-opt${j}" value="${j}">
+                                <label for="${quizId}-q${i}-opt${j}">${opt}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="${quizId}-exp${i}">${q.exp}</div>
+                </div>
+            `).join('');
+
+            // Update progress
+            updateProgress(quizId);
+        }
+
+        function selectOption(quizId, qIndex, optIndex) {
+            document.getElementById(`${quizId}-q${qIndex}-opt${optIndex}`).checked = true;
+            updateProgress(quizId);
+        }
+
+        function updateProgress(quizId) {
+            const form = document.getElementById(`${quizId}-form`);
+            const questions = allQuestions[quizId];
+            const answered = Array.from(form.querySelectorAll('input[type="radio"]:checked')).length;
+            const progress = (answered / questions.length) * 100;
+            document.getElementById(`${quizId}-progress`).style.width = progress + '%';
+        }
+
+        function submitQuiz(quizId) {
+            const questions = allQuestions[quizId];
+            let score = 0;
+
+            questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${quizId}-q${i}"]:checked`);
+                const questionDiv = document.getElementById(`${quizId}-q${i}`);
+                const options = questionDiv.querySelectorAll('.option');
+                const explanation = document.getElementById(`${quizId}-exp${i}`);
+
+                if (selected) {
+                    const answer = parseInt(selected.value);
+                    if (answer === q.ans) {
+                        score++;
+                        options[answer].classList.add('correct');
+                    } else {
+                        options[answer].classList.add('incorrect');
+                        options[q.ans].classList.add('correct');
+                    }
+                    explanation.classList.add('show');
+                } else {
+                    options[q.ans].classList.add('correct');
+                    explanation.classList.add('show');
+                }
+            });
+
+            const percentage = (score / questions.length * 100).toFixed(1);
+            const resultDiv = document.getElementById(`${quizId}-result`);
+            
+            let grade, color;
+            if (percentage >= 90) { grade = 'A*'; color = '#28a745'; }
+            else if (percentage >= 80) { grade = 'A'; color = '#5cb85c'; }
+            else if (percentage >= 70) { grade = 'B'; color = '#5bc0de'; }
+            else if (percentage >= 60) { grade = 'C'; color = '#f0ad4e'; }
+            else if (percentage >= 50) { grade = 'D'; color = '#ff9800'; }
+            else { grade = 'E'; color = '#dc3545'; }
+
+            resultDiv.innerHTML = `
+                <div style="background: ${color}; color: white; padding: 20px; border-radius: 10px;">
+                    <h2>Quiz Complete!</h2>
+                    <p style="font-size: 2em; margin: 10px 0;">${score}/${questions.length}</p>
+                    <p style="font-size: 1.5em;">Score: ${percentage}%</p>
+                    <p style="font-size: 1.8em; font-weight: bold;">Grade: ${grade}</p>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showQuiz(quizId) {
+            // Hide all quizzes
+            document.querySelectorAll('.quiz-content').forEach(q => q.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            // Show selected quiz
+            document.getElementById(quizId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Initialize all quizzes on load
+        window.onload = function() {
+            initQuiz('rates');
+            initQuiz('equilibria');
+            initQuiz('acids');
+            initQuiz('organic');
+        };
+    </script>
+</body>
+</html>
