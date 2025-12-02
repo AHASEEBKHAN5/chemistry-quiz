@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Quiz - Equilibria | IAL Chemistry</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { font-size: 16px; opacity: 0.9; }
+        .quiz-info { background: #f8f9fa; padding: 20px 30px; border-bottom: 2px solid #e9ecef; }
+        .quiz-info p { margin: 5px 0; color: #495057; }
+        .nav-links { background: #e9ecef; padding: 15px 30px; text-align: center; }
+        .nav-links a { display: inline-block; margin: 5px 10px; padding: 8px 15px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; }
+        .nav-links a:hover { background: #764ba2; }
+        .quiz-content { padding: 30px; max-height: 600px; overflow-y: auto; }
+        .question { margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea; }
+        .question-header { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.6; }
+        .options { margin-top: 15px; }
+        .option { display: block; padding: 12px; margin: 8px 0; background: white; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .option:hover { border-color: #667eea; background: #f7fafc; transform: translateX(5px); }
+        .option input[type="radio"] { margin-right: 10px; cursor: pointer; }
+        .option label { cursor: pointer; font-size: 15px; color: #4a5568; }
+        .submit-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; margin: 30px auto; transition: transform 0.3s ease; }
+        .submit-btn:hover { transform: scale(1.05); }
+        .results { display: none; padding: 30px; background: #f8f9fa; border-radius: 10px; margin-top: 30px; }
+        .results.show { display: block; }
+        .score-display { text-align: center; padding: 30px; background: white; border-radius: 10px; margin-bottom: 20px; }
+        .score-display h2 { font-size: 32px; color: #2d3748; margin-bottom: 10px; }
+        .score-display .score { font-size: 48px; font-weight: bold; color: #667eea; margin: 20px 0; }
+        .score-display .percentage { font-size: 24px; color: #718096; }
+        .grade { font-size: 20px; font-weight: 600; margin-top: 10px; }
+        .feedback { padding: 20px; background: white; border-radius: 8px; margin-top: 20px; max-height: 400px; overflow-y: auto; }
+        .feedback h3 { color: #2d3748; margin-bottom: 15px; position: sticky; top: 0; background: white; padding: 10px 0; }
+        .answer-review { margin: 15px 0; padding: 15px; border-radius: 8px; }
+        .answer-review.correct { background: #d4edda; border-left: 4px solid #28a745; }
+        .answer-review.incorrect { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .answer-review .question-num { font-weight: 600; margin-bottom: 8px; }
+        .answer-review .explanation { margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 5px; font-size: 14px; }
+        .retry-btn { background: #28a745; color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; margin: 20px auto; }
+        .retry-btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IAL Chemistry Unit 4 Quiz</h1>
+            <p>Equilibria - 50 MCQs</p>
+        </div>
+        
+        <div class="quiz-info">
+            <p><strong>Subject:</strong> Pearson Edexcel IAL Chemistry - Unit 4</p>
+            <p><strong>Topic:</strong> Dynamic Equilibrium, Kc, Kp, and Le Chatelier's Principle</p>
+            <p><strong>Questions:</strong> 50 Multiple Choice Questions</p>
+            <p><strong>Time:</strong> Recommended 60 minutes</p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">🏠 Home</a>
+            <a href="unit4-rates-kinetics.html">⚡ Rates & Kinetics</a>
+            <a href="unit4-acids-bases.html">🧪 Acids & Bases</a>
+            <a href="unit4-organic.html">🔬 Organic Chemistry</a>
+        </div>
+        
+        <div class="quiz-content">
+            <form id="quizForm">
+                
+                <!-- Questions 1-10: Dynamic Equilibrium Basics -->
+                <div class="question">
+                    <div class="question-header"><strong>Q1:</strong> A dynamic equilibrium exists when:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q1a" name="q1" value="A"><label for="q1a">A. The forward and reverse reactions have stopped</label></div>
+                        <div class="option"><input type="radio" id="q1b" name="q1" value="B"><label for="q1b">B. The forward and reverse reactions occur at equal rates</label></div>
+                        <div class="option"><input type="radio" id="q1c" name="q1" value="C"><label for="q1c">C. The concentrations of reactants and products are equal</label></div>
+                        <div class="option"><input type="radio" id="q1d" name="q1" value="D"><label for="q1d">D. The reaction is complete</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q2:</strong> Which condition is necessary for a system to reach equilibrium?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q2a" name="q2" value="A"><label for="q2a">A. The system must be open</label></div>
+                        <div class="option"><input type="radio" id="q2b" name="q2" value="B"><label for="q2b">B. The system must be closed</label></div>
+                        <div class="option"><input type="radio" id="q2c" name="q2" value="C"><label for="q2c">C. The temperature must be increasing</label></div>
+                        <div class="option"><input type="radio" id="q2d" name="q2" value="D"><label for="q2d">D. The pressure must be constant</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q3:</strong> At equilibrium, the concentrations of reactants and products:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q3a" name="q3" value="A"><label for="q3a">A. Are always equal</label></div>
+                        <div class="option"><input type="radio" id="q3b" name="q3" value="B"><label for="q3b">B. Remain constant</label></div>
+                        <div class="option"><input type="radio" id="q3c" name="q3" value="C"><label for="q3c">C. Continue to change</label></div>
+                        <div class="option"><input type="radio" id="q3d" name="q3" value="D"><label for="q3d">D. Become zero</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q4:</strong> The equilibrium constant Kc is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q4a" name="q4" value="A"><label for="q4a">A. Dependent on initial concentrations</label></div>
+                        <div class="option"><input type="radio" id="q4b" name="q4" value="B"><label for="q4b">B. Dependent on temperature only</label></div>
+                        <div class="option"><input type="radio" id="q4c" name="q4" value="C"><label for="q4c">C. Dependent on pressure</label></div>
+                        <div class="option"><input type="radio" id="q4d" name="q4" value="D"><label for="q4d">D. Dependent on catalyst</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q5:</strong> For the reaction: aA + bB ⇌ cC + dD, the expression for Kc is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q5a" name="q5" value="A"><label for="q5a">A. [A]ᵃ[B]ᵇ / [C]ᶜ[D]ᵈ</label></div>
+                        <div class="option"><input type="radio" id="q5b" name="q5" value="B"><label for="q5b">B. [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ</label></div>
+                        <div class="option"><input type="radio" id="q5c" name="q5" value="C"><label for="q5c">C. [C][D] / [A][B]</label></div>
+                        <div class="option"><input type="radio" id="q5d" name="q5" value="D"><label for="q5d">D. [A][B] / [C][D]</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q6:</strong> A large value of Kc (Kc >> 1) indicates:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q6a" name="q6" value="A"><label for="q6a">A. Equilibrium lies to the left (favors reactants)</label></div>
+                        <div class="option"><input type="radio" id="q6b" name="q6" value="B"><label for="q6b">B. Equilibrium lies to the right (favors products)</label></div>
+                        <div class="option"><input type="radio" id="q6c" name="q6" value="C"><label for="q6c">C. Equal amounts of reactants and products</label></div>
+                        <div class="option"><input type="radio" id="q6d" name="q6" value="D"><label for="q6d">D. The reaction is very slow</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q7:</strong> A small value of Kc (Kc << 1) indicates:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q7a" name="q7" value="A"><label for="q7a">A. Equilibrium lies to the right</label></div>
+                        <div class="option"><input type="radio" id="q7b" name="q7" value="B"><label for="q7b">B. Equilibrium lies to the left</label></div>
+                        <div class="option"><input type="radio" id="q7c" name="q7" value="C"><label for="q7c">C. The reaction goes to completion</label></div>
+                        <div class="option"><input type="radio" id="q7d" name="q7" value="D"><label for="q7d">D. Products are favored</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q8:</strong> The units of Kc depend on:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q8a" name="q8" value="A"><label for="q8a">A. Temperature</label></div>
+                        <div class="option"><input type="radio" id="q8b" name="q8" value="B"><label for="q8b">B. The stoichiometry of the equation</label></div>
+                        <div class="option"><input type="radio" id="q8c" name="q8" value="C"><label for="q8c">C. Pressure</label></div>
+                        <div class="option"><input type="radio" id="q8d" name="q8" value="D"><label for="q8d">D. Catalyst used</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q9:</strong> For the reaction: N₂(g) + 3H₂(g) ⇌ 2NH₃(g), if Kc = 0.5 mol⁻² dm⁶, what are the units?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q9a" name="q9" value="A"><label for="q9a">A. No units</label></div>
+                        <div class="option"><input type="radio" id="q9b" name="q9" value="B"><label for="q9b">B. mol dm⁻³</label></div>
+                        <div class="option"><input type="radio" id="q9c" name="q9" value="C"><label for="q9c">C. mol⁻² dm⁶</label></div>
+                        <div class="option"><input type="radio" id="q9d" name="q9" value="D"><label for="q9d">D. mol² dm⁻⁶</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q10:</strong> A catalyst affects equilibrium by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q10a" name="q10" value="A"><label for="q10a">A. Increasing Kc</label></div>
+                        <div class="option"><input type="radio" id="q10b" name="q10" value="B"><label for="q10b">B. Decreasing Kc</label></div>
+                        <div class="option"><input type="radio" id="q10c" name="q10" value="C"><label for="q10c">C. Not changing Kc, but reaching equilibrium faster</label></div>
+                        <div class="option"><input type="radio" id="q10d" name="q10" value="D"><label for="q10d">D. Shifting equilibrium to the right</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 11-20: Le Chatelier's Principle -->
+                <div class="question">
+                    <div class="question-header"><strong>Q11:</strong> Le Chatelier's Principle states that if a system at equilibrium is disturbed:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q11a" name="q11" value="A"><label for="q11a">A. The system will stop reacting</label></div>
+                        <div class="option"><input type="radio" id="q11b" name="q11" value="B"><label for="q11b">B. The system will shift to oppose the change</label></div>
+                        <div class="option"><input type="radio" id="q11c" name="q11" value="C"><label for="q11c">C. Kc will change</label></div>
+                        <div class="option"><input type="radio" id="q11d" name="q11" value="D"><label for="q11d">D. The reaction will reverse completely</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q12:</strong> For an exothermic reaction at equilibrium, increasing temperature will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q12a" name="q12" value="A"><label for="q12a">A. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q12b" name="q12" value="B"><label for="q12b">B. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q12c" name="q12" value="C"><label for="q12c">C. Not affect the equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q12d" name="q12" value="D"><label for="q12d">D. Increase Kc</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q13:</strong> For an endothermic reaction at equilibrium, increasing temperature will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q13a" name="q13" value="A"><label for="q13a">A. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q13b" name="q13" value="B"><label for="q13b">B. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q13c" name="q13" value="C"><label for="q13c">C. Decrease Kc</label></div>
+                        <div class="option"><input type="radio" id="q13d" name="q13" value="D"><label for="q13d">D. Not affect equilibrium</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q14:</strong> For the reaction: N₂(g) + 3H₂(g) ⇌ 2NH₃(g), increasing pressure will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q14a" name="q14" value="A"><label for="q14a">A. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q14b" name="q14" value="B"><label for="q14b">B. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q14c" name="q14" value="C"><label for="q14c">C. Not affect equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q14d" name="q14" value="D"><label for="q14d">D. Stop the reaction</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q15:</strong> For the reaction: H₂(g) + I₂(g) ⇌ 2HI(g), changing pressure will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q15a" name="q15" value="A"><label for="q15a">A. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q15b" name="q15" value="B"><label for="q15b">B. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q15c" name="q15" value="C"><label for="q15c">C. Not affect equilibrium position</label></div>
+                        <div class="option"><input type="radio" id="q15d" name="q15" value="D"><label for="q15d">D. Change Kc</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q16:</strong> Adding more reactant to a system at equilibrium will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q16a" name="q16" value="A"><label for="q16a">A. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q16b" name="q16" value="B"><label for="q16b">B. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q16c" name="q16" value="C"><label for="q16c">C. Not affect equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q16d" name="q16" value="D"><label for="q16d">D. Change Kc</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q17:</strong> Removing a product from a system at equilibrium will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q17a" name="q17" value="A"><label for="q17a">A. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q17b" name="q17" value="B"><label for="q17b">B. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q17c" name="q17" value="C"><label for="q17c">C. Not affect equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q17d" name="q17" value="D"><label for="q17d">D. Increase Kc</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q18:</strong> For the Haber process: N₂(g) + 3H₂(g) ⇌ 2NH₃(g) ΔH = -92 kJ/mol, which conditions favor product formation?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q18a" name="q18" value="A"><label for="q18a">A. High temperature, high pressure</label></div>
+                        <div class="option"><input type="radio" id="q18b" name="q18" value="B"><label for="q18b">B. Low temperature, high pressure</label></div>
+                        <div class="option"><input type="radio" id="q18c" name="q18" value="C"><label for="q18c">C. High temperature, low pressure</label></div>
+                        <div class="option"><input type="radio" id="q18d" name="q18" value="D"><label for="q18d">D. Low temperature, low pressure</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q19:</strong> Adding an inert gas at constant volume to a gaseous equilibrium will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q19a" name="q19" value="A"><label for="q19a">A. Shift equilibrium to the right</label></div>
+                        <div class="option"><input type="radio" id="q19b" name="q19" value="B"><label for="q19b">B. Shift equilibrium to the left</label></div>
+                        <div class="option"><input type="radio" id="q19c" name="q19" value="C"><label for="q19c">C. Not affect equilibrium position</label></div>
+                        <div class="option"><input type="radio" id="q19d" name="q19" value="D"><label for="q19d">D. Change Kc</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q20:</strong> Which factor does NOT affect the position of equilibrium?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q20a" name="q20" value="A"><label for="q20a">A. Temperature</label></div>
+                        <div class="option"><input type="radio" id="q20b" name="q20" value="B"><label for="q20b">B. Concentration</label></div>
+                        <div class="option"><input type="radio" id="q20c" name="q20" value="C"><label for="q20c">C. Pressure (for gases)</label></div>
+                        <div class="option"><input type="radio" id="q20d" name="q20" value="D"><label for="q20d">D. Catalyst</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 21-30: Kp and Partial Pressures -->
+                <div class="question">
+                    <div class="question-header"><strong>Q21:</strong> The equilibrium constant Kp is used for:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q21a" name="q21" value="A"><label for="q21a">A. Reactions in solution only</label></div>
+                        <div class="option"><input type="radio" id="q21b" name="q21" value="B"><label for="q21b">B. Gaseous equilibria only</label></div>
+                        <div class="option"><input type="radio" id="q21c" name="q21" value="C"><label for="q21c">C. Solid-liquid equilibria</label></div>
+                        <div class="option"><input type="radio" id="q21d" name="q21" value="D"><label for="q21d">D. All types of equilibria</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q22:</strong> Partial pressure is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q22a" name="q22" value="A"><label for="q22a">A. The pressure exerted by one gas in a mixture</label></div>
+                        <div class="option"><input type="radio" id="q22b" name="q22" value="B"><label for="q22b">B. Half the total pressure</label></div>
+                        <div class="option"><input type="radio" id="q22c" name="q22" value="C"><label for="q22c">C. The pressure of a pure gas</label></div>
+                        <div class="option"><input type="radio" id="q22d" name="q22" value="D"><label for="q22d">D. Always constant</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q23:</strong> For a gas mixture, partial pressure of gas A is calculated as:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q23a" name="q23" value="A"><label for="q23a">A. (moles of A / total moles) × total pressure</label></div>
+                        <div class="option"><input type="radio" id="q23b" name="q23" value="B"><label for="q23b">B. (moles of A) × total pressure</label></div>
+                        <div class="option"><input type="radio" id="q23c" name="q23" value="C"><label for="q23c">C. Total pressure / moles of A</label></div>
+                        <div class="option"><input type="radio" id="q23d" name="q23" value="D"><label for="q23d">D. Total pressure - moles of A</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q24:</strong> The units of Kp are:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q24a" name="q24" value="A"><label for="q24a">A. Always Pa or atm</label></div>
+                        <div class="option"><input type="radio" id="q24b" name="q24" value="B"><label for="q24b">B. Depend on the stoichiometry</label></div>
+                        <div class="option"><input type="radio" id="q24c" name="q24" value="C"><label for="q24c">C. Always no units</label></div>
+                        <div class="option"><input type="radio" id="q24d" name="q24" value="D"><label for="q24d">D. Always mol dm⁻³</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q25:</strong> For the reaction: N₂O₄(g) ⇌ 2NO₂(g), the expression for Kp is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q25a" name="q25" value="A"><label for="q25a">A. p(NO₂) / p(N₂O₄)</label></div>
+                        <div class="option"><input type="radio" id="q25b" name="q25" value="B"><label for="q25b">B. [p(NO₂)]² / p(N₂O₄)</label></div>
+                        <div class="option"><input type="radio" id="q25c" name="q25" value="C"><label for="q25c">C. p(N₂O₄) / [p(NO₂)]²</label></div>
+                        <div class="option"><input type="radio" id="q25d" name="q25" value="D"><label for="q25d">D. 2p(NO₂) / p(N₂O₄)</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q26:</strong> Mole fraction is defined as:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q26a" name="q26" value="A"><label for="q26a">A. Moles of component / total moles</label></div>
+                        <div class="option"><input type="radio" id="q26b" name="q26" value="B"><label for="q26b">B. Mass of component / total mass</label></div>
+                        <div class="option"><input type="radio" id="q26c" name="q26" value="C"><label for="q26c">C. Volume of component / total volume</label></div>
+                        <div class="option"><input type="radio" id="q26d" name="q26" value="D"><label for="q26d">D. Pressure of component / total pressure</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q27:</strong> For a reaction with Δn = 0 (where Δn = moles of gaseous products - moles of gaseous reactants):</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q27a" name="q27" value="A"><label for="q27a">A. Kp has units of Pa</label></div>
+                        <div class="option"><input type="radio" id="q27b" name="q27" value="B"><label for="q27b">B. Kp has no units</label></div>
+                        <div class="option"><input type="radio" id="q27c" name="q27" value="C"><label for="q27c">C. Kp = Kc always</label></div>
+                        <div class="option"><input type="radio" id="q27d" name="q27" value="D"><label for="q27d">D. Pressure doesn't affect equilibrium</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q28:</strong> The relationship between Kp and Kc is given by: Kp = Kc(RT)^Δn. What is R?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q28a" name="q28" value="A"><label for="q28a">A. Rate constant</label></div>
+                        <div class="option"><input type="radio" id="q28b" name="q28" value="B"><label for="q28b">B. Gas constant (8.314 J K⁻¹ mol⁻¹)</label></div>
+                        <div class="option"><input type="radio" id="q28c" name="q28" value="C"><label for="q28c">C. Rydberg constant</label></div>
+                        <div class="option"><input type="radio" id="q28d" name="q28" value="D"><label for="q28d">D. Reaction quotient</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q29:</strong> If total pressure is 100 kPa and mole fraction of A is 0.4, the partial pressure of A is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q29a" name="q29" value="A"><label for="q29a">A. 40 kPa</label></div>
+                        <div class="option"><input type="radio" id="q29b" name="q29" value="B"><label for="q29b">B. 60 kPa</label></div>
+                        <div class="option"><input type="radio" id="q29c" name="q29" value="C"><label for="q29c">C. 100 kPa</label></div>
+                        <div class="option"><input type="radio" id="q29d" name="q29" value="D"><label for="q29d">D. 250 kPa</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q30:</strong> For the reaction: PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), if Kp = 2.0 atm at a certain temperature, what are the units?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q30a" name="q30" value="A"><label for="q30a">A. No units</label></div>
+                        <div class="option"><input type="radio" id="q30b" name="q30" value="B"><label for="q30b">B. atm</label></div>
+                        <div class="option"><input type="radio" id="q30c" name="q30" value="C"><label for="q30c">C. atm⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q30d" name="q30" value="D"><label for="q30d">D. atm²</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 31-40: Calculations and Applications -->
+                <div class="question">
+                    <div class="question-header"><strong>Q31:</strong> For the reaction: A + B ⇌ C + D, if [A] = [B] = 2 mol dm⁻³ and [C] = [D] = 4 mol dm⁻³ at equilibrium, Kc is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q31a" name="q31" value="A"><label for="q31a">A. 1</label></div>
+                        <div class="option"><input type="radio" id="q31b" name="q31" value="B"><label for="q31b">B. 2</label></div>
+                        <div class="option"><input type="radio" id="q31c" name="q31" value="C"><label for="q31c">C. 4</label></div>
+                        <div class="option"><input type="radio" id="q31d" name="q31" value="D"><label for="q31d">D. 8</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q32:</strong> The reaction quotient Q is used to:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q32a" name="q32" value="A"><label for="q32a">A. Determine if a system is at equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q32b" name="q32" value="B"><label for="q32b">B. Calculate the rate of reaction</label></div>
+                        <div class="option"><input type="radio" id="q32c" name="q32" value="C"><label for="q32c">C. Find activation energy</label></div>
+                        <div class="option"><input type="radio" id="q32d" name="q32" value="D"><label for="q32d">D. Measure temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q33:</strong> If Q < Kc, the reaction will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q33a" name="q33" value="A"><label for="q33a">A. Proceed to the left (reverse direction)</label></div>
+                        <div class="option"><input type="radio" id="q33b" name="q33" value="B"><label for="q33b">B. Proceed to the right (forward direction)</label></div>
+                        <div class="option"><input type="radio" id="q33c" name="q33" value="C"><label for="q33c">C. Be at equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q33d" name="q33" value="D"><label for="q33d">D. Stop completely</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q34:</strong> If Q > Kc, the reaction will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q34a" name="q34" value="A"><label for="q34a">A. Proceed to the right</label></div>
+                        <div class="option"><input type="radio" id="q34b" name="q34" value="B"><label for="q34b">B. Proceed to the left</label></div>
+                        <div class="option"><input type="radio" id="q34c" name="q34" value="C"><label for="q34c">C. Be at equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q34d" name="q34" value="D"><label for="q34d">D. Increase temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q35:</strong> If Q = Kc, the system is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q35a" name="q35" value="A"><label for="q35a">A. Not at equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q35b" name="q35" value="B"><label for="q35b">B. At equilibrium</label></div>
+                        <div class="option"><input type="radio" id="q35c" name="q35" value="C"><label for="q35c">C. Proceeding to the right</label></div>
+                        <div class="option"><input type="radio" id="q35d" name="q35" value="D"><label for="q35d">D. Proceeding to the left</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q36:</strong> In heterogeneous equilibria, the concentrations of:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q36a" name="q36" value="A"><label for="q36a">A. All species are included in Kc</label></div>
+                        <div class="option"><input type="radio" id="q36b" name="q36" value="B"><label for="q36b">B. Pure solids and liquids are not included in Kc</label></div>
+                        <div class="option"><input type="radio" id="q36c" name="q36" value="C"><label for="q36c">C. Only solids are included</label></div>
+                        <div class="option"><input type="radio" id="q36d" name="q36" value="D"><label for="q36d">D. Only gases are excluded</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q37:</strong> For the reaction: CaCO₃(s) ⇌ CaO(s) + CO₂(g), the expression for Kp is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q37a" name="q37" value="A"><label for="q37a">A. p(CaO) × p(CO₂) / p(CaCO₃)</label></div>
+                        <div class="option"><input type="radio" id="q37b" name="q37" value="B"><label for="q37b">B. p(CO₂)</label></div>
+                        <div class="option"><input type="radio" id="q37c" name="q37" value="C"><label for="q37c">C. p(CaO) / p(CaCO₃)</label></div>
+                        <div class="option"><input type="radio" id="q37d" name="q37" value="D"><label for="q37d">D. 1 / p(CO₂)</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q38:</strong> The Contact Process for sulfuric acid production uses: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) ΔH = -197 kJ/mol. To maximize SO₃ yield:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q38a" name="q38" value="A"><label for="q38a">A. Use high temperature and low pressure</label></div>
+                        <div class="option"><input type="radio" id="q38b" name="q38" value="B"><label for="q38b">B. Use low temperature and high pressure</label></div>
+                        <div class="option"><input type="radio" id="q38c" name="q38" value="C"><label for="q38c">C. Use high temperature and high pressure</label></div>
+                        <div class="option"><input type="radio" id="q38d" name="q38" value="D"><label for="q38d">D. Use low temperature and low pressure</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q39:</strong> In the Haber process, a compromise temperature of 450°C is used because:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q39a" name="q39" value="A"><label for="q39a">A. It gives maximum yield</label></div>
+                        <div class="option"><input type="radio" id="q39b" name="q39" value="B"><label for="q39b">B. It balances reasonable yield with acceptable rate</label></div>
+                        <div class="option"><input type="radio" id="q39c" name="q39" value="C"><label for="q39c">C. It is the cheapest temperature</label></div>
+                        <div class="option"><input type="radio" id="q39d" name="q39" value="D"><label for="q39d">D. The catalyst only works at this temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q40:</strong> For an exothermic reaction, increasing temperature:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q40a" name="q40" value="A"><label for="q40a">A. Increases Kc</label></div>
+                        <div class="option"><input type="radio" id="q40b" name="q40" value="B"><label for="q40b">B. Decreases Kc</label></div>
+                        <div class="option"><input type="radio" id="q40c" name="q40" value="C"><label for="q40c">C. Does not change Kc</label></div>
+                        <div class="option"><input type="radio" id="q40d" name="q40" value="D"><label for="q40d">D. Makes Kc = 1</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 41-50: Advanced Concepts -->
+                <div class="question">
+                    <div class="question-header"><strong>Q41:</strong> The degree of dissociation (α) is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q41a" name="q41" value="A"><label for="q41a">A. The fraction of molecules that dissociate</label></div>
+                        <div class="option"><input type="radio" id="q41b" name="q41" value="B"><label for="q41b">B. The rate of dissociation</label></div>
+                        <div class="option"><input type="radio" id="q41c" name="q41" value="C"><label for="q41c">C. The equilibrium constant</label></div>
+                        <div class="option"><input type="radio" id="q41d" name="q41" value="D"><label for="q41d">D. The activation energy</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q42:</strong> For the dissociation: N₂O₄(g) ⇌ 2NO₂(g), if α = 0.5, what percentage has dissociated?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q42a" name="q42" value="A"><label for="q42a">A. 25%</label></div>
+                        <div class="option"><input type="radio" id="q42b" name="q42" value="B"><label for="q42b">B. 50%</label></div>
+                        <div class="option"><input type="radio" id="q42c" name="q42" value="C"><label for="q42c">C. 75%</label></div>
+                        <div class="option"><input type="radio" id="q42d" name="q42" value="D"><label for="q42d">D. 100%</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q43:</strong> The van't Hoff equation relates:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q43a" name="q43" value="A"><label for="q43a">A. Kc to temperature</label></div>
+                        <div class="option"><input type="radio" id="q43b" name="q43" value="B"><label for="q43b">B. Rate to concentration</label></div>
+                        <div class="option"><input type="radio" id="q43c" name="q43" value="C"><label for="q43c">C. Pressure to volume</label></div>
+                        <div class="option"><input type="radio" id="q43d" name="q43" value="D"><label for="q43d">D. Enthalpy to entropy</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q44:</strong> For a reversible reaction, at equilibrium:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q44a" name="q44" value="A"><label for="q44a">A. ΔG = 0</label></div>
+                        <div class="option"><input type="radio" id="q44b" name="q44" value="B"><label for="q44b">B. ΔG > 0</label></div>
+                        <div class="option"><input type="radio" id="q44c" name="q44" value="C"><label for="q44c">C. ΔG < 0</label></div>
+                        <div class="option"><input type="radio" id="q44d" name="q44" value="D"><label for="q44d">D. ΔG = ΔH</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q45:</strong> The relationship between ΔG° and K is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q45a" name="q45" value="A"><label for="q45a">A. ΔG° = RT ln K</label></div>
+                        <div class="option"><input type="radio" id="q45b" name="q45" value="B"><label for="q45b">B. ΔG° = -RT ln K</label></div>
+                        <div class="option"><input type="radio" id="q45c" name="q45" value="C"><label for="q45c">C. ΔG° = RT / ln K</label></div>
+                        <div class="option"><input type="radio" id="q45d" name="q45" value="D"><label for="q45d">D. ΔG° = K / RT</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q46:</strong> If ΔG° < 0, then:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q46a" name="q46" value="A"><label for="q46a">A. K < 1</label></div>
+                        <div class="option"><input type="radio" id="q46b" name="q46" value="B"><label for="q46b">B. K > 1</label></div>
+                        <div class="option"><input type="radio" id="q46c" name="q46" value="C"><label for="q46c">C. K = 1</label></div>
+                        <div class="option"><input type="radio" id="q46d" name="q46" value="D"><label for="q46d">D. K = 0</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q47:</strong> Solubility product (Ksp) is a special case of Kc for:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q47a" name="q47" value="A"><label for="q47a">A. Gaseous equilibria</label></div>
+                        <div class="option"><input type="radio" id="q47b" name="q47" value="B"><label for="q47b">B. Saturated solutions of sparingly soluble salts</label></div>
+                        <div class="option"><input type="radio" id="q47c" name="q47" value="C"><label for="q47c">C. Acid-base reactions</label></div>
+                        <div class="option"><input type="radio" id="q47d" name="q47" value="D"><label for="q47d">D. Redox reactions</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q48:</strong> For AgCl(s) ⇌ Ag⁺(aq) + Cl⁻(aq), the expression for Ksp is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q48a" name="q48" value="A"><label for="q48a">A. [Ag⁺][Cl⁻] / [AgCl]</label></div>
+                        <div class="option"><input type="radio" id="q48b" name="q48" value="B"><label for="q48b">B. [Ag⁺][Cl⁻]</label></div>
+                        <div class="option"><input type="radio" id="q48c" name="q48" value="C"><label for="q48c">C. [AgCl] / [Ag⁺][Cl⁻]</label></div>
+                        <div class="option"><input type="radio" id="q48d" name="q48" value="D"><label for="q48d">D. [Ag⁺] + [Cl⁻]</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q49:</strong> The common ion effect:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q49a" name="q49" value="A"><label for="q49a">A. Increases solubility</label></div>
+                        <div class="option"><input type="radio" id="q49b" name="q49" value="B"><label for="q49b">B. Decreases solubility</label></div>
+                        <div class="option"><input type="radio" id="q49c" name="q49" value="C"><label for="q49c">C. Does not affect solubility</label></div>
+                        <div class="option"><input type="radio" id="q49d" name="q49" value="D"><label for="q49d">D. Changes Ksp</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q50:</strong> In industrial processes, Le Chatelier's Principle is used to:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q50a" name="q50" value="A"><label for="q50a">A. Maximize product yield by choosing optimal conditions</label></div>
+                        <div class="option"><input type="radio" id="q50b" name="q50" value="B"><label for="q50b">B. Minimize energy costs only</label></div>
+                        <div class="option"><input type="radio" id="q50c" name="q50" value="C"><label for="q50c">C. Increase reaction rate only</label></div>
+                        <div class="option"><input type="radio" id="q50d" name="q50" value="D"><label for="q50d">D. Change the equilibrium constant</label></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Quiz</button>
+            </form>
+            
+            <div class="results" id="results">
+                <div class="score-display">
+                    <h2>Your Results</h2>
+                    <div class="score" id="scoreDisplay"></div>
+                    <div class="percentage" id="percentageDisplay"></div>
+                    <div class="grade" id="gradeDisplay"></div>
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <button class="retry-btn" onclick="location.reload()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const correctAnswers = {
+            q1:'B', q2:'B', q3:'B', q4:'B', q5:'B', q6:'B', q7:'B', q8:'B', q9:'C', q10:'C',
+            q11:'B', q12:'B', q13:'B', q14:'B', q15:'C', q16:'B', q17:'B', q18:'B', q19:'C', q20:'D',
+            q21:'B', q22:'A', q23:'A', q24:'B', q25:'B', q26:'A', q27:'B', q28:'B', q29:'A', q30:'B',
+            q31:'C', q32:'A', q33:'B', q34:'B', q35:'B', q36:'B', q37:'B', q38:'B', q39:'B', q40:'B',
+            q41:'A', q42:'B', q43:'A', q44:'A', q45:'B', q46:'B', q47:'B', q48:'B', q49:'B', q50:'A'
+        };
+        
+        const explanations = {
+            q1: 'Dynamic equilibrium: forward and reverse reactions occur at equal rates, concentrations remain constant.',
+            q2: 'A closed system is necessary so reactants and products cannot escape.',
+            q3: 'At equilibrium, concentrations remain constant (but not necessarily equal).',
+            q4: 'Kc depends only on temperature for a given reaction.',
+            q5: 'Kc = [products]^coefficients / [reactants]^coefficients',
+            q6: 'Large Kc means products are favored (equilibrium lies to the right).',
+            q7: 'Small Kc means reactants are favored (equilibrium lies to the left).',
+            q8: 'Units of Kc depend on the stoichiometry (sum of powers in expression).',
+            q9: 'For N₂ + 3H₂ ⇌ 2NH₃: Kc = [NH₃]² / [N₂][H₂]³, units = (mol dm⁻³)² / (mol dm⁻³)(mol dm⁻³)³ = mol⁻² dm⁶',
+            q10: 'Catalyst speeds up both forward and reverse reactions equally, doesn\'t change Kc or position.',
+            q11: 'Le Chatelier: system shifts to oppose/counteract the change.',
+            q12: 'Exothermic: heat is a product. Increasing T shifts left (opposes heat addition).',
+            q13: 'Endothermic: heat is a reactant. Increasing T shifts right (favors heat absorption).',
+            q14: '4 moles gas → 2 moles gas. Increasing pressure shifts to fewer moles (right).',
+            q15: '2 moles gas → 2 moles gas. No change in moles, pressure has no effect.',
+            q16: 'Adding reactant shifts equilibrium right to consume the added reactant.',
+            q17: 'Removing product shifts equilibrium right to replace the removed product.',
+            q18: 'Exothermic + fewer moles on right: low T (favors products), high P (favors fewer moles).',
+            q19: 'Inert gas at constant volume doesn\'t change partial pressures of reactants/products.',
+            q20: 'Catalyst affects rate but not equilibrium position or Kc.',
+            q21: 'Kp is used for gaseous equilibria (uses partial pressures).',
+            q22: 'Partial pressure is the pressure one gas would exert if alone in the container.',
+            q23: 'Partial pressure = mole fraction × total pressure.',
+            q24: 'Units of Kp depend on stoichiometry (like Kc).',
+            q25: 'Kp = [p(NO₂)]² / p(N₂O₄)',
+            q26: 'Mole fraction = moles of component / total moles.',
+            q27: 'When Δn = 0, pressure terms cancel, Kp has no units.',
+            q28: 'R is the gas constant (8.314 J K⁻¹ mol⁻¹).',
+            q29: 'Partial pressure = 0.4 × 100 = 40 kPa.',
+            q30: '1 mole → 2 moles (Δn = +1), so Kp has units of atm.',
+            q31: 'Kc = (4×4)/(2×2) = 16/4 = 4',
+            q32: 'Q is calculated like K but with current (non-equilibrium) concentrations.',
+            q33: 'Q < Kc means not enough products, reaction proceeds right.',
+            q34: 'Q > Kc means too many products, reaction proceeds left.',
+            q35: 'Q = Kc means system is at equilibrium.',
+            q36: 'Pure solids and liquids have constant concentration, excluded from Kc.',
+            q37: 'Only CO₂ is gaseous, so Kp = p(CO₂).',
+            q38: 'Exothermic + 3 moles → 2 moles: low T, high P favor products.',
+            q39: 'Compromise: lower T gives better yield but slower rate; 450°C balances both.',
+            q40: 'Exothermic: increasing T shifts left, decreases Kc.',
+            q41: 'Degree of dissociation α = fraction that dissociates.',
+            q42: 'α = 0.5 means 50% dissociated.',
+            q43: 'van\'t Hoff equation: ln(K₂/K₁) = -ΔH°/R(1/T₂ - 1/T₁)',
+            q44: 'At equilibrium, ΔG = 0 (no net change in free energy).',
+            q45: 'ΔG° = -RT ln K (standard free energy change).',
+            q46: 'ΔG° < 0 means spontaneous, K > 1 (products favored).',
+            q47: 'Ksp applies to saturated solutions of sparingly soluble salts.',
+            q48: 'Ksp = [Ag⁺][Cl⁻] (solid AgCl excluded).',
+            q49: 'Common ion shifts equilibrium left, decreasing solubility.',
+            q50: 'Le Chatelier helps optimize conditions for maximum yield in industry.'
+        };
+        
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            let feedbackHTML = '<h3>Detailed Answer Review:</h3>';
+            
+            for (let question in correctAnswers) {
+                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                const isCorrect = userAnswer && userAnswer.value === correctAnswers[question];
+                
+                if (isCorrect) {
+                    score++;
+                    feedbackHTML += `<div class="answer-review correct"><div class="question-num">✓ Q${question.substring(1)}</div><div>Your answer: ${userAnswer.value} - Correct!</div><div class="explanation">${explanations[question]}</div></div>`;
+                } else {
+                    feedbackHTML += `<div class="answer-review incorrect"><div class="question-num">✗ Q${question.substring(1)}</div><div>Your answer: ${userAnswer ? userAnswer.value : 'Not answered'}</div><div>Correct: ${correctAnswers[question]}</div><div class="explanation">${explanations[question]}</div></div>`;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let grade = percentage >= 90 ? 'A* - Excellent! 🌟' : percentage >= 80 ? 'A - Very Good! 👏' : percentage >= 70 ? 'B - Good! 👍' : percentage >= 60 ? 'C - Pass ✓' : percentage >= 50 ? 'D - Pass ✓' : 'U - Keep Practicing! 💪';
+            
+            document.getElementById('scoreDisplay').textContent = `${score} / ${totalQuestions}`;
+            document.getElementById('percentageDisplay').textContent = `${percentage}%`;
+            document.getElementById('gradeDisplay').textContent = 'Grade: ' + grade;
+            document.getElementById('feedback').innerHTML = feedbackHTML;
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
