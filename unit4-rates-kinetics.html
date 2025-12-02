@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Quiz - Rates and Kinetics | IAL Chemistry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .quiz-info {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .quiz-info p {
+            margin: 5px 0;
+            color: #495057;
+        }
+        
+        .nav-links {
+            background: #e9ecef;
+            padding: 15px 30px;
+            text-align: center;
+        }
+        
+        .nav-links a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+        
+        .quiz-content {
+            padding: 30px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .question {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            margin-top: 15px;
+        }
+        
+        .option {
+            display: block;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+            transform: translateX(5px);
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .option label {
+            cursor: pointer;
+            font-size: 15px;
+            color: #4a5568;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .results {
+            display: none;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .score-display h2 {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .score-display .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .score-display .percentage {
+            font-size: 24px;
+            color: #718096;
+        }
+        
+        .grade {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .feedback {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .feedback h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px 0;
+        }
+        
+        .answer-review {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .answer-review.correct {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .answer-review.incorrect {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .answer-review .question-num {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .answer-review .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .retry-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .retry-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IAL Chemistry Unit 4 Quiz</h1>
+            <p>Rates and Kinetics - 50 MCQs</p>
+        </div>
+        
+        <div class="quiz-info">
+            <p><strong>Subject:</strong> Pearson Edexcel IAL Chemistry - Unit 4</p>
+            <p><strong>Topic:</strong> Rates, Rate Equations, and Reaction Mechanisms</p>
+            <p><strong>Questions:</strong> 50 Multiple Choice Questions</p>
+            <p><strong>Time:</strong> Recommended 60 minutes</p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">Unit 5: Redox</a>
+            <a href="unit4-equilibria.html">Equilibria</a>
+            <a href="unit4-acids-bases.html">Acids & Bases</a>
+            <a href="unit4-organic.html">Organic Chemistry</a>
+        </div>
+        
+        <div class="quiz-content">
+            <form id="quizForm">
+                
+                <!-- Questions 1-10: Rate of Reaction Basics -->
+                <div class="question">
+                    <div class="question-header"><strong>Q1:</strong> The rate of a chemical reaction is defined as:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q1a" name="q1" value="A"><label for="q1a">A. The change in concentration per unit time</label></div>
+                        <div class="option"><input type="radio" id="q1b" name="q1" value="B"><label for="q1b">B. The time taken for a reaction to complete</label></div>
+                        <div class="option"><input type="radio" id="q1c" name="q1" value="C"><label for="q1c">C. The activation energy of the reaction</label></div>
+                        <div class="option"><input type="radio" id="q1d" name="q1" value="D"><label for="q1d">D. The equilibrium constant</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q2:</strong> Which factor does NOT affect the rate of reaction?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q2a" name="q2" value="A"><label for="q2a">A. Temperature</label></div>
+                        <div class="option"><input type="radio" id="q2b" name="q2" value="B"><label for="q2b">B. Concentration</label></div>
+                        <div class="option"><input type="radio" id="q2c" name="q2" value="C"><label for="q2c">C. ΔH of the reaction</label></div>
+                        <div class="option"><input type="radio" id="q2d" name="q2" value="D"><label for="q2d">D. Surface area</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q3:</strong> The units of rate of reaction when concentration is in mol dm⁻³ and time in seconds are:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q3a" name="q3" value="A"><label for="q3a">A. mol dm⁻³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q3b" name="q3" value="B"><label for="q3b">B. s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q3c" name="q3" value="C"><label for="q3c">C. mol dm⁻³</label></div>
+                        <div class="option"><input type="radio" id="q3d" name="q3" value="D"><label for="q3d">D. dm³ mol⁻¹ s⁻¹</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q4:</strong> Collision theory states that for a reaction to occur, particles must collide with:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q4a" name="q4" value="A"><label for="q4a">A. Sufficient energy only</label></div>
+                        <div class="option"><input type="radio" id="q4b" name="q4" value="B"><label for="q4b">B. Correct orientation only</label></div>
+                        <div class="option"><input type="radio" id="q4c" name="q4" value="C"><label for="q4c">C. Sufficient energy and correct orientation</label></div>
+                        <div class="option"><input type="radio" id="q4d" name="q4" value="D"><label for="q4d">D. Maximum kinetic energy</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q5:</strong> Activation energy is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q5a" name="q5" value="A"><label for="q5a">A. The energy released in a reaction</label></div>
+                        <div class="option"><input type="radio" id="q5b" name="q5" value="B"><label for="q5b">B. The minimum energy required for a reaction to occur</label></div>
+                        <div class="option"><input type="radio" id="q5c" name="q5" value="C"><label for="q5c">C. The energy of the products</label></div>
+                        <div class="option"><input type="radio" id="q5d" name="q5" value="D"><label for="q5d">D. The enthalpy change of reaction</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q6:</strong> A catalyst increases the rate of reaction by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q6a" name="q6" value="A"><label for="q6a">A. Increasing the activation energy</label></div>
+                        <div class="option"><input type="radio" id="q6b" name="q6" value="B"><label for="q6b">B. Decreasing the activation energy</label></div>
+                        <div class="option"><input type="radio" id="q6c" name="q6" value="C"><label for="q6c">C. Increasing the temperature</label></div>
+                        <div class="option"><input type="radio" id="q6d" name="q6" value="D"><label for="q6d">D. Changing the equilibrium position</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q7:</strong> On a Maxwell-Boltzmann distribution curve, increasing temperature:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q7a" name="q7" value="A"><label for="q7a">A. Shifts the peak to the right and lowers it</label></div>
+                        <div class="option"><input type="radio" id="q7b" name="q7" value="B"><label for="q7b">B. Shifts the peak to the left and raises it</label></div>
+                        <div class="option"><input type="radio" id="q7c" name="q7" value="C"><label for="q7c">C. Does not change the curve</label></div>
+                        <div class="option"><input type="radio" id="q7d" name="q7" value="D"><label for="q7d">D. Only changes the area under the curve</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q8:</strong> Which statement about catalysts is correct?</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q8a" name="q8" value="A"><label for="q8a">A. They are chemically changed at the end of the reaction</label></div>
+                        <div class="option"><input type="radio" id="q8b" name="q8" value="B"><label for="q8b">B. They increase the yield of products</label></div>
+                        <div class="option"><input type="radio" id="q8c" name="q8" value="C"><label for="q8c">C. They provide an alternative reaction pathway</label></div>
+                        <div class="option"><input type="radio" id="q8d" name="q8" value="D"><label for="q8d">D. They change the enthalpy change of the reaction</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q9:</strong> The rate of reaction generally increases with temperature because:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q9a" name="q9" value="A"><label for="q9a">A. Particles move faster and collide more frequently with greater energy</label></div>
+                        <div class="option"><input type="radio" id="q9b" name="q9" value="B"><label for="q9b">B. The activation energy decreases</label></div>
+                        <div class="option"><input type="radio" id="q9c" name="q9" value="C"><label for="q9c">C. The concentration increases</label></div>
+                        <div class="option"><input type="radio" id="q9d" name="q9" value="D"><label for="q9d">D. The equilibrium shifts to the right</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q10:</strong> For the reaction: 2A + B → C, if the concentration of A is doubled while B remains constant, the rate quadruples. The order with respect to A is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q10a" name="q10" value="A"><label for="q10a">A. Zero order</label></div>
+                        <div class="option"><input type="radio" id="q10b" name="q10" value="B"><label for="q10b">B. First order</label></div>
+                        <div class="option"><input type="radio" id="q10c" name="q10" value="C"><label for="q10c">C. Second order</label></div>
+                        <div class="option"><input type="radio" id="q10d" name="q10" value="D"><label for="q10d">D. Third order</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 11-20: Rate Equations -->
+                <div class="question">
+                    <div class="question-header"><strong>Q11:</strong> For a reaction with rate equation: rate = k[A]²[B], the overall order is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q11a" name="q11" value="A"><label for="q11a">A. 1</label></div>
+                        <div class="option"><input type="radio" id="q11b" name="q11" value="B"><label for="q11b">B. 2</label></div>
+                        <div class="option"><input type="radio" id="q11c" name="q11" value="C"><label for="q11c">C. 3</label></div>
+                        <div class="option"><input type="radio" id="q11d" name="q11" value="D"><label for="q11d">D. 4</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q12:</strong> The units of the rate constant k for a first order reaction are:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q12a" name="q12" value="A"><label for="q12a">A. mol dm⁻³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q12b" name="q12" value="B"><label for="q12b">B. s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q12c" name="q12" value="C"><label for="q12c">C. mol⁻¹ dm³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q12d" name="q12" value="D"><label for="q12d">D. mol⁻² dm⁶ s⁻¹</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q13:</strong> For a zero order reaction, the rate is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q13a" name="q13" value="A"><label for="q13a">A. Proportional to concentration</label></div>
+                        <div class="option"><input type="radio" id="q13b" name="q13" value="B"><label for="q13b">B. Independent of concentration</label></div>
+                        <div class="option"><input type="radio" id="q13c" name="q13" value="C"><label for="q13c">C. Proportional to concentration squared</label></div>
+                        <div class="option"><input type="radio" id="q13d" name="q13" value="D"><label for="q13d">D. Inversely proportional to concentration</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q14:</strong> The half-life of a first order reaction is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q14a" name="q14" value="A"><label for="q14a">A. Dependent on initial concentration</label></div>
+                        <div class="option"><input type="radio" id="q14b" name="q14" value="B"><label for="q14b">B. Independent of initial concentration</label></div>
+                        <div class="option"><input type="radio" id="q14c" name="q14" value="C"><label for="q14c">C. Proportional to initial concentration</label></div>
+                        <div class="option"><input type="radio" id="q14d" name="q14" value="D"><label for="q14d">D. Inversely proportional to rate constant</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q15:</strong> The rate constant k increases with temperature because:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q15a" name="q15" value="A"><label for="q15a">A. More particles have energy ≥ Ea</label></div>
+                        <div class="option"><input type="radio" id="q15b" name="q15" value="B"><label for="q15b">B. Concentration increases</label></div>
+                        <div class="option"><input type="radio" id="q15c" name="q15" value="C"><label for="q15c">C. Activation energy decreases</label></div>
+                        <div class="option"><input type="radio" id="q15d" name="q15" value="D"><label for="q15d">D. Pressure increases</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q16:</strong> For rate = k[A][B]², if [A] is tripled and [B] is doubled, the rate increases by a factor of:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q16a" name="q16" value="A"><label for="q16a">A. 6</label></div>
+                        <div class="option"><input type="radio" id="q16b" name="q16" value="B"><label for="q16b">B. 12</label></div>
+                        <div class="option"><input type="radio" id="q16c" name="q16" value="C"><label for="q16c">C. 18</label></div>
+                        <div class="option"><input type="radio" id="q16d" name="q16" value="D"><label for="q16d">D. 24</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q17:</strong> The units of k for a second order reaction are:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q17a" name="q17" value="A"><label for="q17a">A. s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q17b" name="q17" value="B"><label for="q17b">B. mol dm⁻³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q17c" name="q17" value="C"><label for="q17c">C. mol⁻¹ dm³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q17d" name="q17" value="D"><label for="q17d">D. mol⁻² dm⁶ s⁻¹</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q18:</strong> The order of reaction with respect to a reactant can be determined by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q18a" name="q18" value="A"><label for="q18a">A. Looking at the stoichiometric equation</label></div>
+                        <div class="option"><input type="radio" id="q18b" name="q18" value="B"><label for="q18b">B. Experimental data only</label></div>
+                        <div class="option"><input type="radio" id="q18c" name="q18" value="C"><label for="q18c">C. The molecular formula</label></div>
+                        <div class="option"><input type="radio" id="q18d" name="q18" value="D"><label for="q18d">D. The activation energy</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q19:</strong> A reaction is zero order with respect to reactant X. Doubling [X] will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q19a" name="q19" value="A"><label for="q19a">A. Double the rate</label></div>
+                        <div class="option"><input type="radio" id="q19b" name="q19" value="B"><label for="q19b">B. Quadruple the rate</label></div>
+                        <div class="option"><input type="radio" id="q19c" name="q19" value="C"><label for="q19c">C. Have no effect on the rate</label></div>
+                        <div class="option"><input type="radio" id="q19d" name="q19" value="D"><label for="q19d">D. Halve the rate</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q20:</strong> The Arrhenius equation relates:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q20a" name="q20" value="A"><label for="q20a">A. Rate constant to temperature and activation energy</label></div>
+                        <div class="option"><input type="radio" id="q20b" name="q20" value="B"><label for="q20b">B. Rate to concentration</label></div>
+                        <div class="option"><input type="radio" id="q20c" name="q20" value="C"><label for="q20c">C. Enthalpy to entropy</label></div>
+                        <div class="option"><input type="radio" id="q20d" name="q20" value="D"><label for="q20d">D. Pressure to volume</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 21-30: Reaction Mechanisms -->
+                <div class="question">
+                    <div class="question-header"><strong>Q21:</strong> The rate-determining step in a reaction mechanism is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q21a" name="q21" value="A"><label for="q21a">A. The fastest step</label></div>
+                        <div class="option"><input type="radio" id="q21b" name="q21" value="B"><label for="q21b">B. The slowest step</label></div>
+                        <div class="option"><input type="radio" id="q21c" name="q21" value="C"><label for="q21c">C. The first step</label></div>
+                        <div class="option"><input type="radio" id="q21d" name="q21" value="D"><label for="q21d">D. The last step</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q22:</strong> An intermediate in a reaction mechanism:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q22a" name="q22" value="A"><label for="q22a">A. Appears in the overall equation</label></div>
+                        <div class="option"><input type="radio" id="q22b" name="q22" value="B"><label for="q22b">B. Is formed and then consumed</label></div>
+                        <div class="option"><input type="radio" id="q22c" name="q22" value="C"><label for="q22c">C. Is a catalyst</label></div>
+                        <div class="option"><input type="radio" id="q22d" name="q22" value="D"><label for="q22d">D. Lowers activation energy</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q23:</strong> The rate equation can be deduced from:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q23a" name="q23" value="A"><label for="q23a">A. The overall balanced equation</label></div>
+                        <div class="option"><input type="radio" id="q23b" name="q23" value="B"><label for="q23b">B. The rate-determining step</label></div>
+                        <div class="option"><input type="radio" id="q23c" name="q23" value="C"><label for="q23c">C. The products formed</label></div>
+                        <div class="option"><input type="radio" id="q23d" name="q23" value="D"><label for="q23d">D. The temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q24:</strong> A catalyst appears in a reaction mechanism as:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q24a" name="q24" value="A"><label for="q24a">A. A reactant only</label></div>
+                        <div class="option"><input type="radio" id="q24b" name="q24" value="B"><label for="q24b">B. A product only</label></div>
+                        <div class="option"><input type="radio" id="q24c" name="q24" value="C"><label for="q24c">C. A reactant in one step and product in another</label></div>
+                        <div class="option"><input type="radio" id="q24d" name="q24" value="D"><label for="q24d">D. An intermediate</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q25:</strong> For a reaction: A + B → C with rate = k[A]², the mechanism likely involves:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q25a" name="q25" value="A"><label for="q25a">A. Two molecules of A in the rate-determining step</label></div>
+                        <div class="option"><input type="radio" id="q25b" name="q25" value="B"><label for="q25b">B. One molecule each of A and B</label></div>
+                        <div class="option"><input type="radio" id="q25c" name="q25" value="C"><label for="q25c">C. B as a catalyst</label></div>
+                        <div class="option"><input type="radio" id="q25d" name="q25" value="D"><label for="q25d">D. A single step mechanism</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q26:</strong> The molecularity of a reaction step is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q26a" name="q26" value="A"><label for="q26a">A. The same as the overall order</label></div>
+                        <div class="option"><input type="radio" id="q26b" name="q26" value="B"><label for="q26b">B. The number of particles involved in that step</label></div>
+                        <div class="option"><input type="radio" id="q26c" name="q26" value="C"><label for="q26c">C. Always equal to 2</label></div>
+                        <div class="option"><input type="radio" id="q26d" name="q26" value="D"><label for="q26d">D. Determined experimentally</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q27:</strong> A unimolecular step involves:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q27a" name="q27" value="A"><label for="q27a">A. One molecule decomposing or rearranging</label></div>
+                        <div class="option"><input type="radio" id="q27b" name="q27" value="B"><label for="q27b">B. Two molecules colliding</label></div>
+                        <div class="option"><input type="radio" id="q27c" name="q27" value="C"><label for="q27c">C. Three molecules colliding</label></div>
+                        <div class="option"><input type="radio" id="q27d" name="q27" value="D"><label for="q27d">D. A catalyst being used</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q28:</strong> If the rate equation is rate = k[A][B] and the overall equation is A + 2B → C, this suggests:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q28a" name="q28" value="A"><label for="q28a">A. A single-step mechanism</label></div>
+                        <div class="option"><input type="radio" id="q28b" name="q28" value="B"><label for="q28b">B. A multi-step mechanism</label></div>
+                        <div class="option"><input type="radio" id="q28c" name="q28" value="C"><label for="q28c">C. B is a catalyst</label></div>
+                        <div class="option"><input type="radio" id="q28d" name="q28" value="D"><label for="q28d">D. The reaction is zero order</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q29:</strong> Pre-equilibrium in a reaction mechanism means:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q29a" name="q29" value="A"><label for="q29a">A. The first step is at equilibrium before the slow step</label></div>
+                        <div class="option"><input type="radio" id="q29b" name="q29" value="B"><label for="q29b">B. All steps are equally fast</label></div>
+                        <div class="option"><input type="radio" id="q29c" name="q29" value="C"><label for="q29c">C. The reaction is reversible</label></div>
+                        <div class="option"><input type="radio" id="q29d" name="q29" value="D"><label for="q29d">D. No intermediates are formed</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q30:</strong> Termolecular steps are rare because:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q30a" name="q30" value="A"><label for="q30a">A. Three particles colliding simultaneously with correct orientation is unlikely</label></div>
+                        <div class="option"><input type="radio" id="q30b" name="q30" value="B"><label for="q30b">B. They have high activation energy</label></div>
+                        <div class="option"><input type="radio" id="q30c" name="q30" value="C"><label for="q30c">C. They are always endothermic</label></div>
+                        <div class="option"><input type="radio" id="q30d" name="q30" value="D"><label for="q30d">D. Catalysts prevent them</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 31-40: Experimental Methods -->
+                <div class="question">
+                    <div class="question-header"><strong>Q31:</strong> The initial rate method involves:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q31a" name="q31" value="A"><label for="q31a">A. Measuring rate at the end of reaction</label></div>
+                        <div class="option"><input type="radio" id="q31b" name="q31" value="B"><label for="q31b">B. Measuring rate at the start with different initial concentrations</label></div>
+                        <div class="option"><input type="radio" id="q31c" name="q31" value="C"><label for="q31c">C. Measuring equilibrium concentrations</label></div>
+                        <div class="option"><input type="radio" id="q31d" name="q31" value="D"><label for="q31d">D. Using a catalyst</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q32:</strong> A concentration-time graph for a first order reaction is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q32a" name="q32" value="A"><label for="q32a">A. A straight line</label></div>
+                        <div class="option"><input type="radio" id="q32b" name="q32" value="B"><label for="q32b">B. An exponential decay curve</label></div>
+                        <div class="option"><input type="radio" id="q32c" name="q32" value="C"><label for="q32c">C. A parabola</label></div>
+                        <div class="option"><input type="radio" id="q32d" name="q32" value="D"><label for="q32d">D. A horizontal line</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q33:</strong> For a zero order reaction, a plot of [A] vs time gives:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q33a" name="q33" value="A"><label for="q33a">A. A curve</label></div>
+                        <div class="option"><input type="radio" id="q33b" name="q33" value="B"><label for="q33b">B. A straight line with negative slope</label></div>
+                        <div class="option"><input type="radio" id="q33c" name="q33" value="C"><label for="q33c">C. A straight line with positive slope</label></div>
+                        <div class="option"><input type="radio" id="q33d" name="q33" value="D"><label for="q33d">D. A horizontal line</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q34:</strong> The clock reaction method measures:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q34a" name="q34" value="A"><label for="q34a">A. Time for a fixed amount of product to form</label></div>
+                        <div class="option"><input type="radio" id="q34b" name="q34" value="B"><label for="q34b">B. Equilibrium constant</label></div>
+                        <div class="option"><input type="radio" id="q34c" name="q34" value="C"><label for="q34c">C. Activation energy directly</label></div>
+                        <div class="option"><input type="radio" id="q34d" name="q34" value="D"><label for="q34d">D. Final concentration</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q35:</strong> Continuous monitoring of a reaction can be done by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q35a" name="q35" value="A"><label for="q35a">A. Measuring gas volume produced over time</label></div>
+                        <div class="option"><input type="radio" id="q35b" name="q35" value="B"><label for="q35b">B. Taking one measurement at the end</label></div>
+                        <div class="option"><input type="radio" id="q35c" name="q35" value="C"><label for="q35c">C. Using only initial concentrations</label></div>
+                        <div class="option"><input type="radio" id="q35d" name="q35" value="D"><label for="q35d">D. Calculating theoretical yield</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q36:</strong> Quenching a reaction sample means:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q36a" name="q36" value="A"><label for="q36a">A. Heating it rapidly</label></div>
+                        <div class="option"><input type="radio" id="q36b" name="q36" value="B"><label for="q36b">B. Stopping the reaction suddenly</label></div>
+                        <div class="option"><input type="radio" id="q36c" name="q36" value="C"><label for="q36c">C. Adding more reactant</label></div>
+                        <div class="option"><input type="radio" id="q36d" name="q36" value="D"><label for="q36d">D. Increasing pressure</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q37:</strong> Colorimetry can be used to follow reaction rate when:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q37a" name="q37" value="A"><label for="q37a">A. A colored species is formed or consumed</label></div>
+                        <div class="option"><input type="radio" id="q37b" name="q37" value="B"><label for="q37b">B. Gas is produced</label></div>
+                        <div class="option"><input type="radio" id="q37c" name="q37" value="C"><label for="q37c">C. Temperature changes</label></div>
+                        <div class="option"><input type="radio" id="q37d" name="q37" value="D"><label for="q37d">D. pH remains constant</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q38:</strong> To determine activation energy, you plot:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q38a" name="q38" value="A"><label for="q38a">A. ln k vs 1/T</label></div>
+                        <div class="option"><input type="radio" id="q38b" name="q38" value="B"><label for="q38b">B. k vs T</label></div>
+                        <div class="option"><input type="radio" id="q38c" name="q38" value="C"><label for="q38c">C. Rate vs concentration</label></div>
+                        <div class="option"><input type="radio" id="q38d" name="q38" value="D"><label for="q38d">D. [A] vs time</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q39:</strong> The gradient of a ln k vs 1/T plot equals:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q39a" name="q39" value="A"><label for="q39a">A. -Ea/R</label></div>
+                        <div class="option"><input type="radio" id="q39b" name="q39" value="B"><label for="q39b">B. Ea/R</label></div>
+                        <div class="option"><input type="radio" id="q39c" name="q39" value="C"><label for="q39c">C. ln A</label></div>
+                        <div class="option"><input type="radio" id="q39d" name="q39" value="D"><label for="q39d">D. R/Ea</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q40:</strong> The iodine clock reaction uses:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q40a" name="q40" value="A"><label for="q40a">A. A sudden color change to indicate a fixed amount of product</label></div>
+                        <div class="option"><input type="radio" id="q40b" name="q40" value="B"><label for="q40b">B. Continuous color change</label></div>
+                        <div class="option"><input type="radio" id="q40c" name="q40" value="C"><label for="q40c">C. Gas production</label></div>
+                        <div class="option"><input type="radio" id="q40d" name="q40" value="D"><label for="q40d">D. Temperature measurement</label></div>
+                    </div>
+                </div>
+
+                <!-- Questions 41-50: Advanced Concepts -->
+                <div class="question">
+                    <div class="question-header"><strong>Q41:</strong> The Arrhenius equation is: k = Ae^(-Ea/RT). The term A represents:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q41a" name="q41" value="A"><label for="q41a">A. Activation energy</label></div>
+                        <div class="option"><input type="radio" id="q41b" name="q41" value="B"><label for="q41b">B. Pre-exponential factor (frequency factor)</label></div>
+                        <div class="option"><input type="radio" id="q41c" name="q41" value="C"><label for="q41c">C. Gas constant</label></div>
+                        <div class="option"><input type="radio" id="q41d" name="q41" value="D"><label for="q41d">D. Temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q42:</strong> For a reaction A → B, if a plot of ln[A] vs time is linear, the reaction is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q42a" name="q42" value="A"><label for="q42a">A. Zero order</label></div>
+                        <div class="option"><input type="radio" id="q42b" name="q42" value="B"><label for="q42b">B. First order</label></div>
+                        <div class="option"><input type="radio" id="q42c" name="q42" value="C"><label for="q42c">C. Second order</label></div>
+                        <div class="option"><input type="radio" id="q42d" name="q42" value="D"><label for="q42d">D. Third order</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q43:</strong> The half-life equation for a first order reaction is:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q43a" name="q43" value="A"><label for="q43a">A. t₁/₂ = 0.693/k</label></div>
+                        <div class="option"><input type="radio" id="q43b" name="q43" value="B"><label for="q43b">B. t₁/₂ = [A]₀/2k</label></div>
+                        <div class="option"><input type="radio" id="q43c" name="q43" value="C"><label for="q43c">C. t₁/₂ = 1/k[A]₀</label></div>
+                        <div class="option"><input type="radio" id="q43d" name="q43" value="D"><label for="q43d">D. t₁/₂ = k/[A]₀</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q44:</strong> A reaction has rate = k[A]⁰[B]¹. This means:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q44a" name="q44" value="A"><label for="q44a">A. The rate depends only on [B]</label></div>
+                        <div class="option"><input type="radio" id="q44b" name="q44" value="B"><label for="q44b">B. The rate depends only on [A]</label></div>
+                        <div class="option"><input type="radio" id="q44c" name="q44" value="C"><label for="q44c">C. The rate is constant</label></div>
+                        <div class="option"><input type="radio" id="q44d" name="q44" value="D"><label for="q44d">D. A is a catalyst</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q45:</strong> Increasing pressure affects the rate of gaseous reactions by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q45a" name="q45" value="A"><label for="q45a">A. Increasing concentration of gas molecules</label></div>
+                        <div class="option"><input type="radio" id="q45b" name="q45" value="B"><label for="q45b">B. Decreasing activation energy</label></div>
+                        <div class="option"><input type="radio" id="q45c" name="q45" value="C"><label for="q45c">C. Changing the rate constant</label></div>
+                        <div class="option"><input type="radio" id="q45d" name="q45" value="D"><label for="q45d">D. Increasing temperature</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q46:</strong> The rate constant k is affected by:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q46a" name="q46" value="A"><label for="q46a">A. Temperature and catalyst</label></div>
+                        <div class="option"><input type="radio" id="q46b" name="q46" value="B"><label for="q46b">B. Concentration only</label></div>
+                        <div class="option"><input type="radio" id="q46c" name="q46" value="C"><label for="q46c">C. Pressure only</label></div>
+                        <div class="option"><input type="radio" id="q46d" name="q46" value="D"><label for="q46d">D. Volume only</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q47:</strong> For a second order reaction with one reactant, a plot of 1/[A] vs time gives:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q47a" name="q47" value="A"><label for="q47a">A. A curve</label></div>
+                        <div class="option"><input type="radio" id="q47b" name="q47" value="B"><label for="q47b">B. A straight line with positive slope = k</label></div>
+                        <div class="option"><input type="radio" id="q47c" name="q47" value="C"><label for="q47c">C. A straight line with negative slope</label></div>
+                        <div class="option"><input type="radio" id="q47d" name="q47" value="D"><label for="q47d">D. A horizontal line</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q48:</strong> The units of k for a third order reaction are:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q48a" name="q48" value="A"><label for="q48a">A. s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q48b" name="q48" value="B"><label for="q48b">B. mol⁻¹ dm³ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q48c" name="q48" value="C"><label for="q48c">C. mol⁻² dm⁶ s⁻¹</label></div>
+                        <div class="option"><input type="radio" id="q48d" name="q48" value="D"><label for="q48d">D. mol⁻³ dm⁹ s⁻¹</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q49:</strong> A reaction with a large activation energy will:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q49a" name="q49" value="A"><label for="q49a">A. Be very fast at room temperature</label></div>
+                        <div class="option"><input type="radio" id="q49b" name="q49" value="B"><label for="q49b">B. Be very slow at room temperature</label></div>
+                        <div class="option"><input type="radio" id="q49c" name="q49" value="C"><label for="q49c">C. Have a large enthalpy change</label></div>
+                        <div class="option"><input type="radio" id="q49d" name="q49" value="D"><label for="q49d">D. Be exothermic</label></div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-header"><strong>Q50:</strong> The rate of a catalyzed reaction compared to an uncatalyzed reaction:</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" id="q50a" name="q50" value="A"><label for="q50a">A. Is faster due to lower Ea</label></div>
+                        <div class="option"><input type="radio" id="q50b" name="q50" value="B"><label for="q50b">B. Is slower due to higher Ea</label></div>
+                        <div class="option"><input type="radio" id="q50c" name="q50" value="C"><label for="q50c">C. Is the same</label></div>
+                        <div class="option"><input type="radio" id="q50d" name="q50" value="D"><label for="q50d">D. Depends on temperature only</label></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Quiz</button>
+            </form>
+            
+            <div class="results" id="results">
+                <div class="score-display">
+                    <h2>Your Results</h2>
+                    <div class="score" id="scoreDisplay"></div>
+                    <div class="percentage" id="percentageDisplay"></div>
+                    <div class="grade" id="gradeDisplay"></div>
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <button class="retry-btn" onclick="location.reload()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const correctAnswers = {
+            q1:'A', q2:'C', q3:'A', q4:'C', q5:'B', q6:'B', q7:'A', q8:'C', q9:'A', q10:'C',
+            q11:'C', q12:'B', q13:'B', q14:'B', q15:'A', q16:'B', q17:'C', q18:'B', q19:'C', q20:'A',
+            q21:'B', q22:'B', q23:'B', q24:'C', q25:'A', q26:'B', q27:'A', q28:'B', q29:'A', q30:'A',
+            q31:'B', q32:'B', q33:'B', q34:'A', q35:'A', q36:'B', q37:'A', q38:'A', q39:'A', q40:'A',
+            q41:'B', q42:'B', q43:'A', q44:'A', q45:'A', q46:'A', q47:'B', q48:'C', q49:'B', q50:'A'
+        };
+        
+        const explanations = {
+            q1: 'Rate is defined as change in concentration per unit time (mol dm⁻³ s⁻¹).',
+            q2: 'ΔH (enthalpy change) affects whether a reaction is exothermic or endothermic, but not the rate.',
+            q3: 'Rate units = concentration/time = mol dm⁻³ s⁻¹.',
+            q4: 'Collision theory requires both sufficient energy (≥Ea) and correct orientation.',
+            q5: 'Activation energy (Ea) is the minimum energy needed for particles to react.',
+            q6: 'Catalysts lower activation energy, providing an alternative pathway.',
+            q7: 'Higher temperature shifts the peak right (higher average energy) and lowers it (same total particles).',
+            q8: 'Catalysts provide an alternative reaction pathway with lower Ea.',
+            q9: 'Higher temperature increases both collision frequency and energy of collisions.',
+            q10: 'Rate quadruples when [A] doubles: rate ∝ [A]², so second order in A.',
+            q11: 'Overall order = sum of individual orders = 2 + 1 = 3.',
+            q12: 'For first order: rate = k[A], so k = rate/[A] = (mol dm⁻³ s⁻¹)/(mol dm⁻³) = s⁻¹.',
+            q13: 'Zero order means rate is independent of concentration: rate = k.',
+            q14: 'For first order reactions, t₁/₂ = 0.693/k (constant, independent of concentration).',
+            q15: 'Higher temperature means more particles have E ≥ Ea (from Maxwell-Boltzmann distribution).',
+            q16: '[A] tripled = 3× effect, [B]² doubled = 4× effect. Total = 3 × 4 = 12.',
+            q17: 'Second order: rate = k[A]², so k = rate/[A]² = mol⁻¹ dm³ s⁻¹.',
+            q18: 'Order must be determined experimentally; it cannot be deduced from stoichiometry.',
+            q19: 'Zero order means rate is independent of [X], so doubling [X] has no effect.',
+            q20: 'Arrhenius equation: k = Ae^(-Ea/RT) relates k to T and Ea.',
+            q21: 'The slowest step determines the overall rate (rate-determining step).',
+            q22: 'Intermediates are formed in one step and consumed in another; they don\'t appear in the overall equation.',
+            q23: 'The rate equation reflects the stoichiometry of the rate-determining step.',
+            q24: 'A catalyst is consumed in one step and regenerated in another.',
+            q25: 'Rate = k[A]² suggests two A molecules in the rate-determining step.',
+            q26: 'Molecularity is the number of particles involved in a single elementary step.',
+            q27: 'Unimolecular means one molecule decomposes or rearranges.',
+            q28: 'Rate equation doesn\'t match stoichiometry, indicating a multi-step mechanism.',
+            q29: 'Pre-equilibrium means a fast reversible step occurs before the slow rate-determining step.',
+            q30: 'Three particles colliding simultaneously with correct orientation is statistically very unlikely.',
+            q31: 'Initial rate method measures rate at t=0 with different starting concentrations.',
+            q32: 'First order gives exponential decay: [A] = [A]₀e^(-kt).',
+            q33: 'Zero order: [A] = [A]₀ - kt, which is a straight line with negative slope -k.',
+            q34: 'Clock reactions measure time for a fixed, small amount of product to form.',
+            q35: 'Continuous monitoring tracks concentration changes throughout the reaction.',
+            q36: 'Quenching stops the reaction suddenly (e.g., by rapid cooling or dilution).',
+            q37: 'Colorimetry measures absorbance changes when colored species form or are consumed.',
+            q38: 'Arrhenius plot: ln k vs 1/T gives a straight line with slope -Ea/R.',
+            q39: 'From ln k = ln A - Ea/RT, gradient of ln k vs 1/T = -Ea/R.',
+            q40: 'Iodine clock uses sudden color change (blue-black with starch) to indicate fixed product amount.',
+            q41: 'A is the pre-exponential factor (frequency factor) related to collision frequency.',
+            q42: 'ln[A] vs t linear indicates first order: ln[A] = ln[A]₀ - kt.',
+            q43: 'For first order: t₁/₂ = ln2/k = 0.693/k.',
+            q44: '[A]⁰ = 1, so rate = k[B]¹ depends only on [B].',
+            q45: 'Increased pressure increases gas concentration, leading to more frequent collisions.',
+            q46: 'k depends on temperature (Arrhenius equation) and presence of catalyst.',
+            q47: 'Second order: 1/[A] = 1/[A]₀ + kt, straight line with positive slope k.',
+            q48: 'Third order: k = rate/[A]³ = mol⁻² dm⁶ s⁻¹.',
+            q49: 'Large Ea means few particles have sufficient energy, so reaction is slow.',
+            q50: 'Catalyst lowers Ea, so more particles have E ≥ Ea, increasing rate.'
+        };
+        
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            let feedbackHTML = '<h3>Detailed Answer Review:</h3>';
+            
+            for (let question in correctAnswers) {
+                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                const isCorrect = userAnswer && userAnswer.value === correctAnswers[question];
+                
+                if (isCorrect) {
+                    score++;
+                    feedbackHTML += `
+                        <div class="answer-review correct">
+                            <div class="question-num">✓ Question ${question.substring(1)}</div>
+                            <div>Your answer: ${userAnswer.value} - Correct!</div>
+                            <div class="explanation">${explanations[question]}</div>
+                        </div>
+                    `;
+                } else {
+                    feedbackHTML += `
+                        <div class="answer-review incorrect">
+                            <div class="question-num">✗ Question ${question.substring(1)}</div>
+                            <div>Your answer: ${userAnswer ? userAnswer.value : 'Not answered'}</div>
+                            <div>Correct answer: ${correctAnswers[question]}</div>
+                            <div class="explanation">${explanations[question]}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let grade = '';
+            if (percentage >= 90) grade = 'Grade: A* - Excellent!';
+            else if (percentage >= 80) grade = 'Grade: A - Very Good!';
+            else if (percentage >= 70) grade = 'Grade: B - Good!';
+            else if (percentage >= 60) grade = 'Grade: C - Pass';
+            else if (percentage >= 50) grade = 'Grade: D - Pass';
+            else grade = 'Grade: U - Keep Practicing!';
+            
+            document.getElementById('scoreDisplay').textContent = `${score} / ${totalQuestions}`;
+            document.getElementById('percentageDisplay').textContent = `${percentage}%`;
+            document.getElementById('gradeDisplay').textContent = grade;
+            document.getElementById('feedback').innerHTML = feedbackHTML;
+            document.getElementById('results').classList.add('show');
+            
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
