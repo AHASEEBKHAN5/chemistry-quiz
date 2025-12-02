@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAL Chemistry Quiz - Standard Hydrogen Electrode & Redox Equilibria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .quiz-info {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .quiz-info p {
+            margin: 5px 0;
+            color: #495057;
+        }
+        
+        .quiz-content {
+            padding: 30px;
+        }
+        
+        .question {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            margin-top: 15px;
+        }
+        
+        .option {
+            display: block;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+            transform: translateX(5px);
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        
+        .option label {
+            cursor: pointer;
+            font-size: 16px;
+            color: #4a5568;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            display: none;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .score-display h2 {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .score-display .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .score-display .percentage {
+            font-size: 24px;
+            color: #718096;
+        }
+        
+        .feedback {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .feedback h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .answer-review {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .answer-review.correct {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .answer-review.incorrect {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .answer-review .question-num {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .answer-review .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .retry-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .retry-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IAL Chemistry Quiz</h1>
+            <p>Standard Hydrogen Electrode & Redox Equilibria</p>
+        </div>
+        
+        <div class="quiz-info">
+            <p><strong>Subject:</strong> Pearson Edexcel IAL Chemistry - Unit 5</p>
+            <p><strong>Topic:</strong> Redox Equilibria & Electrochemistry</p>
+            <p><strong>Questions:</strong> 15 Multiple Choice Questions</p>
+            <p><strong>Instructions:</strong> Select one answer for each question and click Submit to see your results.</p>
+        </div>
+        
+        <div class="quiz-content">
+            <form id="quizForm">
+                
+                <!-- Question 1 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 1:</strong> What is the standard electrode potential of the standard hydrogen electrode?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q1a" name="q1" value="A">
+                            <label for="q1a">A. +1.00 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1b" name="q1" value="B">
+                            <label for="q1b">B. 0.00 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1c" name="q1" value="C">
+                            <label for="q1c">C. −1.00 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1d" name="q1" value="D">
+                            <label for="q1d">D. It varies with temperature</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 2:</strong> Which metal is used as the electrode in the standard hydrogen electrode?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q2a" name="q2" value="A">
+                            <label for="q2a">A. Copper</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2b" name="q2" value="B">
+                            <label for="q2b">B. Zinc</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2c" name="q2" value="C">
+                            <label for="q2c">C. Platinum</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2d" name="q2" value="D">
+                            <label for="q2d">D. Silver</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 3 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 3:</strong> What is the concentration of H⁺(aq) ions in the standard hydrogen electrode?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q3a" name="q3" value="A">
+                            <label for="q3a">A. 0.1 mol dm⁻³</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3b" name="q3" value="B">
+                            <label for="q3b">B. 1.0 mol dm⁻³</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3c" name="q3" value="C">
+                            <label for="q3c">C. 2.0 mol dm⁻³</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3d" name="q3" value="D">
+                            <label for="q3d">D. 10.0 mol dm⁻³</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 4 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 4:</strong> At what temperature is the standard hydrogen electrode maintained?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q4a" name="q4" value="A">
+                            <label for="q4a">A. 273 K</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4b" name="q4" value="B">
+                            <label for="q4b">B. 298 K</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4c" name="q4" value="C">
+                            <label for="q4c">C. 373 K</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4d" name="q4" value="D">
+                            <label for="q4d">D. 323 K</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 5 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 5:</strong> What is the pressure of hydrogen gas in the standard hydrogen electrode?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q5a" name="q5" value="A">
+                            <label for="q5a">A. 0.5 atm (50 kPa)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5b" name="q5" value="B">
+                            <label for="q5b">B. 1.0 atm (100 kPa)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5c" name="q5" value="C">
+                            <label for="q5c">C. 2.0 atm (200 kPa)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5d" name="q5" value="D">
+                            <label for="q5d">D. 10.0 atm (1000 kPa)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 6 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 6:</strong> The half-equation for the standard hydrogen electrode is:<br>
+                        H₂(g) ⇌ 2H⁺(aq) + 2e⁻<br><br>
+                        Why is platinum used as the electrode material?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q6a" name="q6" value="A">
+                            <label for="q6a">A. It is cheap and readily available</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6b" name="q6" value="B">
+                            <label for="q6b">B. It is inert and provides a catalytic surface</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6c" name="q6" value="C">
+                            <label for="q6c">C. It reacts with hydrogen gas</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6d" name="q6" value="D">
+                            <label for="q6d">D. It dissolves in acidic solution</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 7 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 7:</strong> Given the following standard electrode potentials:<br>
+                        Zn²⁺(aq) + 2e⁻ ⇌ Zn(s)  E° = −0.76 V<br>
+                        Cu²⁺(aq) + 2e⁻ ⇌ Cu(s)  E° = +0.34 V<br><br>
+                        What is the standard cell potential (E°cell) for a cell made from these two half-cells?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q7a" name="q7" value="A">
+                            <label for="q7a">A. −1.10 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7b" name="q7" value="B">
+                            <label for="q7b">B. −0.42 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7c" name="q7" value="C">
+                            <label for="q7c">C. +0.42 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7d" name="q7" value="D">
+                            <label for="q7d">D. +1.10 V</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 8 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 8:</strong> A positive E°cell value indicates that a reaction is:
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q8a" name="q8" value="A">
+                            <label for="q8a">A. Non-spontaneous under standard conditions</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8b" name="q8" value="B">
+                            <label for="q8b">B. Thermodynamically feasible under standard conditions</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8c" name="q8" value="C">
+                            <label for="q8c">C. At equilibrium</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8d" name="q8" value="D">
+                            <label for="q8d">D. Endothermic</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 9 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 9:</strong> Given:<br>
+                        Fe³⁺(aq) + e⁻ → Fe²⁺(aq)  E° = +0.77 V<br>
+                        I₂(aq) + 2e⁻ → 2I⁻(aq)  E° = +0.54 V<br><br>
+                        Will Fe³⁺ ions oxidise I⁻ ions to I₂?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q9a" name="q9" value="A">
+                            <label for="q9a">A. No, because E°cell is negative</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q9b" name="q9" value="B">
+                            <label for="q9b">B. Yes, because E°cell is +0.23 V (positive)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q9c" name="q9" value="C">
+                            <label for="q9c">C. No, because both are positive values</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q9d" name="q9" value="D">
+                            <label for="q9d">D. Yes, because E°cell is +1.31 V</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 10 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 10:</strong> In an electrochemical cell, the salt bridge:
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q10a" name="q10" value="A">
+                            <label for="q10a">A. Allows electrons to flow between the two half-cells</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q10b" name="q10" value="B">
+                            <label for="q10b">B. Allows ions to flow to complete the circuit</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q10c" name="q10" value="C">
+                            <label for="q10c">C. Prevents any reaction from occurring</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q10d" name="q10" value="D">
+                            <label for="q10d">D. Increases the cell potential</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 11 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 11:</strong> Which statement about the electrochemical series is correct?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q11a" name="q11" value="A">
+                            <label for="q11a">A. Species with more negative E° values are better oxidising agents</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q11b" name="q11" value="B">
+                            <label for="q11b">B. Species with more positive E° values are better reducing agents</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q11c" name="q11" value="C">
+                            <label for="q11c">C. Species with more positive E° values are better oxidising agents</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q11d" name="q11" value="D">
+                            <label for="q11d">D. All species have the same oxidising power</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 12 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 12:</strong> The conventional cell representation for a zinc-copper cell is:
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q12a" name="q12" value="A">
+                            <label for="q12a">A. Cu(s) | Cu²⁺(aq) || Zn²⁺(aq) | Zn(s)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q12b" name="q12" value="B">
+                            <label for="q12b">B. Zn(s) | Zn²⁺(aq) || Cu²⁺(aq) | Cu(s)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q12c" name="q12" value="C">
+                            <label for="q12c">C. Zn²⁺(aq) | Zn(s) || Cu(s) | Cu²⁺(aq)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q12d" name="q12" value="D">
+                            <label for="q12d">D. Cu²⁺(aq) | Cu(s) || Zn(s) | Zn²⁺(aq)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 13 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 13:</strong> Given:<br>
+                        MnO₄⁻(aq) + 8H⁺(aq) + 5e⁻ → Mn²⁺(aq) + 4H₂O(l)  E° = +1.51 V<br>
+                        Fe³⁺(aq) + e⁻ → Fe²⁺(aq)  E° = +0.77 V<br><br>
+                        What is the E°cell for the reaction between MnO₄⁻ and Fe²⁺?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q13a" name="q13" value="A">
+                            <label for="q13a">A. +0.74 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q13b" name="q13" value="B">
+                            <label for="q13b">B. +2.28 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q13c" name="q13" value="C">
+                            <label for="q13c">C. −0.74 V</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q13d" name="q13" value="D">
+                            <label for="q13d">D. +1.51 V</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 14 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 14:</strong> If the concentration of H⁺ ions in a hydrogen electrode is increased, the electrode potential will:
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q14a" name="q14" value="A">
+                            <label for="q14a">A. Become more negative</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q14b" name="q14" value="B">
+                            <label for="q14b">B. Become more positive</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q14c" name="q14" value="C">
+                            <label for="q14c">C. Remain unchanged</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q14d" name="q14" value="D">
+                            <label for="q14d">D. Become zero</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Question 15 -->
+                <div class="question">
+                    <div class="question-header">
+                        <strong>Question 15:</strong> Which of the following metals will NOT react with dilute hydrochloric acid?<br>
+                        (Given: Cu²⁺/Cu E° = +0.34 V, Zn²⁺/Zn E° = −0.76 V, Mg²⁺/Mg E° = −2.37 V, Ag⁺/Ag E° = +0.80 V)
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q15a" name="q15" value="A">
+                            <label for="q15a">A. Zinc</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q15b" name="q15" value="B">
+                            <label for="q15b">B. Magnesium</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q15c" name="q15" value="C">
+                            <label for="q15c">C. Copper</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q15d" name="q15" value="D">
+                            <label for="q15d">D. All will react</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit Quiz</button>
+            </form>
+            
+            <div class="results" id="results">
+                <div class="score-display">
+                    <h2>Your Results</h2>
+                    <div class="score" id="scoreDisplay"></div>
+                    <div class="percentage" id="percentageDisplay"></div>
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <button class="retry-btn" onclick="location.reload()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const correctAnswers = {
+            q1: 'B',
+            q2: 'C',
+            q3: 'B',
+            q4: 'B',
+            q5: 'B',
+            q6: 'B',
+            q7: 'D',
+            q8: 'B',
+            q9: 'B',
+            q10: 'B',
+            q11: 'C',
+            q12: 'B',
+            q13: 'A',
+            q14: 'B',
+            q15: 'C'
+        };
+        
+        const explanations = {
+            q1: 'The standard hydrogen electrode is assigned a value of 0.00 V by definition. It serves as the reference point for all other electrode potentials.',
+            q2: 'Platinum is used because it is inert (does not react) and provides a catalytic surface for the hydrogen gas equilibrium.',
+            q3: 'Standard conditions require H⁺ concentration of 1.0 mol dm⁻³, typically achieved using 1.0 M HCl solution.',
+            q4: 'Standard temperature is 298 K (25°C), which is standard laboratory temperature.',
+            q5: 'Standard pressure for the hydrogen gas is 1.0 atm (100 kPa).',
+            q6: 'Platinum is inert and does not participate in the reaction. It provides a catalytic surface for the H₂/H⁺ equilibrium.',
+            q7: 'E°cell = E°(cathode) − E°(anode) = (+0.34) − (−0.76) = +1.10 V. Copper is reduced (cathode), zinc is oxidized (anode).',
+            q8: 'A positive E°cell indicates the reaction is thermodynamically feasible (spontaneous) under standard conditions.',
+            q9: 'E°cell = (+0.77) − (+0.54) = +0.23 V. Since E°cell is positive, the reaction is feasible. Fe³⁺ will oxidise I⁻ to I₂.',
+            q10: 'The salt bridge allows ions to flow between half-cells to maintain electrical neutrality and complete the circuit.',
+            q11: 'Species with more positive E° values are better oxidising agents (they are more easily reduced).',
+            q12: 'Convention: negative electrode (anode) on left, positive electrode (cathode) on right. Zn is oxidized (anode), Cu is reduced (cathode).',
+            q13: 'E°cell = E°(cathode) − E°(anode) = (+1.51) − (+0.77) = +0.74 V. MnO₄⁻ is reduced, Fe²⁺ is oxidized.',
+            q14: 'Increasing [H⁺] shifts equilibrium H₂ ⇌ 2H⁺ + 2e⁻ to the left, making the electrode more positive (less negative).',
+            q15: 'Copper has a positive E° value (+0.34 V), meaning it is less reactive than hydrogen. Metals with negative E° values (Zn, Mg) will react with HCl.'
+        };
+        
+        const questionTexts = {
+            q1: 'Standard electrode potential of SHE',
+            q2: 'Electrode material in SHE',
+            q3: 'H⁺ concentration in SHE',
+            q4: 'Temperature of SHE',
+            q5: 'Pressure of H₂ in SHE',
+            q6: 'Why platinum is used',
+            q7: 'Calculating E°cell (Zn-Cu)',
+            q8: 'Meaning of positive E°cell',
+            q9: 'Fe³⁺ oxidising I⁻',
+            q10: 'Function of salt bridge',
+            q11: 'Electrochemical series',
+            q12: 'Cell representation',
+            q13: 'E°cell for MnO₄⁻/Fe²⁺',
+            q14: 'Effect of [H⁺] increase',
+            q15: 'Metal not reacting with HCl'
+        };
+        
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            let feedbackHTML = '<h3>Answer Review:</h3>';
+            
+            for (let question in correctAnswers) {
+                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                const isCorrect = userAnswer && userAnswer.value === correctAnswers[question];
+                
+                if (isCorrect) {
+                    score++;
+                    feedbackHTML += `
+                        <div class="answer-review correct">
+                            <div class="question-num">✓ Question ${question.substring(1)}: ${questionTexts[question]}</div>
+                            <div>Your answer: ${userAnswer.value} - Correct!</div>
+                            <div class="explanation"><strong>Explanation:</strong> ${explanations[question]}</div>
+                        </div>
+                    `;
+                } else {
+                    feedbackHTML += `
+                        <div class="answer-review incorrect">
+                            <div class="question-num">✗ Question ${question.substring(1)}: ${questionTexts[question]}</div>
+                            <div>Your answer: ${userAnswer ? userAnswer.value : 'Not answered'}</div>
+                            <div>Correct answer: ${correctAnswers[question]}</div>
+                            <div class="explanation"><strong>Explanation:</strong> ${explanations[question]}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            document.getElementById('scoreDisplay').textContent = `${score} / ${totalQuestions}`;
+            document.getElementById('percentageDisplay').textContent = `${percentage}%`;
+            document.getElementById('feedback').innerHTML = feedbackHTML;
+            document.getElementById('results').classList.add('show');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
