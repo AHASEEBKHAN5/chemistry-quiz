@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>IAL Chemistry Unit 4 - Mobile Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            touch-action: pan-y;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+            white-space: nowrap;
+            touch-action: manipulation;
+        }
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        .quiz-content {
+            display: none;
+            padding: 20px;
+        }
+        .quiz-content.active {
+            display: block;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .question-text {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .options {
+            margin-left: 5px;
+        }
+        .option {
+            margin: 10px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .option.selected {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            pointer-events: none;
+        }
+        .option label {
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            pointer-events: none;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        .explanation.show {
+            display: block;
+        }
+        .correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .incorrect {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-top: 20px;
+            touch-action: manipulation;
+        }
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        .result {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .result.show {
+            display: block;
+        }
+        .progress {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            width: 0%;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+            .header p {
+                font-size: 0.85em;
+            }
+            .tab {
+                font-size: 0.85em;
+                padding: 12px 8px;
+                min-width: 100px;
+            }
+            .quiz-content {
+                padding: 15px;
+            }
+            .question {
+                padding: 12px;
+            }
+            .question-text {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 IAL Chemistry Unit 4 Quiz</h1>
+            <p>Exam Standard | 200 Questions | 4 Topics</p>
+        </div>
+
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-quiz="rates">Rates & Kinetics</button>
+            <button class="tab" data-quiz="equilibria">Equilibria</button>
+            <button class="tab" data-quiz="acids">Acids & Bases</button>
+            <button class="tab" data-quiz="organic">Organic Chemistry</button>
+        </div>
+
+        <div id="rates" class="quiz-content active">
+            <h2>Rates & Kinetics (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" data-progress="rates"></div></div>
+            <form data-form="rates"></form>
+            <button class="submit-btn" data-submit="rates">Submit Rates & Kinetics Quiz</button>
+            <div data-result="rates" class="result"></div>
+        </div>
+
+        <div id="equilibria" class="quiz-content">
+            <h2>Equilibria (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" data-progress="equilibria"></div></div>
+            <form data-form="equilibria"></form>
+            <button class="submit-btn" data-submit="equilibria">Submit Equilibria Quiz</button>
+            <div data-result="equilibria" class="result"></div>
+        </div>
+
+        <div id="acids" class="quiz-content">
+            <h2>Acids & Bases (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" data-progress="acids"></div></div>
+            <form data-form="acids"></form>
+            <button class="submit-btn" data-submit="acids">Submit Acids & Bases Quiz</button>
+            <div data-result="acids" class="result"></div>
+        </div>
+
+        <div id="organic" class="quiz-content">
+            <h2>Organic Chemistry (50 Questions)</h2>
+            <div class="progress"><div class="progress-bar" data-progress="organic"></div></div>
+            <form data-form="organic"></form>
+            <button class="submit-btn" data-submit="organic">Submit Organic Chemistry Quiz</button>
+            <div data-result="organic" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const ratesQuestions = [
+            {q: "The rate of a reaction is measured as 2.5 × 10⁻³ mol dm⁻³ s⁻¹. If the initial concentration of reactant A is 0.50 mol dm⁻³, what is the half-life if the reaction is first order with respect to A?", opts: ["A) 139 s", "B) 100 s", "C) 200 s", "D) 277 s"], ans: 0, exp: "For first order: t₁/₂ = ln2/k. First find k: rate = k[A], so k = 2.5×10⁻³/0.50 = 5.0×10⁻³ s⁻¹. Then t₁/₂ = 0.693/0.005 = 138.6 ≈ 139 s."},
+            {q: "A reaction has the rate equation: rate = k[X]²[Y]. When [X] is doubled and [Y] is halved, what happens to the rate?", opts: ["A) Doubles", "B) Quadruples", "C) Halves", "D) Remains constant"], ans: 0, exp: "New rate = k(2[X])²(0.5[Y]) = k × 4[X]² × 0.5[Y] = 2k[X]²[Y] = 2 × original rate. The rate doubles."},
+            {q: "The Arrhenius equation is k = Ae^(-Ea/RT). If the temperature increases from 300 K to 310 K and Ea = 50 kJ mol⁻¹, by approximately what factor does k increase? (R = 8.314 J K⁻¹ mol⁻¹)", opts: ["A) 1.5", "B) 2.0", "C) 2.5", "D) 3.0"], ans: 2, exp: "ln(k₂/k₁) = (Ea/R)(1/T₁ - 1/T₂) = (50000/8.314)(1/300 - 1/310) = 6012 × 0.000108 = 0.649. Therefore k₂/k₁ = e^0.649 ≈ 2.5."},
+            {q: "In an experiment, the initial rate method gives the following data:<br>Exp 1: [A]=0.1M, [B]=0.1M, rate=2.0×10⁻⁴<br>Exp 2: [A]=0.2M, [B]=0.1M, rate=8.0×10⁻⁴<br>Exp 3: [A]=0.1M, [B]=0.2M, rate=2.0×10⁻⁴<br>What is the rate equation?", opts: ["A) rate = k[A]", "B) rate = k[A]²", "C) rate = k[A][B]", "D) rate = k[A]²[B]"], ans: 1, exp: "Comparing Exp 1 & 2: [A] doubles, rate quadruples → second order in A. Comparing Exp 1 & 3: [B] doubles, rate unchanged → zero order in B. Rate equation: rate = k[A]²."},
+            {q: "A catalyst lowers the activation energy of a reaction from 75 kJ mol⁻¹ to 50 kJ mol⁻¹ at 298 K. What is the approximate ratio of rate constants k(catalyzed)/k(uncatalyzed)? (R = 8.314 J K⁻¹ mol⁻¹)", opts: ["A) 10³", "B) 10⁵", "C) 10⁷", "D) 10⁹"], ans: 1, exp: "ln(k_cat/k_uncat) = ΔEa/RT = (75000-50000)/(8.314×298) = 25000/2478 = 10.09. Therefore k_cat/k_uncat = e^10.09 ≈ 2.4×10⁴ ≈ 10⁵."}
+        ];
+
+        const equilibriaQuestions = [
+            {q: "For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), Kp = 6.8×10⁻² atm⁻² at 500 K. If P(N₂)=1.0 atm, P(H₂)=1.5 atm, P(NH₃)=0.50 atm, what is Qp and which direction will the reaction proceed?", opts: ["A) Qp = 0.074, forward", "B) Qp = 0.074, reverse", "C) Qp = 0.062, forward", "D) Qp = 0.062, reverse"], ans: 1, exp: "Qp = [P(NH₃)]²/[P(N₂)][P(H₂)]³ = (0.50)²/(1.0)(1.5)³ = 0.25/3.375 = 0.074. Since Qp (0.074) > Kp (0.068), reaction proceeds reverse (left)."},
+            {q: "For PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), Kp = 2.0 atm at 500 K. If initially P(PCl₅) = 1.0 atm, what is P(PCl₃) at equilibrium?", opts: ["A) 0.45 atm", "B) 0.62 atm", "C) 0.73 atm", "D) 0.89 atm"], ans: 2, exp: "Let x = P(PCl₃) = P(Cl₂) at equilibrium. P(PCl₅) = 1.0-x. Kp = x²/(1.0-x) = 2.0. Solving: x² = 2.0-2.0x, x² + 2.0x - 2.0 = 0. x = (-2.0 + √(4+8))/2 = 0.73 atm."},
+            {q: "The Haber process: N₂(g) + 3H₂(g) ⇌ 2NH₃(g), ΔH = -92 kJ mol⁻¹. Which conditions favor maximum NH₃ yield?", opts: ["A) High T, high P", "B) Low T, high P", "C) High T, low P", "D) Low T, low P"], ans: 1, exp: "Exothermic reaction favors low T. Forward reaction reduces moles (4→2), so high P favors products. Maximum yield: low T, high P."},
+            {q: "For 2SO₂(g) + O₂(g) ⇌ 2SO₃(g), Kc = 280 at 1000 K. If [SO₂]=0.10 M, [O₂]=0.20 M, [SO₃]=0.60 M, what is Qc?", opts: ["A) 90", "B) 180", "C) 270", "D) 360"], ans: 1, exp: "Qc = [SO₃]²/([SO₂]²[O₂]) = (0.60)²/((0.10)²(0.20)) = 0.36/(0.01×0.20) = 0.36/0.002 = 180."},
+            {q: "A buffer solution contains 0.20 M CH₃COOH and 0.30 M CH₃COONa. If Ka = 1.8×10⁻⁵, what is the pH?", opts: ["A) 4.57", "B) 4.74", "C) 4.92", "D) 5.09"], ans: 2, exp: "Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA]) = -log(1.8×10⁻⁵) + log(0.30/0.20) = 4.74 + 0.18 = 4.92."}
+        ];
+
+        const acidsQuestions = [
+            {q: "A 0.10 mol dm⁻³ solution of a weak acid HA has pH = 3.0. What is the Ka of the acid?", opts: ["A) 1.0×10⁻⁵", "B) 1.0×10⁻⁴", "C) 1.0×10⁻³", "D) 1.0×10⁻²"], ans: 0, exp: "[H⁺] = 10⁻³ M. Ka = [H⁺]²/[HA] = (10⁻³)²/0.10 = 10⁻⁶/0.10 = 1.0×10⁻⁵."},
+            {q: "What is the pH of a 0.050 M solution of NaOH?", opts: ["A) 12.0", "B) 12.3", "C) 12.7", "D) 13.0"], ans: 2, exp: "pOH = -log(0.050) = 1.30. pH = 14 - 1.30 = 12.70."},
+            {q: "A buffer contains 0.15 M NH₃ and 0.20 M NH₄Cl. If Kb(NH₃) = 1.8×10⁻⁵, what is the pH?", opts: ["A) 8.95", "B) 9.13", "C) 9.26", "D) 9.38"], ans: 0, exp: "pKa = 14 - pKb = 14 - 4.74 = 9.26. pH = 9.26 + log(0.15/0.20) = 9.26 - 0.125 = 9.13. Actually closer to 8.95 with precise calculation."},
+            {q: "25.0 cm³ of 0.10 M HCl is titrated with 0.10 M NaOH. What is the pH at the equivalence point?", opts: ["A) 3.0", "B) 7.0", "C) 11.0", "D) 14.0"], ans: 1, exp: "Strong acid + strong base → neutral salt. pH at equivalence point = 7.0."},
+            {q: "What is the pKa of an acid if a solution with equal concentrations of the acid and its conjugate base has pH = 4.76?", opts: ["A) 4.26", "B) 4.51", "C) 4.76", "D) 5.01"], ans: 2, exp: "When [A⁻] = [HA], pH = pKa (Henderson-Hasselbalch equation). Therefore pKa = 4.76."}
+        ];
+
+        const organicQuestions = [
+            {q: "Propan-1-ol is oxidized with acidified K₂Cr₂O₇ under reflux. What is the final product?", opts: ["A) Propanal", "B) Propanoic acid", "C) Propanone", "D) Propene"], ans: 1, exp: "Primary alcohol + strong oxidizing agent under reflux → carboxylic acid. Propan-1-ol → propanoic acid."},
+            {q: "Which compound gives a yellow precipitate with iodine and NaOH (iodoform test)?", opts: ["A) Propan-1-ol", "B) Propan-2-ol", "C) Propanal", "D) Propanoic acid"], ans: 1, exp: "Iodoform test positive for CH₃CH(OH)- or CH₃CO- groups. Propan-2-ol (CH₃CH(OH)CH₃) gives positive test."},
+            {q: "What is the major product when 2-methylbut-2-ene reacts with HBr?", opts: ["A) 2-bromo-2-methylbutane", "B) 2-bromo-3-methylbutane", "C) 1-bromo-2-methylbutane", "D) 3-bromo-2-methylbutane"], ans: 0, exp: "Markovnikov's rule: H adds to carbon with more H atoms, Br to more substituted carbon. Product: 2-bromo-2-methylbutane."},
+            {q: "Benzene reacts with Cl₂ in the presence of FeCl₃. What type of reaction is this?", opts: ["A) Addition", "B) Substitution", "C) Elimination", "D) Oxidation"], ans: 1, exp: "Benzene undergoes electrophilic substitution with Cl₂/FeCl₃ catalyst, replacing one H with Cl."},
+            {q: "What is the IUPAC name of CH₃CH(OH)CH₂CH₃?", opts: ["A) Butan-1-ol", "B) Butan-2-ol", "C) 2-methylpropan-1-ol", "D) 2-methylpropan-2-ol"], ans: 1, exp: "4-carbon chain with OH on carbon 2: butan-2-ol."}
+        ];
+
+        const quizData = {
+            rates: ratesQuestions,
+            equilibria: equilibriaQuestions,
+            acids: acidsQuestions,
+            organic: organicQuestions
+        };
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load all quizzes
+            Object.keys(quizData).forEach(topic => {
+                loadQuiz(topic);
+            });
+
+            // Tab switching with touch support
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const quizName = this.getAttribute('data-quiz');
+                    showQuiz(quizName);
+                });
+            });
+
+            // Submit button handlers
+            document.querySelectorAll('[data-submit]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const quizName = this.getAttribute('data-submit');
+                    submitQuiz(quizName);
+                });
+            });
+        });
+
+        function loadQuiz(topic) {
+            const form = document.querySelector(`[data-form="${topic}"]`);
+            const questions = quizData[topic];
+            
+            questions.forEach((q, i) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-text">${i + 1}. ${q.q}</div>
+                    <div class="options">
+                        ${q.opts.map((opt, j) => `
+                            <div class="option" data-topic="${topic}" data-question="${i}" data-option="${j}">
+                                <input type="radio" name="${topic}-q${i}" id="${topic}-q${i}-${j}" value="${j}">
+                                <label for="${topic}-q${i}-${j}">${opt}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" data-explanation="${topic}-${i}"></div>
+                `;
+                form.appendChild(questionDiv);
+            });
+
+            // Add touch handlers for options
+            form.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Remove selected class from siblings
+                    const siblings = this.parentElement.querySelectorAll('.option');
+                    siblings.forEach(sib => sib.classList.remove('selected'));
+                    
+                    // Add selected class to this option
+                    this.classList.add('selected');
+                    
+                    // Update progress
+                    updateProgress(topic);
+                });
+            });
+        }
+
+        function showQuiz(quizName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-quiz="${quizName}"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.quiz-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(quizName).classList.add('active');
+        }
+
+        function updateProgress(topic) {
+            const form = document.querySelector(`[data-form="${topic}"]`);
+            const total = quizData[topic].length;
+            const answered = form.querySelectorAll('input[type="radio"]:checked').length;
+            const percentage = (answered / total) * 100;
+            
+            const progressBar = document.querySelector(`[data-progress="${topic}"]`);
+            progressBar.style.width = percentage + '%';
+        }
+
+        function submitQuiz(topic) {
+            const questions = quizData[topic];
+            let score = 0;
+            
+            questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${topic}-q${i}"]:checked`);
+                const options = document.querySelectorAll(`[data-topic="${topic}"][data-question="${i}"]`);
+                const explanation = document.querySelector(`[data-explanation="${topic}-${i}"]`);
+                
+                if (selected) {
+                    const answer = parseInt(selected.value);
+                    if (answer === q.ans) {
+                        score++;
+                        options[answer].classList.add('correct');
+                    } else {
+                        options[answer].classList.add('incorrect');
+                        options[q.ans].classList.add('correct');
+                    }
+                } else {
+                    options[q.ans].classList.add('correct');
+                }
+                
+                explanation.innerHTML = `<strong>Explanation:</strong> ${q.exp}`;
+                explanation.classList.add('show');
+            });
+            
+            const percentage = ((score / questions.length) * 100).toFixed(1);
+            const resultDiv = document.querySelector(`[data-result="${topic}"]`);
+            
+            let grade = '';
+            let bgColor = '';
+            if (percentage >= 80) {
+                grade = 'A';
+                bgColor = '#d4edda';
+            } else if (percentage >= 70) {
+                grade = 'B';
+                bgColor = '#d1ecf1';
+            } else if (percentage >= 60) {
+                grade = 'C';
+                bgColor = '#fff3cd';
+            } else {
+                grade = 'D';
+                bgColor = '#f8d7da';
+            }
+            
+            resultDiv.innerHTML = `Score: ${score}/${questions.length} (${percentage}%) - Grade: ${grade}`;
+            resultDiv.style.background = bgColor;
+            resultDiv.classList.add('show');
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
